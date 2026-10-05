@@ -1,0 +1,16 @@
+@baseUrl = http://localhost:8080/api/v1
+@categoriaExistenteId = {{CATEGORIA_EXISTENTE}}
+@nombreYaRegistrado = {{NOMBRE_DE_PRODUCTO_EXISTENTE}}
+
+### La baja lógica no genera conflicto por ventas asociadas.
+### Este POST demuestra el 409 real por nombre duplicado.
+POST {{baseUrl}}/productos
+Content-Type: application/json
+
+{
+  "nombre": "{{nombreYaRegistrado}}",
+  "precio": 12.5,
+  "stock": 1,
+  "estado": true,
+  "categoriaId": {{categoriaExistenteId}}
+}

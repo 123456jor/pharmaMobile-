@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:8080/api/v1
+@categoriaExistenteId = {{CATEGORIA_EXISTENTE}}
+
+### 1. Validación de nombre (esperado por la ficha: 400; registrar el código real)
+POST {{baseUrl}}/productos
+Content-Type: application/json
+
+{
+  "nombre": "AB",
+  "precio": 12.5,
+  "stock": 1,
+  "estado": true,
+  "categoriaId": {{categoriaExistenteId}}
+}

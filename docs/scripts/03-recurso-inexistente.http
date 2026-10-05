@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:8080/api/v1
+@idInexistente = {{ID_VERIFICADO_INEXISTENTE}}
+@categoriaExistenteId = {{CATEGORIA_EXISTENTE}}
+
+### Actualizar un ID cuya inexistencia se comprobó previamente (esperado por la ficha: 404)
+PUT {{baseUrl}}/productos/{{idInexistente}}
+Content-Type: application/json
+
+{
+  "nombre": "Producto inexistente",
+  "precio": 1,
+  "stock": 0,
+  "estado": true,
+  "categoriaId": {{categoriaExistenteId}}
+}

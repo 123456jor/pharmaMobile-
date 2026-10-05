@@ -1,0 +1,7 @@
+[
+  {"N.º":1,"Operación":"Listar","Petición enviada":"GET /api/v1/productos?pagina=0&tamanio=20","Código HTTP recibido":"","Resultado observado en la app":""},
+  {"N.º":2,"Operación":"Obtener","Petición enviada":"GET /api/v1/productos/{id}","Código HTTP recibido":"","Resultado observado en la app":""},
+  {"N.º":3,"Operación":"Crear","Petición enviada":"POST /api/v1/productos con cuerpo válido","Código HTTP recibido":"","Resultado observado en la app":""},
+  {"N.º":4,"Operación":"Actualizar","Petición enviada":"PUT /api/v1/productos/{id} con cuerpo válido","Código HTTP recibido":"","Resultado observado en la app":""},
+  {"N.º":5,"Operación":"Eliminar","Petición enviada":"DELETE /api/v1/productos/{id}","Código HTTP recibido":"","Resultado observado en la app":""}
+]

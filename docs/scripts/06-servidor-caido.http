@@ -1,0 +1,4 @@
+@baseUrl = http://localhost:8080/api/v1
+
+### Detén PharmaSoft antes de ejecutar. No se espera un código HTTP si falla la conexión.
+GET {{baseUrl}}/productos?pagina=0&tamanio=20

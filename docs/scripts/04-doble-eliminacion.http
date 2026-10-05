@@ -1,0 +1,8 @@
+@baseUrl = http://localhost:8080/api/v1
+@productoId = {{ID_PRODUCTO_DE_PRUEBA}}
+
+### Primera eliminación (baja lógica del backend: esperado 204)
+DELETE {{baseUrl}}/productos/{{productoId}}
+
+### Segunda eliminación del ID ahora inactivo (ReglaNegocioException: esperado 409)
+DELETE {{baseUrl}}/productos/{{productoId}}

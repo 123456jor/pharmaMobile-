@@ -1,0 +1,1 @@
+PENDIENTE DE EJECUCIÓN POR EL ESTUDIANTE: guardar aquí la salida real de Ktor de una operación fallida.
