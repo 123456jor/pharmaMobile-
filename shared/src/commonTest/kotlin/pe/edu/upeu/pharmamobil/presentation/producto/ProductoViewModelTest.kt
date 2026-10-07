@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import pe.edu.upeu.pharmamobil.data.repository.FakeProductoRepository
+import pe.edu.upeu.pharmamobil.domain.platform.FakeCompartidor
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApi
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApiException
 import pe.edu.upeu.pharmamobil.domain.model.Producto
@@ -36,13 +37,16 @@ class ProductoViewModelTest {
     @AfterTest
     fun restaurarMain() = Dispatchers.resetMain()
 
+    private val compartidor = FakeCompartidor()
+
     private fun nuevoViewModel(repository: FakeProductoRepository = FakeProductoRepository()) =
         ProductoViewModel(
             registrarProducto = RegistrarProductoUseCase(repository),
             listarProductos = ListarProductosUseCase(repository),
             actualizarProducto = ActualizarProductoUseCase(repository),
             eliminarProducto = EliminarProductoUseCase(repository),
-            obtenerProducto = ObtenerProductoUseCase(repository)
+            obtenerProducto = ObtenerProductoUseCase(repository),
+            compartidor = compartidor
         )
 
     private fun producto(id: Long = 1L) = Producto(
@@ -55,7 +59,11 @@ class ProductoViewModelTest {
         advanceUntilIdle()
         val fase = assertIs<ProductoUiState.Fase.ConProductos>(viewModel.uiState.value.fase)
         assertEquals("Paracetamol", fase.productos.single().nombre)
-        assertEquals("S/ 12.50", fase.productos.single().precio)
+        // Cada plataforma formatea a su manera (p. ej. espacio no separable en JVM, o sin espacio):
+        // se valida el simbolo y el monto, no el separador exacto.
+        val precio = fase.productos.single().precio
+        assertTrue(precio.startsWith("S/"), "Debe iniciar con S/ pero fue: $precio")
+        assertTrue(precio.endsWith("12.50"), "Debe terminar en 12.50 pero fue: $precio")
     }
 
     @Test
@@ -175,5 +183,20 @@ class ProductoViewModelTest {
 
         assertTrue(viewModel.uiState.value.operacion !is ProductoUiState.Operacion.Fallida)
         assertNull(viewModel.uiState.value.mensajeExito)
+    }
+
+    @Test
+    fun compartirEnviaAlCompartidorElTextoArmadoEnCodigoComun() = runTest {
+        val viewModel = nuevoViewModel(FakeProductoRepository(mutableListOf(producto())))
+        advanceUntilIdle()
+        val ui = (viewModel.uiState.value.fase as ProductoUiState.Fase.ConProductos).productos.single()
+
+        viewModel.compartir(ui)
+        advanceUntilIdle()
+
+        val texto = compartidor.textos.single()
+        assertTrue(texto.startsWith("Paracetamol"), texto)
+        assertTrue(texto.contains("12.50"), texto)
+        assertTrue(texto.endsWith("Stock: 5"), texto)
     }
 }

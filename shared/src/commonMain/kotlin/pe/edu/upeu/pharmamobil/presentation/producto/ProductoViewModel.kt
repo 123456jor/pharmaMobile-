@@ -10,19 +10,22 @@ import kotlinx.coroutines.launch
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApi
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApiException
 import pe.edu.upeu.pharmamobil.domain.model.Producto
+import pe.edu.upeu.pharmamobil.domain.platform.Compartidor
 import pe.edu.upeu.pharmamobil.domain.usecase.ActualizarProductoUseCase
 import pe.edu.upeu.pharmamobil.domain.usecase.EliminarProductoUseCase
 import pe.edu.upeu.pharmamobil.domain.usecase.ListarProductosUseCase
 import pe.edu.upeu.pharmamobil.domain.usecase.ObtenerProductoUseCase
 import pe.edu.upeu.pharmamobil.domain.usecase.ProductoInvalidoException
 import pe.edu.upeu.pharmamobil.domain.usecase.RegistrarProductoUseCase
+import pe.edu.upeu.pharmamobil.domain.usecase.comoTextoParaCompartir
 
 class ProductoViewModel(
     private val registrarProducto: RegistrarProductoUseCase,
     private val listarProductos: ListarProductosUseCase,
     private val actualizarProducto: ActualizarProductoUseCase,
     private val eliminarProducto: EliminarProductoUseCase,
-    private val obtenerProducto: ObtenerProductoUseCase
+    private val obtenerProducto: ObtenerProductoUseCase,
+    private val compartidor: Compartidor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductoUiState())
@@ -74,6 +77,16 @@ class ProductoViewModel(
                         )
                     }
                 },
+                onFailure = { manejarFallo(it) }
+            )
+        }
+    }
+
+    /** El texto se arma en codigo comun; la hoja de compartir la abre cada plataforma. */
+    fun compartir(producto: ProductoUi) {
+        viewModelScope.launch {
+            obtenerProducto(producto.id).fold(
+                onSuccess = { compartidor.compartir(it.comoTextoParaCompartir()) },
                 onFailure = { manejarFallo(it) }
             )
         }

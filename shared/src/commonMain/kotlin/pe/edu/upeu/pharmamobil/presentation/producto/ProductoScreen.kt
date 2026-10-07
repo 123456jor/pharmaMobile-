@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Medication
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -86,6 +87,7 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier) 
                         ProductoItem(
                             producto = producto,
                             ocupado = ocupada,
+                            onCompartir = { viewModel.compartir(producto) },
                             onEditar = { viewModel.comenzarEdicion(producto) },
                             onEliminar = { viewModel.eliminar(producto.id) }
                         )
@@ -167,6 +169,7 @@ private fun EncabezadoInventario(fase: ProductoUiState.Fase) {
 private fun ProductoItem(
     producto: ProductoUi,
     ocupado: Boolean,
+    onCompartir: () -> Unit,
     onEditar: () -> Unit,
     onEliminar: () -> Unit
 ) {
@@ -189,6 +192,9 @@ private fun ProductoItem(
             if (producto.requiereReposicion) Surface(shape = MaterialTheme.shapes.small,
                 color = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer) {
                 Text("Reponer", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
+            }
+            IconButton(onClick = onCompartir) {
+                Icon(Icons.Default.Share, contentDescription = "Compartir ${producto.nombre}")
             }
             IconButton(onClick = onEditar, enabled = !ocupado) {
                 Icon(Icons.Default.Edit, contentDescription = "Editar ${producto.nombre}")

@@ -12,6 +12,8 @@ import org.koin.dsl.module
 import pe.edu.upeu.pharmamobil.data.repository.ClienteRepositorioEnMemoria
 import pe.edu.upeu.pharmamobil.data.repository.ProductoRepositorioRest
 import pe.edu.upeu.pharmamobil.data.repository.FakeProductoRepository
+import pe.edu.upeu.pharmamobil.domain.platform.Compartidor
+import pe.edu.upeu.pharmamobil.domain.platform.FakeCompartidor
 import pe.edu.upeu.pharmamobil.domain.repository.ClienteRepository
 import pe.edu.upeu.pharmamobil.domain.repository.ProductoRepository
 import pe.edu.upeu.pharmamobil.domain.usecase.ListarClientesUseCase
@@ -59,7 +61,9 @@ class AppModuleTest {
             domainModule,
             module { single<ProductoRepository> { FakeProductoRepository() } },
             presentationModule,
-            platformModule
+            platformModule,
+            // El Compartidor real necesita Context/UIKit; en pruebas se sustituye por un doble.
+            module { single<Compartidor> { FakeCompartidor() } }
         )
     }.koin
 

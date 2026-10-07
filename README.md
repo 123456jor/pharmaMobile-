@@ -60,3 +60,17 @@ Repositorio destino: `https://github.com/123456jor/pharmaMobile-.git`; rama prep
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+## Capacidades nativas (Sesión 9 · expect/actual)
+
+| Capacidad | Mecanismo | commonMain | androidMain | iosMain |
+| --- | --- | --- | --- | --- |
+| Formato de moneda (S/) | `expect`/`actual` | `platform/Formato.kt` | `platform/Formato.android.kt` (`NumberFormat`, `es_PE`) | `platform/Formato.ios.kt` (`NSNumberFormatter`, `es_PE`) |
+| Compartir producto | Interfaz + inyección con Koin | `domain/platform/Compartidor.kt`, `domain/usecase/TextoParaCompartir.kt` | `platform/CompartidorAndroid.kt` (`Intent.ACTION_SEND` + `FLAG_ACTIVITY_NEW_TASK`), `di/PlatformModule.android.kt` | `platform/CompartidorIos.kt` (`UIActivityViewController`), `di/PlatformModule.ios.kt` |
+
+- El precio se formatea en `Producto.aUi()` (capa `presentation`); se eliminó el formateador manual que había en `ProductoUi.kt`.
+- El texto a compartir se arma en código común (`Producto.comoTextoParaCompartir()`); `ProductoViewModel.compartir()` solo delega en `Compartidor`.
+- El botón «Compartir» está en cada tarjeta del inventario (`ProductoScreen`), porque el proyecto aún no tiene pantalla de detalle.
+- `presentation` no importa `android.*` ni `platform.UIKit`.
+- En pruebas, `FakeCompartidor` sustituye la implementación nativa (`AppModuleTest`, `ProductoViewModelTest`).
+- Evidencias: `docs/evidencias/android/`, `docs/evidencias/ios/` y `docs/evidencias/errores/` (error del punto de control 1).
