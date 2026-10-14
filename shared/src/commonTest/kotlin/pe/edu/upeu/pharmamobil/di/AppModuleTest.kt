@@ -10,6 +10,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import pe.edu.upeu.pharmamobil.data.repository.ClienteRepositorioEnMemoria
+import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguro
 import pe.edu.upeu.pharmamobil.data.repository.ProductoRepositorioRest
 import pe.edu.upeu.pharmamobil.data.repository.FakeProductoRepository
 import pe.edu.upeu.pharmamobil.domain.platform.Compartidor
@@ -25,6 +26,7 @@ import pe.edu.upeu.pharmamobil.domain.usecase.EliminarProductoUseCase
 import pe.edu.upeu.pharmamobil.domain.usecase.ObtenerProductoUseCase
 import pe.edu.upeu.pharmamobil.presentation.cliente.ClienteViewModel
 import pe.edu.upeu.pharmamobil.presentation.producto.ProductoViewModel
+import pe.edu.upeu.pharmamobil.presentation.sesion.SesionViewModel
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -63,13 +65,17 @@ class AppModuleTest {
             presentationModule,
             platformModule,
             // El Compartidor real necesita Context/UIKit; en pruebas se sustituye por un doble.
-            module { single<Compartidor> { FakeCompartidor() } }
+            module { single<Compartidor> { FakeCompartidor() } },
+            module { single<AlmacenSeguro> { AlmacenSeguroFake() } }
         )
     }.koin
 
     @Test
     fun registraLaImplementacionRestDeProductos() {
-        val koin = startKoin { modules(dataModule, platformModule) }.koin
+        val koin = startKoin {
+            allowOverride(true)
+            modules(dataModule, platformModule, module { single<AlmacenSeguro> { AlmacenSeguroFake() } })
+        }.koin
         assertIs<ProductoRepositorioRest>(koin.get<ProductoRepository>())
     }
 
@@ -118,5 +124,13 @@ class AppModuleTest {
 
         koin.get<ProductoViewModel>()
         koin.get<ClienteViewModel>()
+        koin.get<SesionViewModel>()
     }
+}
+
+private class AlmacenSeguroFake : AlmacenSeguro {
+    private var token: String? = null
+    override fun guardarToken(token: String) { this.token = token }
+    override fun leerToken(): String? = token
+    override fun borrarToken() { token = null }
 }
