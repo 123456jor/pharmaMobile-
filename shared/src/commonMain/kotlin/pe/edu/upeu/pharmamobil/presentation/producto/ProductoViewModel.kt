@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApi
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApiException
+import pe.edu.upeu.pharmamobil.domain.model.ErrorSesion
+import pe.edu.upeu.pharmamobil.domain.model.ErrorSesionException
 import pe.edu.upeu.pharmamobil.domain.model.Producto
 import pe.edu.upeu.pharmamobil.domain.platform.Compartidor
 import pe.edu.upeu.pharmamobil.domain.usecase.ActualizarProductoUseCase
@@ -65,6 +67,7 @@ class ProductoViewModel(
     }
 
     fun comenzarEdicion(producto: ProductoUi) {
+        if (!iniciarOperacion(ProductoUiState.Tipo.Actualizar)) return
         viewModelScope.launch {
             obtenerProducto(producto.id).fold(
                 onSuccess = { encontrado ->
@@ -84,12 +87,15 @@ class ProductoViewModel(
 
     /** El texto se arma en codigo comun; la hoja de compartir la abre cada plataforma. */
     fun compartir(producto: ProductoUi) {
-        viewModelScope.launch {
-            obtenerProducto(producto.id).fold(
-                onSuccess = { compartidor.compartir(it.comoTextoParaCompartir()) },
-                onFailure = { manejarFallo(it) }
-            )
-        }
+        val productoActual = Producto(
+            id = producto.id,
+            nombre = producto.nombre,
+            precio = producto.precioValor,
+            stock = producto.stockValor,
+            estado = true,
+            categoriaId = producto.categoriaId
+        )
+        compartidor.compartir(productoActual.comoTextoParaCompartir())
     }
 
     fun cancelarEdicion() {
@@ -203,7 +209,13 @@ class ProductoViewModel(
         ErrorApi.Servidor -> "El servidor no pudo completar la operación"
         ErrorApi.SinConexion -> "No hay conexión con PharmaSoft"
         ErrorApi.TiempoAgotado -> "La solicitud tardó demasiado. Inténtalo nuevamente"
-        null -> fallo?.message ?: "Ocurrió un error inesperado"
+        null -> when ((fallo as? ErrorSesionException)?.error) {
+            ErrorSesion.SesionExpirada -> "Tu sesión expiró. Inicia sesión nuevamente."
+            ErrorSesion.CredencialesInvalidas -> "La sesión ya no es válida. Inicia sesión nuevamente."
+            ErrorSesion.SinPermiso -> "No tienes permisos para realizar esta operación."
+            ErrorSesion.SinConexion -> "No hay conexión con PharmaSoft."
+            null -> fallo?.message ?: "Ocurrió un error inesperado"
+        }
     }
 
     private fun actualizarFormulario(transformar: FormularioProducto.() -> FormularioProducto) {

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.LocalPharmacy
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -36,12 +37,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -55,6 +58,8 @@ import pe.edu.upeu.pharmamobil.presentation.cliente.ClienteScreen
 import pe.edu.upeu.pharmamobil.presentation.components.EstadoVacio
 import pe.edu.upeu.pharmamobil.presentation.inicio.InicioScreen
 import pe.edu.upeu.pharmamobil.presentation.producto.ProductoScreen
+import pe.edu.upeu.pharmamobil.presentation.sesion.LoginScreen
+import pe.edu.upeu.pharmamobil.presentation.sesion.SesionViewModel
 import pe.edu.upeu.pharmamobil.theme.PharmaMobilTheme
 
 /** Una sola fuente para el menu lateral y el titulo de la barra superior. */
@@ -83,6 +88,9 @@ private val ScreenSaver = Saver<Screen, Int>(
 
 @Composable
 fun App() = KoinContext {
+    val sesionViewModel: SesionViewModel = koinViewModel()
+    val sesionState by sesionViewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) { sesionViewModel.cargarSesionGuardada() }
 
     var pantallaActual by rememberSaveable(stateSaver = ScreenSaver) {
         mutableStateOf<Screen>(Screen.Inicio)
@@ -97,11 +105,33 @@ fun App() = KoinContext {
     )
 
     val scope = rememberCoroutineScope()
+    LaunchedEffect(sesionState.sesion) {
+        if (sesionState.sesion == null) pantallaActual = Screen.Inicio
+    }
+    LaunchedEffect(sesionState.sesion?.permisos) {
+        val permisos = sesionState.sesion?.permisos.orEmpty()
+        if (pantallaActual == Screen.Clientes && "CLIENTES_LEER" !in permisos) pantallaActual = Screen.Productos
+        if (pantallaActual == Screen.Pedidos && "VENTAS_REGISTRAR" !in permisos) pantallaActual = Screen.Productos
+    }
 
     PharmaMobilTheme(
         darkTheme = darkTheme
     ) {
-
+        val sesion = sesionState.sesion
+        if (sesion == null) {
+            if (sesionState.cargando) {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { androidx.compose.material3.CircularProgressIndicator() }
+            } else {
+                LoginScreen(sesionState, sesionViewModel)
+            }
+        } else {
+        val destinosDisponibles = DESTINOS.filter { destino ->
+            when (destino.screen) {
+                Screen.Inicio, Screen.Productos -> true
+                Screen.Clientes -> sesion.puede("CLIENTES_LEER")
+                Screen.Pedidos -> sesion.puede("VENTAS_REGISTRAR")
+            }
+        }
         ModalNavigationDrawer(
 
             drawerState = drawerState,
@@ -118,7 +148,8 @@ fun App() = KoinContext {
                         modifier = Modifier.height(12.dp)
                     )
 
-                    DESTINOS.forEach { destino ->
+                    Text("Sesión: ${sesion.nombreCompleto}", modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp), style = MaterialTheme.typography.labelMedium)
+                    destinosDisponibles.forEach { destino ->
 
                         NavigationDrawerItem(
                             label = {
@@ -155,6 +186,10 @@ fun App() = KoinContext {
                         activo = darkTheme,
                         onCambiar = { darkTheme = it }
                     )
+                    androidx.compose.material3.TextButton(
+                        onClick = { sesionViewModel.cerrarSesion() },
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                    ) { Icon(Icons.Default.Logout, null); Text("Cerrar sesión") }
                 }
             }
         ) {
@@ -166,9 +201,13 @@ fun App() = KoinContext {
                     TopAppBar(
 
                         title = {
-                            Text(
-                                text = tituloDe(pantallaActual)
-                            )
+                            Text(text = tituloDe(pantallaActual))
+                        },
+
+                        actions = {
+                            IconButton(onClick = { sesionViewModel.cerrarSesion() }) {
+                                Icon(Icons.Default.Logout, contentDescription = "Cerrar sesión")
+                            }
                         },
 
                         navigationIcon = {
@@ -206,18 +245,24 @@ fun App() = KoinContext {
                         .padding(paddingValues)
                 ) {
 
+                    sesionState.error?.let { mensaje ->
+                        Text(mensaje, color = MaterialTheme.colorScheme.error, modifier = Modifier.align(Alignment.TopCenter).padding(12.dp))
+                    }
+
                     when (pantallaActual) {
 
                         Screen.Inicio ->
                             InicioScreen(
+                                permisos = sesion.permisos,
                                 onNavegar = { destino ->
-                                    pantallaActual = destino
+                                    if (destino in destinosDisponibles.map { it.screen }) pantallaActual = destino
                                 }
                             )
 
                         Screen.Productos ->
                             ProductoScreen(
-                                viewModel = koinViewModel()
+                                viewModel = koinViewModel(),
+                                permiteEscritura = sesion.puede("CATALOGO_ESCRIBIR")
                             )
 
                         Screen.Clientes ->
@@ -235,6 +280,7 @@ fun App() = KoinContext {
                     }
                 }
             }
+        }
         }
     }
 }

@@ -187,7 +187,10 @@ class ProductoViewModelTest {
 
     @Test
     fun compartirEnviaAlCompartidorElTextoArmadoEnCodigoComun() = runTest {
-        val viewModel = nuevoViewModel(FakeProductoRepository(mutableListOf(producto())))
+        val repository = FakeProductoRepository(mutableListOf(producto())).apply {
+            fallaAlObtener = ErrorApiException(ErrorApi.SinConexion)
+        }
+        val viewModel = nuevoViewModel(repository)
         advanceUntilIdle()
         val ui = (viewModel.uiState.value.fase as ProductoUiState.Fase.ConProductos).productos.single()
 
@@ -198,5 +201,6 @@ class ProductoViewModelTest {
         assertTrue(texto.startsWith("Paracetamol"), texto)
         assertTrue(texto.contains("12.50"), texto)
         assertTrue(texto.endsWith("Stock: 5"), texto)
+        assertEquals(0, repository.cantidadObtener, "Compartir un producto visible no debe necesitar otra petición de red")
     }
 }

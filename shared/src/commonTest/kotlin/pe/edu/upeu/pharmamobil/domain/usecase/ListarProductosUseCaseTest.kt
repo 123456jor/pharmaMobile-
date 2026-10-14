@@ -1,11 +1,13 @@
 package pe.edu.upeu.pharmamobil.domain.usecase
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
 import pe.edu.upeu.pharmamobil.data.repository.FakeProductoRepository
 import pe.edu.upeu.pharmamobil.domain.model.Producto
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.assertFailsWith
 
 class ListarProductosUseCaseTest {
 
@@ -35,5 +37,16 @@ class ListarProductosUseCaseTest {
 
         assertTrue(resultado.isFailure)
         assertEquals("Sin conexión", resultado.exceptionOrNull()?.message)
+    }
+
+    @Test
+    fun relanzaLaCancelacionEnLugarDeConvertirlaEnFailure() = runTest {
+        val repositorio = FakeProductoRepository().apply {
+            fallaAlListar = CancellationException("Navegación")
+        }
+
+        assertFailsWith<CancellationException> {
+            ListarProductosUseCase(repositorio).invoke()
+        }
     }
 }

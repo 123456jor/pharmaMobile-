@@ -61,6 +61,7 @@ private val OPCIONES = listOf(
 @Composable
 fun InicioScreen(
     onNavegar: (Screen) -> Unit,
+    permisos: Set<String> = emptySet(),
     modifier: Modifier = Modifier
 ) {
 
@@ -79,7 +80,13 @@ fun InicioScreen(
             style = MaterialTheme.typography.titleMedium
         )
 
-        OPCIONES.forEach { opcion ->
+        OPCIONES.filter { opcion ->
+            when (opcion.screen) {
+                Screen.Inicio, Screen.Productos -> true
+                Screen.Clientes -> "CLIENTES_LEER" in permisos
+                Screen.Pedidos -> "VENTAS_REGISTRAR" in permisos
+            }
+        }.forEach { opcion ->
 
             AccesoRapido(
                 icono = opcion.icono,

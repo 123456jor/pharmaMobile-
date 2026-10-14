@@ -40,7 +40,7 @@ import pe.edu.upeu.pharmamobil.presentation.components.MensajeExito
 import pe.edu.upeu.pharmamobil.presentation.components.ValidatedTextField
 
 @Composable
-fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier) {
+fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, permiteEscritura: Boolean = true) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val ocupada = uiState.operacion is ProductoUiState.Operacion.EnCurso
 
@@ -48,7 +48,7 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier) 
         modifier = modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        FormularioProductoCard(
+        if (permiteEscritura) FormularioProductoCard(
             formulario = uiState.formulario,
             ocupado = ocupada,
             editando = uiState.productoEditandoId != null,
@@ -87,6 +87,7 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier) 
                         ProductoItem(
                             producto = producto,
                             ocupado = ocupada,
+                            permiteEscritura = permiteEscritura,
                             onCompartir = { viewModel.compartir(producto) },
                             onEditar = { viewModel.comenzarEdicion(producto) },
                             onEliminar = { viewModel.eliminar(producto.id) }
@@ -169,6 +170,7 @@ private fun EncabezadoInventario(fase: ProductoUiState.Fase) {
 private fun ProductoItem(
     producto: ProductoUi,
     ocupado: Boolean,
+    permiteEscritura: Boolean,
     onCompartir: () -> Unit,
     onEditar: () -> Unit,
     onEliminar: () -> Unit
@@ -196,11 +198,13 @@ private fun ProductoItem(
             IconButton(onClick = onCompartir) {
                 Icon(Icons.Default.Share, contentDescription = "Compartir ${producto.nombre}")
             }
-            IconButton(onClick = onEditar, enabled = !ocupado) {
-                Icon(Icons.Default.Edit, contentDescription = "Editar ${producto.nombre}")
-            }
-            IconButton(onClick = onEliminar, enabled = !ocupado) {
-                Icon(Icons.Default.Delete, contentDescription = "Dar de baja ${producto.nombre}")
+            if (permiteEscritura) {
+                IconButton(onClick = onEditar, enabled = !ocupado) {
+                    Icon(Icons.Default.Edit, contentDescription = "Editar ${producto.nombre}")
+                }
+                IconButton(onClick = onEliminar, enabled = !ocupado) {
+                    Icon(Icons.Default.Delete, contentDescription = "Dar de baja ${producto.nombre}")
+                }
             }
         }
     }

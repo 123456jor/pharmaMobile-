@@ -18,6 +18,7 @@ class FakeProductoRepository(
     var fallaAlActualizar: Throwable? = null
     var fallaAlEliminar: Throwable? = null
     var cantidadListados: Int = 0
+    var cantidadObtener: Int = 0
     var antesDeRegistrar: (suspend () -> Unit)? = null
     var antesDeEliminar: (suspend () -> Unit)? = null
 
@@ -43,6 +44,7 @@ class FakeProductoRepository(
     }
 
     override suspend fun obtener(id: Long): Producto {
+        cantidadObtener++
         fallaAlObtener?.let { throw it }
         return productos.firstOrNull { it.id == id }
             ?: throw NoSuchElementException("Producto no encontrado")
