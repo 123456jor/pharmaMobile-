@@ -11,16 +11,28 @@ import kotlinx.io.IOException
 import pe.edu.upeu.pharmamobil.data.remote.dto.ErrorResponseDto
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApi
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApiException
+import pe.edu.upeu.pharmamobil.domain.auth.SesionManager
+import pe.edu.upeu.pharmamobil.domain.model.ErrorSesionException
 
-suspend fun <T> ejecutarLlamada(bloque: suspend () -> T): T = try {
+suspend fun <T> ejecutarLlamada(sesionManager: SesionManager? = null, bloque: suspend () -> T): T = try {
     bloque()
 } catch (cancelacion: CancellationException) {
     throw cancelacion
+} catch (sesion: ErrorSesionException) {
+    throw sesion
 } catch (timeout: HttpRequestTimeoutException) {
     throw ErrorApiException(ErrorApi.TiempoAgotado, timeout)
 } catch (timeout: ConnectTimeoutException) {
     throw ErrorApiException(ErrorApi.TiempoAgotado, timeout)
 } catch (peticion: ClientRequestException) {
+    if (peticion.response.status == HttpStatusCode.Unauthorized || peticion.response.status == HttpStatusCode.Forbidden) {
+        val dto = try { peticion.response.body<pe.edu.upeu.pharmamobil.data.remote.dto.ErrorSesionDto>() } catch (_: Exception) { null }
+        val mapeado = mapearErrorSesion(peticion.response.status, dto?.message)
+        val error = if (peticion.response.status == HttpStatusCode.Unauthorized && mapeado == pe.edu.upeu.pharmamobil.domain.model.ErrorSesion.CredencialesInvalidas)
+            pe.edu.upeu.pharmamobil.domain.model.ErrorSesion.SesionExpirada else mapeado
+        sesionManager?.notificar(error)
+        throw ErrorSesionException(error, peticion)
+    }
     throw ErrorApiException(peticion.traducirCliente(), peticion)
 } catch (servidor: ServerResponseException) {
     throw ErrorApiException(ErrorApi.Servidor, servidor)
