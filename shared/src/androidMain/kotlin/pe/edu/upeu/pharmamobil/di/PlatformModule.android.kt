@@ -5,7 +5,10 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import pe.edu.upeu.pharmamobil.domain.platform.Compartidor
 import pe.edu.upeu.pharmamobil.platform.CompartidorAndroid
+import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguro
+import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguroAndroid
 
 actual val platformModule: Module = module {
     single<Compartidor> { CompartidorAndroid(androidContext()) }
+    single<AlmacenSeguro> { AlmacenSeguroAndroid(androidContext()) }
 }
