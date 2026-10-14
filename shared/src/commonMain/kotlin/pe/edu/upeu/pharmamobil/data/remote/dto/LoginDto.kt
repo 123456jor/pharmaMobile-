@@ -22,7 +22,8 @@ fun LoginResponseDto.aSesion() = Sesion(token, username, nombreCompleto, permiso
 @Serializable
 data class UsuarioActualDto(
     val username: String,
-    val nombreCompleto: String,
+    val nombreCompleto: String? = null,
+    val empleadoNombre: String? = null,
     val roles: List<String> = emptyList(),
     val permisos: List<String> = emptyList()
 )

@@ -35,7 +35,7 @@ class AuthRepositorioRestTest {
             val body = if (llamada++ == 0) {
                 """{"token":"jwt-seguro","tipo":"Bearer","expiraEnSegundos":3600,"username":"admin","nombreCompleto":"Administradora","roles":["ADMIN"],"permisos":["CATALOGO_LEER","CATALOGO_ESCRIBIR"]}"""
             } else {
-                """{"username":"admin","nombreCompleto":"Administradora","roles":["ADMIN"],"permisos":["CATALOGO_LEER","CATALOGO_ESCRIBIR"]}"""
+                """{"username":"admin","empleadoNombre":"Administradora","roles":["ADMIN"],"permisos":["CATALOGO_LEER","CATALOGO_ESCRIBIR"]}"""
             }
             respond(body, headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()))
         }

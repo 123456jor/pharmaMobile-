@@ -56,7 +56,12 @@ class AuthRepositorioRest(
         if (almacen.leerToken() == null) return null
         return try {
             val usuario: UsuarioActualDto = cliente.get("auth/me").body()
-            Sesion(almacen.leerToken().orEmpty(), usuario.username, usuario.nombreCompleto, usuario.permisos.toSet())
+            Sesion(
+                token = almacen.leerToken().orEmpty(),
+                usuario = usuario.username,
+                nombreCompleto = usuario.nombreCompleto ?: usuario.empleadoNombre ?: usuario.username,
+                permisos = usuario.permisos.toSet()
+            )
         } catch (cancelacion: CancellationException) {
             throw cancelacion
         } catch (error: ErrorSesionException) {

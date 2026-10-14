@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "b1e11130-7928-48f0-9d40-11494d652241",
     "name": "PharmaSoft - Productos CRUD",
-    "description": "Pruebas HTTP para PharmaSoft. Base URL: http://localhost:8080. Elimina productos con baja lógica (estado=false). El backend revisado aún no contiene /auth/login ni validación JWT; la carpeta de autenticación queda como pendiente.",
+    "description": "Pruebas completas de la Sesión 10: autenticación JWT, autorización por permisos y CRUD autenticado. Base URL local: http://localhost:8080. Las credenciales incluidas son usuarios de demostración del backend académico.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -16,8 +16,8 @@
     { "key": "token", "value": "", "type": "string" },
     { "key": "productoId", "value": "1", "type": "string" },
     { "key": "categoriaId", "value": "1", "type": "string" },
-    { "key": "username", "value": "", "type": "string" },
-    { "key": "password", "value": "", "type": "string" }
+    { "key": "username", "value": "admin", "type": "string" },
+    { "key": "password", "value": "Admin123", "type": "string" }
   ],
   "item": [
     {
@@ -34,11 +34,11 @@
       ]
     },
     {
-      "name": "01 - Autenticación (pendiente en backend)",
-      "description": "El backend PharmaSoft revisado no implementa aún estos endpoints. Se dejan como referencia para cuando se agregue JWT.",
+      "name": "01 - Autenticación JWT",
+      "description": "Inicia sesión con el usuario configurado en las variables username/password y guarda el JWT automáticamente.",
       "item": [
         {
-          "name": "Iniciar sesión (cuando exista POST /api/v1/auth/login)",
+          "name": "Iniciar sesión y guardar JWT",
           "request": {
             "auth": { "type": "noauth" },
             "method": "POST",
@@ -66,7 +66,7 @@
           ]
         },
         {
-          "name": "Usuario actual (cuando exista GET /api/v1/auth/me)",
+          "name": "Consultar usuario actual",
           "request": {
             "method": "GET",
             "header": [],
@@ -155,6 +155,59 @@
             "header": [],
             "url": { "raw": "{{baseUrl}}/api/v1/categorias", "host": ["{{baseUrl}}"], "path": ["api", "v1", "categorias"] }
           }
+        }
+      ]
+    },
+    {
+      "name": "04 - Autorización 401 y 403",
+      "description": "Ejecutar en este orden para documentar la protección del backend.",
+      "item": [
+        {
+          "name": "Productos sin JWT - espera 401",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/productos", "host": ["{{baseUrl}}"], "path": ["api", "v1", "productos"] }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": ["pm.test('Sin token devuelve 401', () => pm.response.to.have.status(401));"] }
+          }]
+        },
+        {
+          "name": "Login almacen y guardar JWT",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"almacen\",\n  \"password\": \"Almacen123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Login almacen devuelve 200', () => pm.response.to.have.status(200));",
+              "const data = pm.response.json();",
+              "if (data.token) pm.collectionVariables.set('token', data.token);"
+            ] }
+          }]
+        },
+        {
+          "name": "Clientes con almacen - espera 403",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/clientes", "host": ["{{baseUrl}}"], "path": ["api", "v1", "clientes"] }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": ["pm.test('Almacen no puede consultar clientes: 403', () => pm.response.to.have.status(403));"] }
+          }]
         }
       ]
     }
