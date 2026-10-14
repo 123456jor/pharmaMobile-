@@ -1,0 +1,162 @@
+{
+  "info": {
+    "_postman_id": "b1e11130-7928-48f0-9d40-11494d652241",
+    "name": "PharmaSoft - Productos CRUD",
+    "description": "Pruebas HTTP para PharmaSoft. Base URL: http://localhost:8080. Elimina productos con baja lógica (estado=false). El backend revisado aún no contiene /auth/login ni validación JWT; la carpeta de autenticación queda como pendiente.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{token}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "productoId", "value": "1", "type": "string" },
+    { "key": "categoriaId", "value": "1", "type": "string" },
+    { "key": "username", "value": "", "type": "string" },
+    { "key": "password", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "00 - Estado del servidor",
+      "item": [
+        {
+          "name": "Verificar API (health)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api", "health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 - Autenticación (pendiente en backend)",
+      "description": "El backend PharmaSoft revisado no implementa aún estos endpoints. Se dejan como referencia para cuando se agregue JWT.",
+      "item": [
+        {
+          "name": "Iniciar sesión (cuando exista POST /api/v1/auth/login)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  const data = pm.response.json();",
+                  "  if (data.token) pm.collectionVariables.set('token', data.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Usuario actual (cuando exista GET /api/v1/auth/me)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Productos (CRUD)",
+      "item": [
+        {
+          "name": "Listar productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/productos?pagina=0&tamanio=20&ordenarPor=id&direccion=asc", "host": ["{{baseUrl}}"], "path": ["api", "v1", "productos"], "query": [{ "key": "pagina", "value": "0" }, { "key": "tamanio", "value": "20" }, { "key": "ordenarPor", "value": "id" }, { "key": "direccion", "value": "asc" }] }
+          }
+        },
+        {
+          "name": "Buscar producto por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/productos/{{productoId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "productos", "{{productoId}}"] }
+          }
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Producto prueba Postman\",\n  \"precio\": 12.50,\n  \"stock\": 25,\n  \"estado\": true,\n  \"categoriaId\": {{categoriaId}}\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/productos", "host": ["{{baseUrl}}"], "path": ["api", "v1", "productos"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  const data = pm.response.json();",
+                  "  if (data.id !== undefined) pm.collectionVariables.set('productoId', String(data.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Editar producto",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Producto prueba Postman editado\",\n  \"precio\": 13.75,\n  \"stock\": 30,\n  \"estado\": true,\n  \"categoriaId\": {{categoriaId}}\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/productos/{{productoId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "productos", "{{productoId}}"] }
+          }
+        },
+        {
+          "name": "Eliminar producto (baja lógica)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "description": "El backend devuelve 204 y marca estado=false; el registro no se borra físicamente.",
+            "url": { "raw": "{{baseUrl}}/api/v1/productos/{{productoId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "productos", "{{productoId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Categorías (consulta)",
+      "item": [
+        {
+          "name": "Listar categorías (buscar categoriaId)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/categorias", "host": ["{{baseUrl}}"], "path": ["api", "v1", "categorias"] }
+          }
+        }
+      ]
+    }
+  ]
+}

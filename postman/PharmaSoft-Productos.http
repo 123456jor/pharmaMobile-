@@ -1,0 +1,56 @@
+### Cambia la URL si PharmaSoft usa otro puerto.
+@baseUrl = http://localhost:8080
+@categoriaId = 1
+@productoId = 1
+
+### 1. Verificar que el backend de Spring está encendido
+GET {{baseUrl}}/api/health
+Accept: application/json
+
+### 2. Listar categorías y confirmar un categoriaId válido
+GET {{baseUrl}}/api/v1/categorias
+Accept: application/json
+
+### 3. Listar productos
+GET {{baseUrl}}/api/v1/productos?pagina=0&tamanio=20&ordenarPor=id&direccion=asc
+Accept: application/json
+
+### 4. Buscar un producto por ID
+GET {{baseUrl}}/api/v1/productos/{{productoId}}
+Accept: application/json
+
+### 5. Crear producto (usa un categoriaId que exista)
+POST {{baseUrl}}/api/v1/productos
+Content-Type: application/json
+
+{
+  "nombre": "Producto prueba HTTP",
+  "precio": 12.50,
+  "stock": 25,
+  "estado": true,
+  "categoriaId": {{categoriaId}}
+}
+
+### 6. Editar producto (reemplaza productoId por el ID devuelto al crear)
+PUT {{baseUrl}}/api/v1/productos/{{productoId}}
+Content-Type: application/json
+
+{
+  "nombre": "Producto prueba HTTP editado",
+  "precio": 13.75,
+  "stock": 30,
+  "estado": true,
+  "categoriaId": {{categoriaId}}
+}
+
+### 7. Eliminar producto (baja lógica: marca estado=false y responde 204)
+DELETE {{baseUrl}}/api/v1/productos/{{productoId}}
+
+### JWT: los requests de auth se agregan cuando el backend implemente estos endpoints.
+# POST {{baseUrl}}/api/v1/auth/login
+# Content-Type: application/json
+#
+# { "username": "", "password": "" }
+#
+# GET {{baseUrl}}/api/v1/auth/me
+# Authorization: Bearer <token>
