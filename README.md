@@ -74,3 +74,19 @@ Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-mu
 - `presentation` no importa `android.*` ni `platform.UIKit`.
 - En pruebas, `FakeCompartidor` sustituye la implementación nativa (`AppModuleTest`, `ProductoViewModelTest`).
 - Evidencias: `docs/evidencias/android/`, `docs/evidencias/ios/` y `docs/evidencias/errores/` (error del punto de control 1).
+
+## Autenticación (Sesión 10 · JWT)
+
+La app envía las credenciales a `POST /api/v1/auth/login`, guarda el JWT en `EncryptedSharedPreferences` respaldadas por Android Keystore y deja que el plugin Bearer de Ktor lo adjunte a las rutas protegidas. Al abrir la app, consulta `GET /api/v1/auth/me` para reconstruir el usuario y sus permisos. Un `401` en una ruta protegida borra la sesión y devuelve al login; un `403` conserva la sesión y muestra el aviso de permisos.
+
+El cliente registra cabeceras solo en compilaciones de depuración y sanea `Authorization`; no registra cuerpos de login. El tráfico HTTP sin cifrar está permitido únicamente para `10.0.2.2`, que es el host de Android Emulator para el backend local. `INTERNET` está habilitado y las copias de seguridad Android están desactivadas para no exportar las preferencias cifradas.
+
+| Usuario de prueba | Permisos relevantes |
+| --- | --- |
+| `admin` | Administración completa, catálogo, clientes, ventas y reportes |
+| `vendedor` | Catálogo de lectura, clientes y ventas |
+| `almacen` | Catálogo de lectura y escritura |
+
+Para ejecutar el flujo Android, inicia PharmaSoft con el perfil `dev` en el puerto 8080, verifica `http://localhost:8080/api/health` y abre PharmaMobil en un emulador. La app usa `http://10.0.2.2:8080/api/v1/`. Las credenciales de prueba se mantienen en los datos de desarrollo del backend y no se guardan en el código de la app.
+
+La sesión almacenada se conserva si `/auth/me` falla por falta de red y se muestra el error de conexión; un `401` elimina el token. El cierre de sesión elimina el token persistido y la caché del proveedor Bearer.
