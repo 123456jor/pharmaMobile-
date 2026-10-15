@@ -17,6 +17,9 @@ dependencies {
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
+    debugImplementation(libs.koin.core)
+    debugImplementation(libs.ktor.client.core)
+    debugImplementation(libs.kotlinx.serialization.json)
 }
 
 android {

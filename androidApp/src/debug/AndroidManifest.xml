@@ -6,6 +6,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="pe.edu.upeu.pharmamobil.DEBUG_ALTERAR_TOKEN" />
+                <action android:name="pe.edu.upeu.pharmamobil.DEBUG_PETICION_PROTEGIDA" />
             </intent-filter>
         </receiver>
     </application>
