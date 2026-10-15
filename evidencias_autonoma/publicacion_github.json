@@ -1,0 +1,8 @@
+{
+  "fecha_verificacion": "2026-10-15T18:23:57-05:00",
+  "rama": "feature/auth-jwt-quispe",
+  "url_rama": "https://github.com/123456jor/pharmaMobile-/tree/feature/auth-jwt-quispe",
+  "commit_evidencias_verificado": "171afd3b074e696159d0133d4e40847cc7f199ab",
+  "metodo": "git push origin feature/auth-jwt-quispe completado; git ls-remote confirmó el SHA remoto.",
+  "autorizacion": "El usuario autorizó hacer los commits necesarios y subir todo lo correspondiente a su GitHub."
+}

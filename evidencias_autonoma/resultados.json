@@ -243,7 +243,7 @@
     "8": true,
     "9": true,
     "10": true,
-    "11": false
+    "11": true
   },
   "restauracion": {
     "verificado": "2026-10-15 18:13:30 -05:00",
@@ -263,6 +263,6 @@
     "Las horas de la bitácora son del equipo local (UTC-05:00). Las repeticiones en Postman tienen su propia hora visible; Logcat refleja el reloj UTC del emulador.",
     "La matriz HTTP se ejecutó mediante solicitudes directas autenticadas; la observación de acciones de UI se hizo en Android. Clientes usa el repositorio en memoria de la versión académica. Registrar ventas y Reportes no tienen pantalla funcional.",
     "iOS no se verificó por indicación del usuario y ausencia de macOS/Xcode.",
-    "El cotejo 11 permanece pendiente hasta que el usuario autorice el push de los commits locales de la actividad."
+    "El usuario autorizó el push el 15/10/2026. Se publicó la actividad en feature/auth-jwt-quispe y git ls-remote confirmó el commit de evidencias 171afd3b074e696159d0133d4e40847cc7f199ab."
   ]
 }

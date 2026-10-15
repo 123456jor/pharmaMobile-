@@ -412,7 +412,8 @@ story.append(Table(rows, colWidths=[12.6 * cm, 4.5 * cm], repeatRows=1, style=Ta
     ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
 ])))
 story.append(Spacer(1, 0.25 * cm))
-story.append(callout("Estado de entrega", "Se obtuvieron las 22 capturas principales solicitadas: 12 de escenarios, 3 de almacenamiento, 4 de cierre y 3 de roles. Hay 3 capturas adicionales. Se verificó la restauración a 60 minutos y los tres usuarios activos. iOS quedó fuera del alcance indicado. El push de los commits locales permanece pendiente de autorización.", MINT))
+estado_repositorio = "Los commits de la actividad están publicados y verificados en la rama remota." if resultados['cotejo']['11'] else "El push de los commits locales permanece pendiente de autorización."
+story.append(callout("Estado de entrega", "Se obtuvieron las 22 capturas principales solicitadas: 12 de escenarios, 3 de almacenamiento, 4 de cierre y 3 de roles. Hay 3 capturas adicionales. Se verificó la restauración a 60 minutos y los tres usuarios activos. iOS quedó fuera del alcance indicado. " + estado_repositorio, MINT))
 story.append(Spacer(1, 0.25 * cm))
 story.append(p("Repositorio y rama", "H2A"))
 story.append(p(datos["url_rama"]))
@@ -429,7 +430,7 @@ cotejo_textos=[
     "Cuatro efectos del logout verificados, incluido el cliente HTTP real.",
     "Matriz de seis operaciones y tres usuarios con HTTP y oferta de UI.",
     "Expiración restaurada a 60 minutos y usuarios reactivados.",
-    "Commits de la actividad accesibles en la rama remota: pendiente del push autorizado."
+    "Commits de la actividad accesibles en la rama remota del enlace entregado."
 ]
 cotejo_rows=[[p("N.º","WhiteA"),p("Criterio observable","WhiteA"),p("Estado","WhiteA")]]
 for i,texto in enumerate(cotejo_textos,1):

@@ -41,4 +41,4 @@ Salida: `output/pdf/S10_ActividadAutonoma_Quispe.pdf`.
 
 ## Estado final
 
-`restauracion_final.json` confirma `expiracion-minutos: 60`, login HTTP 200 con 3600 segundos y admin/almacen/vendedor activos. Los puntos 1 a 10 de la lista de cotejo están documentados. El punto 11 requiere subir estos commits a la rama remota; el push sigue pendiente de autorización del usuario.
+`restauracion_final.json` confirma `expiracion-minutos: 60`, login HTTP 200 con 3600 segundos y admin/almacen/vendedor activos. Los puntos 1 a 11 de la lista de cotejo están documentados. El usuario autorizó el push y los commits de la actividad se publicaron en `feature/auth-jwt-quispe`. La verificación remota está registrada en `publicacion_github.json`.
