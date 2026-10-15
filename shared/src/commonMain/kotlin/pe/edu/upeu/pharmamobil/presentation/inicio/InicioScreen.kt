@@ -86,6 +86,15 @@ fun InicioScreen(
                 Screen.Clientes -> "CLIENTES_LEER" in permisos
                 Screen.Pedidos -> "VENTAS_REGISTRAR" in permisos
             }
+        }.map { opcion ->
+            if (opcion.screen == Screen.Productos && "CATALOGO_ESCRIBIR" !in permisos) {
+                opcion.copy(
+                    titulo = "Consultar productos",
+                    descripcion = "Revisa el catálogo y el stock disponible."
+                )
+            } else {
+                opcion
+            }
         }.forEach { opcion ->
 
             AccesoRapido(
