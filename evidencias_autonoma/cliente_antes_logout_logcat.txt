@@ -1,0 +1,25 @@
+--------- beginning of main
+10-15 23:10:02.174  2627  6061 I System.out: REQUEST: http://10.0.2.2:8080/api/v1/productos
+10-15 23:10:02.174  2627  6061 I System.out: METHOD: GET
+10-15 23:10:02.175  2627  6061 I System.out: COMMON HEADERS
+10-15 23:10:02.175  2627  6061 I System.out: -> Accept: application/json
+10-15 23:10:02.175  2627  6061 I System.out: -> Authorization: ***
+10-15 23:10:02.175  2627  6061 I System.out: -> Content-Type: application/json
+10-15 23:10:02.175  2627  6061 I System.out: CONTENT HEADERS
+10-15 23:10:02.175  2627  6061 I System.out: -> Content-Length: 0
+10-15 23:10:03.353  2627  3018 I System.out: RESPONSE: 200 
+10-15 23:10:03.353  2627  3018 I System.out: METHOD: GET
+10-15 23:10:03.353  2627  3018 I System.out: FROM: http://10.0.2.2:8080/api/v1/productos
+10-15 23:10:03.353  2627  3018 I System.out: COMMON HEADERS
+10-15 23:10:03.353  2627  3018 I System.out: -> Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+10-15 23:10:03.353  2627  3018 I System.out: -> Content-Type: application/json
+10-15 23:10:03.353  2627  3018 I System.out: -> Date: Thu, 15 Oct 2026 23:10:04 GMT
+10-15 23:10:03.353  2627  3018 I System.out: -> Expires: 0
+10-15 23:10:03.353  2627  3018 I System.out: -> Pragma: no-cache
+10-15 23:10:03.353  2627  3018 I System.out: -> Transfer-Encoding: chunked
+10-15 23:10:03.353  2627  3018 I System.out: -> Vary: Origin; Access-Control-Request-Method; Access-Control-Request-Headers
+10-15 23:10:03.353  2627  3018 I System.out: -> X-Content-Type-Options: nosniff
+10-15 23:10:03.353  2627  3018 I System.out: -> X-Frame-Options: DENY
+10-15 23:10:03.353  2627  3018 I System.out: -> X-XSS-Protection: 0
+10-15 23:10:03.415  2627  3018 I AuthDebugReceiver: PETICION_PROTEGIDA HTTP=200 message=sin error
+10-15 23:10:03.685  2627  3018 I AuthDebugReceiver: ALMACEN token_presente=true

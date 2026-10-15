@@ -1,0 +1,7 @@
+EVIDENCIA REAL - ESCENARIO 4: SIN CABECERA
+Ejecutado: 2026-10-15 15:50:28 -05:00
+Peticion: GET http://localhost:8080/api/v1/productos
+Authorization: cabecera no enviada
+HTTP: 401 Unauthorized
+message: Debe iniciar sesión para acceder a este recurso
+Conclusion: el recurso protegido rechazo la peticion anonima.

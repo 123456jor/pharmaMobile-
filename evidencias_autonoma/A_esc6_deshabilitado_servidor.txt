@@ -1,0 +1,7 @@
+EVIDENCIA REAL - ESCENARIO 6: USUARIO DESHABILITADO
+Ejecutado: 2026-10-15 15:55:42 -05:00
+Usuario: vendedor; estado durante la prueba: false
+Peticion: GET http://localhost:8080/api/v1/productos con sesion abierta
+HTTP: 401 Unauthorized
+message: El usuario está deshabilitado
+Restauracion: vendedor=true; login posterior HTTP 200; expiraEnSegundos=3600

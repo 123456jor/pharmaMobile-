@@ -1,0 +1,7 @@
+EVIDENCIA REAL - ESCENARIO 1: TOKEN VALIDO
+Ejecutado: 2026-10-15 15:50:28 -05:00
+Peticion: GET http://localhost:8080/api/v1/productos
+Autenticacion: Bearer JWT de admin (contenido omitido)
+HTTP: 200 OK
+Resultado: listado recibido; cantidad observada: 1
+Conclusion: el servidor acepto el JWT valido y autorizo la consulta.

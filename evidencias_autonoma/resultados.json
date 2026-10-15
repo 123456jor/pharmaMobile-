@@ -1,0 +1,268 @@
+{
+  "bitacora": [
+    {
+      "id": "A-01",
+      "nombre": "Token válido",
+      "fecha_hora": "2026-10-15 15:50:28 -05:00",
+      "plataforma": "Android",
+      "pasos": "Login admin; GET /api/v1/productos con Bearer JWT mediante el cliente real y respaldo HTTP.",
+      "http": "200",
+      "mensaje": "Sin mensaje de error; se recibió el listado de productos.",
+      "vio_usuario": "Pantalla Productos con inventario cargado.",
+      "conclusion": "Un JWT vigente permite acceder al catálogo protegido y la interfaz presenta los datos.",
+      "captura_servidor": "A_esc1_valido_servidor.png",
+      "captura_pantalla": "A_esc1_valido_pantalla.png",
+      "repeticion_postman_capturada": "2026-10-15 17:58:51 -05:00"
+    },
+    {
+      "id": "A-02",
+      "nombre": "Token expirado",
+      "fecha_hora": "2026-10-15 15:53:47 -05:00",
+      "plataforma": "Android",
+      "pasos": "Expiración temporal a 1 minuto; login; espera 65 s; operación CRUD; restauración a 60 minutos.",
+      "http": "401",
+      "mensaje": "El token ha expirado. Inicie sesión nuevamente",
+      "vio_usuario": "Login con aviso: Tu sesión expiró. Inicia sesión nuevamente.",
+      "detecta_y_lleva_login": "Sí. Tras corregir SesionManager, el 401 limpia sesión y navega al login.",
+      "conclusion": "La sesión vencida ya no deja al usuario dentro de una pantalla protegida.",
+      "commit_correccion": "507da07",
+      "captura_servidor": "A_esc2_expirado_servidor.png",
+      "captura_pantalla": "A_esc2_expirado_pantalla.png",
+      "repeticion_postman_capturada": "2026-10-15 18:08:11 -05:00"
+    },
+    {
+      "id": "A-03",
+      "nombre": "Token alterado",
+      "fecha_hora": "2026-10-15 16:10:53 -05:00",
+      "plataforma": "Android",
+      "pasos": "Login; broadcast debug cambia un carácter de la firma; reinicio de la app; petición protegida.",
+      "http": "401",
+      "mensaje": "El token no es válido",
+      "vio_usuario": "Login con aviso de sesión expirada; el JWT completo nunca se registró.",
+      "detecta_y_lleva_login": "Sí. La app invalidó la sesión y volvió al login.",
+      "conclusion": "La validación de firma rechaza manipulaciones y el cliente elimina la sesión inválida.",
+      "captura_servidor": "A_esc3_alterado_servidor.png",
+      "captura_pantalla": "A_esc3_alterado_pantalla.png",
+      "repeticion_postman_capturada": "2026-10-15 17:59:42 -05:00"
+    },
+    {
+      "id": "A-04",
+      "nombre": "Sin cabecera Authorization",
+      "fecha_hora": "2026-10-15 16:18:18 -05:00",
+      "plataforma": "Android + PowerShell HTTP",
+      "pasos": "Cerrar sesión; GET /api/v1/productos sin cabecera Authorization; observar login limpio.",
+      "http": "401",
+      "mensaje": "Debe iniciar sesión para acceder a este recurso",
+      "vio_usuario": "Formulario de login vacío, sin datos protegidos visibles.",
+      "conclusion": "Sin credenciales el backend bloquea el recurso y la aplicación permanece fuera de sesión.",
+      "captura_servidor": "A_esc4_sin_cabecera_servidor.png",
+      "captura_pantalla": "A_esc4_sin_cabecera_pantalla.png",
+      "repeticion_postman_capturada": "2026-10-15 18:00:09 -05:00"
+    },
+    {
+      "id": "A-05",
+      "nombre": "Prefijo bearer minúsculo",
+      "fecha_hora": "2026-10-15 16:18:18 -05:00",
+      "plataforma": "Android + PowerShell HTTP",
+      "pasos": "Login vendedor para obtener JWT; GET productos con Authorization: bearer [JWT OMITIDO].",
+      "http": "401",
+      "mensaje": "Debe iniciar sesión para acceder a este recurso",
+      "vio_usuario": "La sesión normal de la app siguió en Productos; la solicitud auxiliar fue rechazada de forma aislada.",
+      "conclusion": "El esquema escrito en minúscula no se reconoce y la solicitud se trata como anónima.",
+      "captura_servidor": "A_esc5_prefijo_servidor.png",
+      "captura_pantalla": "A_esc5_prefijo_pantalla.png",
+      "repeticion_postman_capturada": "2026-10-15 18:00:58 -05:00"
+    },
+    {
+      "id": "A-06",
+      "nombre": "Usuario deshabilitado",
+      "fecha_hora": "2026-10-15 15:55:42 -05:00",
+      "plataforma": "Android + Oracle",
+      "pasos": "Login vendedor; UPDATE usuarios SET estado=false; operación protegida; restaurar estado=true y repetir login.",
+      "http": "401",
+      "mensaje": "El usuario está deshabilitado",
+      "vio_usuario": "Login con aviso de sesión expirada.",
+      "detecta_y_lleva_login": "Sí. La app limpió la sesión abierta y navegó al login.",
+      "conclusion": "La deshabilitación en la base de datos revoca una sesión ya abierta en la siguiente petición.",
+      "captura_servidor": "A_esc6_deshabilitado_servidor.png",
+      "captura_pantalla": "A_esc6_deshabilitado_pantalla.png",
+      "repeticion_postman_capturada": "2026-10-15 18:02:57 -05:00"
+    }
+  ],
+  "almacen": {
+    "archivo_como": "adb shell run-as pe.edu.upeu.pharmamobil cat shared_prefs/sesion_segura.xml y conteo de eyJ.",
+    "archivo_obs": "XML con clave y valor cifrados; conteo eyJ = 0. Captura del archivo extraído con adb run-as y mostrado en Bloc de notas, sin modificar el XML.",
+    "log_como": "adb logcat filtrado por Authorization y búsqueda de fragmento JWT.",
+    "log_obs": "Logcat real: Authorization: ***; GET 200. La salida se extrajo con adb y se capturó abierta en Bloc de notas.",
+    "sesion_como": "force-stop del paquete y reapertura desde launcher.",
+    "sesion_obs": "La sesión persistió y se abrió Inicio sin pedir credenciales.",
+    "ios_nota": "No se dispuso de macOS/Xcode; iOS quedó fuera del alcance indicado por el usuario y no se fabricó evidencia."
+  },
+  "cierre": [
+    {
+      "ok": true,
+      "obs": "Tras Cerrar sesión, el archivo cifrado no contenía el JWT; longitud observada: 1143 bytes."
+    },
+    {
+      "ok": true,
+      "obs": "Prueba real en proceso Android PID 2627: antes del logout GET 200 con Authorization saneada; después, sin reiniciar, GET 401 sin Authorization; message: Debe iniciar sesión para acceder a este recurso; token_presente=false. Refuerzo: 2 pruebas host, 0 fallos."
+    },
+    {
+      "ok": true,
+      "obs": "El login volvió con usuario y contraseña vacíos y sin listas protegidas."
+    },
+    {
+      "ok": true,
+      "obs": "KEYCODE_BACK mostró la pantalla de inicio de Android y no regresó al contenido autenticado. Se reabrió la app tras el logout y permaneció en login sin restaurar credenciales."
+    }
+  ],
+  "matriz": {
+    "Listar productos": {
+      "admin": {
+        "http": "200",
+        "ui": "ofrecida"
+      },
+      "vendedor": {
+        "http": "200",
+        "ui": "ofrecida"
+      },
+      "almacen": {
+        "http": "200",
+        "ui": "ofrecida"
+      }
+    },
+    "Registrar producto": {
+      "admin": {
+        "http": "201",
+        "ui": "ofrecida"
+      },
+      "vendedor": {
+        "http": "403",
+        "ui": "oculta"
+      },
+      "almacen": {
+        "http": "201",
+        "ui": "ofrecida"
+      }
+    },
+    "Listar clientes": {
+      "admin": {
+        "http": "200",
+        "ui": "ofrecida"
+      },
+      "vendedor": {
+        "http": "200",
+        "ui": "ofrecida"
+      },
+      "almacen": {
+        "http": "403",
+        "ui": "oculta"
+      }
+    },
+    "Registrar venta": {
+      "admin": {
+        "http": "201",
+        "ui": "no existe en la app"
+      },
+      "vendedor": {
+        "http": "201",
+        "ui": "no existe en la app"
+      },
+      "almacen": {
+        "http": "403",
+        "ui": "oculta"
+      }
+    },
+    "Ver reportes": {
+      "admin": {
+        "http": "200",
+        "ui": "no existe en la app"
+      },
+      "vendedor": {
+        "http": "403",
+        "ui": "no existe en la app"
+      },
+      "almacen": {
+        "http": "403",
+        "ui": "no existe en la app"
+      }
+    },
+    "Consultar /auth/me": {
+      "admin": {
+        "http": "200",
+        "ui": "uso interno"
+      },
+      "vendedor": {
+        "http": "200",
+        "ui": "uso interno"
+      },
+      "almacen": {
+        "http": "200",
+        "ui": "uso interno"
+      }
+    }
+  },
+  "hallazgos": [
+    "El evento global de sesión se emitía con tryEmit y podía perderse; se cambió a emit para garantizar la redirección.",
+    "La portada del vendedor decía Registrar productos aunque el formulario estaba oculto; se cambió a Consultar productos.",
+    "Registrar venta y Reportes todavía no tienen una pantalla funcional en esta versión de la app.",
+    "Sin hallazgos de acciones realmente ejecutables que la UI ofrezca y el servidor rechace con 403."
+  ],
+  "conclusiones": [
+    "La sesión debe invalidarse ante cualquier 401 asociado al JWT para evitar una interfaz aparentemente autenticada.",
+    "El almacenamiento cifrado y el saneamiento de logs reducen la exposición del token en un dispositivo de desarrollo.",
+    "La autorización del backend sigue siendo la fuente de verdad; la UI usa los permisos para evitar acciones imposibles.",
+    "Para la sesión 11, las operaciones offline deberán distinguir datos en caché de una sesión vencida y exigir nueva autenticación antes de sincronizar."
+  ],
+  "commits": [
+    {
+      "hash": "507da07",
+      "mensaje": "fix(auth): asegurar redireccion al expirar la sesion"
+    },
+    {
+      "hash": "9c84377",
+      "mensaje": "test(auth): agregar utilidad debug para alterar token"
+    },
+    {
+      "hash": "2c787d0",
+      "mensaje": "fix(auth): ajustar acceso de productos segun permiso"
+    },
+    {
+      "hash": "08b05ef",
+      "mensaje": "test(auth): verificar cliente real tras cerrar sesion"
+    }
+  ],
+  "cotejo": {
+    "1": true,
+    "2": true,
+    "3": true,
+    "4": true,
+    "5": true,
+    "6": true,
+    "7": true,
+    "8": true,
+    "9": true,
+    "10": true,
+    "11": false
+  },
+  "restauracion": {
+    "verificado": "2026-10-15 18:13:30 -05:00",
+    "config": "app.jwt.expiracion-minutos: 60",
+    "usuarios": [
+      "admin=true",
+      "almacen=true",
+      "vendedor=true"
+    ],
+    "login_status": 200,
+    "login_username": "admin",
+    "expiraEnSegundos": 3600
+  },
+  "notas": [
+    "Las seis respuestas de servidor se repitieron en Postman y sus capturas originales se guardaron con los nombres solicitados. Los resultados iniciales HTTP/JSON también se conservaron.",
+    "Las capturas de Android se obtuvieron del emulador Pixel 8 Pro mediante adb screencap. Los archivos y logs de ADB se mostraron sin modificaciones en Bloc de notas para las capturas de almacenamiento y caché; no se presentan como terminal o Device Explorer.",
+    "Las horas de la bitácora son del equipo local (UTC-05:00). Las repeticiones en Postman tienen su propia hora visible; Logcat refleja el reloj UTC del emulador.",
+    "La matriz HTTP se ejecutó mediante solicitudes directas autenticadas; la observación de acciones de UI se hizo en Android. Clientes usa el repositorio en memoria de la versión académica. Registrar ventas y Reportes no tienen pantalla funcional.",
+    "iOS no se verificó por indicación del usuario y ausencia de macOS/Xcode.",
+    "El cotejo 11 permanece pendiente hasta que el usuario autorice el push de los commits locales de la actividad."
+  ]
+}

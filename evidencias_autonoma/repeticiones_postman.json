@@ -1,0 +1,32 @@
+[
+  {
+    "escenario": 1,
+    "archivo": "A_esc1_valido_servidor.png",
+    "capturado": "2026-10-15 17:58:51 -05:00"
+  },
+  {
+    "escenario": 2,
+    "archivo": "A_esc2_expirado_servidor.png",
+    "capturado": "2026-10-15 18:08:11 -05:00"
+  },
+  {
+    "escenario": 3,
+    "archivo": "A_esc3_alterado_servidor.png",
+    "capturado": "2026-10-15 17:59:42 -05:00"
+  },
+  {
+    "escenario": 4,
+    "archivo": "A_esc4_sin_cabecera_servidor.png",
+    "capturado": "2026-10-15 18:00:09 -05:00"
+  },
+  {
+    "escenario": 5,
+    "archivo": "A_esc5_prefijo_servidor.png",
+    "capturado": "2026-10-15 18:00:58 -05:00"
+  },
+  {
+    "escenario": 6,
+    "archivo": "A_esc6_deshabilitado_servidor.png",
+    "capturado": "2026-10-15 18:02:57 -05:00"
+  }
+]

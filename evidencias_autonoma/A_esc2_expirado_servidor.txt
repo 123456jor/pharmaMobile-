@@ -1,0 +1,8 @@
+EVIDENCIA REAL - ESCENARIO 2: TOKEN EXPIRADO
+Ejecutado: 2026-10-15 15:53:47 -05:00
+Preparacion: app.jwt.expiracion-minutos=1; login; espera de 65 segundos
+Peticion: GET http://localhost:8080/api/v1/productos
+HTTP: 401 Unauthorized
+message: El token ha expirado. Inicie sesión nuevamente
+path: /api/v1/productos
+Restauracion: expiracion=60; login nuevo expiraEnSegundos=3600

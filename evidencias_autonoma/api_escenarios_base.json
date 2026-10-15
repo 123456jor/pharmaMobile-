@@ -1,0 +1,38 @@
+{
+  "ejecutado": "2026-10-15 15:50:28 -05:00",
+  "login_admin": {
+    "status": 200,
+    "expiraEnSegundos": 3600,
+    "username": "admin",
+    "roles": [
+      "ADMIN"
+    ],
+    "permisos": [
+      "CATALOGO_ESCRIBIR",
+      "CATALOGO_LEER",
+      "CLIENTES_ESCRIBIR",
+      "CLIENTES_LEER",
+      "REPORTES_VER",
+      "USUARIOS_ADMINISTRAR",
+      "VENTAS_LEER",
+      "VENTAS_REGISTRAR"
+    ]
+  },
+  "escenario_1": {
+    "status": 200,
+    "message": null,
+    "cantidad": 1
+  },
+  "escenario_3": {
+    "status": 401,
+    "message": "El token no es válido"
+  },
+  "escenario_4": {
+    "status": 401,
+    "message": "Debe iniciar sesión para acceder a este recurso"
+  },
+  "escenario_5": {
+    "status": 401,
+    "message": "Debe iniciar sesión para acceder a este recurso"
+  }
+}

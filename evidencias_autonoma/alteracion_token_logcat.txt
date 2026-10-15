@@ -1,0 +1,2 @@
+--------- beginning of main
+10-15 21:10:42.798 16251 16251 I AuthDebugReceiver: Token JWT alterado para la siguiente ejecución; contenido omitido

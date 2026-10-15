@@ -1,0 +1,4 @@
+Control del manifiesto release generado por Gradle
+Fecha: 2026-10-15 18:19:28 -05:00
+Coincidencias del receiver o acciones debug: 0
+Resultado de compilación: :androidApp:assembleDebug y :androidApp:processReleaseMainManifest completados correctamente.

@@ -1,0 +1,229 @@
+{
+  "info": {
+    "name": "S10 Actividad Autonoma - Evidencias reales",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "jwt",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "00 Login admin (guardar JWT)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"admin\", \"password\": \"Admin123\"}"
+        },
+        "url": "http://localhost:8080/api/v1/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Login 200',()=>pm.response.to.have.status(200));",
+              "if(pm.response.code===200) pm.collectionVariables.set('jwt',pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "00 Login vendedor (guardar JWT)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"vendedor\", \"password\": \"Vendedor123\"}"
+        },
+        "url": "http://localhost:8080/api/v1/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Login 200',()=>pm.response.to.have.status(200));",
+              "if(pm.response.code===200) pm.collectionVariables.set('jwt',pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "A1 Token valido - 200",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "http://localhost:8080/api/v1/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "A2 Token expirado - 401",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "http://localhost:8080/api/v1/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "A3 Token alterado - 401",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtAlterado}}"
+          }
+        ],
+        "url": "http://localhost:8080/api/v1/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const t=pm.collectionVariables.get('jwt'); const i=t.lastIndexOf('.')+1; pm.variables.set('jwtAlterado',t.slice(0,i)+(t[i]==='A'?'B':'A')+t.slice(i+1));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "A4 Sin cabecera - 401",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [],
+        "url": "http://localhost:8080/api/v1/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "A5 Prefijo bearer minuscula - 401",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "bearer {{jwt}}"
+          }
+        ],
+        "url": "http://localhost:8080/api/v1/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "A6 Usuario deshabilitado - 401",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "http://localhost:8080/api/v1/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

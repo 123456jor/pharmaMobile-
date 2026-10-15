@@ -1,0 +1,4 @@
+Comando: adb logcat -d | filtro Authorization
+10-15 20:57:41.947 15061 15061 I System.out: -> Authorization: ***
+
+Conteo de fragmentos eyJ en logcat: 0

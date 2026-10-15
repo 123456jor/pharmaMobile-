@@ -20,3 +20,5 @@ captures
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
 .work/
+/tmp/
+/output/*.zip

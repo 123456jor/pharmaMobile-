@@ -1,0 +1,8 @@
+{
+  "ejecutado": "2026-10-15 15:53:47 -05:00",
+  "espera_segundos": 65,
+  "expira_en_segundos": 60,
+  "status": 401,
+  "message": "El token ha expirado. Inicie sesión nuevamente",
+  "path": "/api/v1/productos"
+}

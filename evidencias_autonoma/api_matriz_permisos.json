@@ -1,0 +1,54 @@
+{
+  "ejecutado": "2026-10-15 15:51:16 -05:00",
+  "recurso_base": {
+    "producto_id": 23,
+    "cliente_id": 1
+  },
+  "matriz": {
+    "admin": {
+      "Listar productos": 200,
+      "Registrar producto": 201,
+      "Listar clientes": 200,
+      "Registrar venta": 201,
+      "Ver reportes": 200,
+      "Consultar /auth/me": 200,
+      "permisos": [
+        "CATALOGO_ESCRIBIR",
+        "CATALOGO_LEER",
+        "CLIENTES_ESCRIBIR",
+        "CLIENTES_LEER",
+        "REPORTES_VER",
+        "USUARIOS_ADMINISTRAR",
+        "VENTAS_LEER",
+        "VENTAS_REGISTRAR"
+      ]
+    },
+    "vendedor": {
+      "Listar productos": 200,
+      "Registrar producto": 403,
+      "Listar clientes": 200,
+      "Registrar venta": 201,
+      "Ver reportes": 403,
+      "Consultar /auth/me": 200,
+      "permisos": [
+        "CATALOGO_LEER",
+        "CLIENTES_ESCRIBIR",
+        "CLIENTES_LEER",
+        "VENTAS_LEER",
+        "VENTAS_REGISTRAR"
+      ]
+    },
+    "almacen": {
+      "Listar productos": 200,
+      "Registrar producto": 201,
+      "Listar clientes": 403,
+      "Registrar venta": 403,
+      "Ver reportes": 403,
+      "Consultar /auth/me": 200,
+      "permisos": [
+        "CATALOGO_ESCRIBIR",
+        "CATALOGO_LEER"
+      ]
+    }
+  }
+}

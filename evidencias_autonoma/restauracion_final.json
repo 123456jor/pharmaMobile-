@@ -1,0 +1,12 @@
+{
+  "verificado": "2026-10-15 18:13:30 -05:00",
+  "config": "expiracion-minutos: 60",
+  "usuarios": [
+    "admin=true",
+    "almacen=true",
+    "vendedor=true"
+  ],
+  "login_status": 200,
+  "login_username": "admin",
+  "expiraEnSegundos": 3600
+}

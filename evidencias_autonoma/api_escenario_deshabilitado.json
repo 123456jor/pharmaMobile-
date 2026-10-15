@@ -1,0 +1,16 @@
+{
+  "ejecutado": "2026-10-15 15:55:42 -05:00",
+  "usuario": "vendedor",
+  "estado_durante_prueba": "vendedor=false",
+  "respuesta": {
+    "status": 401,
+    "message": "El usuario está deshabilitado",
+    "path": "/api/v1/productos"
+  },
+  "estado_restaurado": "vendedor=true",
+  "login_tras_restaurar": {
+    "status": 200,
+    "username": "vendedor",
+    "expiraEnSegundos": 3600
+  }
+}

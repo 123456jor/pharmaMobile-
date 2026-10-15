@@ -1,0 +1,13 @@
+{
+  "ejecutado": "2026-10-15 16:18:18 -05:00",
+  "escenario_4": {
+    "status": 401,
+    "message": "Debe iniciar sesión para acceder a este recurso",
+    "authorization": "no enviada"
+  },
+  "escenario_5": {
+    "status": 401,
+    "message": "Debe iniciar sesión para acceder a este recurso",
+    "authorization": "bearer [JWT OMITIDO]"
+  }
+}
