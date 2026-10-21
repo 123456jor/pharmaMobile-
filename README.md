@@ -154,3 +154,7 @@ Resultado ejecutado el 21/10/2026: **76 pruebas, 0 fallos, 0 errores, 0 omitidas
 - [PDF con capturas reales y lista de cotejo](output/pdf/Entregable_Sesion11_OfflineFirst_Quispe.pdf).
 - Capturas originales y verificaciones: [evidencias/](evidencias/).
 - El PDF tiene 15 páginas; las vistas de escritorio usan páginas apaisadas más grandes para conservar la legibilidad, sin alterar las capturas.
+
+### Tus propias comprobaciones en Postman
+
+Importa [S11 - Mi producto offline - Jorge](postman/S11-Mi-producto-offline.postman_collection.json). Está preparada para el ejemplo **Prueba Offline Jorge 01**, precio **5.50**, stock **15**, categoría **1**. Tras crearlo y sincronizarlo desde Android, ejecuta **01 Iniciar sesion → 02 Encontrar mi producto → 03 Ver mi producto**. El ID se obtiene automáticamente del listado y se comprueban nombre, unicidad, ID positivo, precio, stock, categoría y estado. Ver [instrucciones sencillas](postman/LEEME-Mi-producto-offline.md). La colección anterior conserva las evidencias de la práctica ya realizada.
