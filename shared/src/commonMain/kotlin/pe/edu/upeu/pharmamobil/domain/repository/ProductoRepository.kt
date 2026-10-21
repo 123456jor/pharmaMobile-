@@ -1,8 +1,13 @@
 package pe.edu.upeu.pharmamobil.domain.repository
 
 import pe.edu.upeu.pharmamobil.domain.model.Producto
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 interface ProductoRepository {
+    /** La implementación offline observa exclusivamente SQLDelight. */
+    fun observar(): Flow<List<Producto>> = flow { emit(listar()) }
+    suspend fun sincronizar() { listar() }
 
     /** Incorpora el producto al inventario y devuelve el producto ya identificado. */
     suspend fun registrar(producto: Producto): Producto
