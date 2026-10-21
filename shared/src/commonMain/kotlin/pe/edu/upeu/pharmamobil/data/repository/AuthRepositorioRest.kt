@@ -13,6 +13,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CancellationException
 import kotlinx.io.IOException
+import kotlin.time.Clock
 import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguro
 import pe.edu.upeu.pharmamobil.data.remote.dto.ErrorSesionDto
 import pe.edu.upeu.pharmamobil.data.remote.dto.LoginRequestDto
@@ -36,7 +37,8 @@ class AuthRepositorioRest(
         }.body()
         almacen.guardarToken(dto.token)
         limpiarTokenEnCache()
-        dto.aSesion()
+        dto.aSesion().copy(expiracionEpochSegundos = Clock.System.now().epochSeconds + dto.expiraEnSegundos)
+            .also(almacen::guardarSesion)
     } catch (cancelacion: CancellationException) {
         throw cancelacion
     } catch (peticion: ClientRequestException) {
@@ -53,15 +55,21 @@ class AuthRepositorioRest(
     }
 
     override suspend fun sesionGuardada(): Sesion? {
-        if (almacen.leerToken() == null) return null
+        val token = almacen.leerToken() ?: return null
+        val guardada = almacen.leerSesion()?.takeIf { it.token == token }
+        if (guardada != null && guardada.expiracionEpochSegundos <= Clock.System.now().epochSeconds) {
+            cerrarSesion()
+            return null
+        }
         return try {
             val usuario: UsuarioActualDto = cliente.get("auth/me").body()
             Sesion(
                 token = almacen.leerToken().orEmpty(),
                 usuario = usuario.username,
                 nombreCompleto = usuario.nombreCompleto ?: usuario.empleadoNombre ?: usuario.username,
-                permisos = usuario.permisos.toSet()
-            )
+                permisos = usuario.permisos.toSet(),
+                expiracionEpochSegundos = guardada?.expiracionEpochSegundos ?: 0
+            ).also { if (it.expiracionEpochSegundos > 0) almacen.guardarSesion(it) }
         } catch (cancelacion: CancellationException) {
             throw cancelacion
         } catch (error: ErrorSesionException) {
@@ -70,13 +78,13 @@ class AuthRepositorioRest(
                 null
             } else throw error
         } catch (timeout: HttpRequestTimeoutException) {
-            throw ErrorSesionException(ErrorSesion.SinConexion, timeout)
+            return sesionSinRed(guardada, timeout)
         } catch (timeout: io.ktor.client.network.sockets.ConnectTimeoutException) {
-            throw ErrorSesionException(ErrorSesion.SinConexion, timeout)
+            return sesionSinRed(guardada, timeout)
         } catch (servidor: ServerResponseException) {
-            throw ErrorSesionException(ErrorSesion.SinConexion, servidor)
+            return sesionSinRed(guardada, servidor)
         } catch (conexion: IOException) {
-            throw ErrorSesionException(ErrorSesion.SinConexion, conexion)
+            return sesionSinRed(guardada, conexion)
         } catch (peticion: ClientRequestException) {
             if (peticion.response.status == HttpStatusCode.Unauthorized) {
                 cerrarSesion()
@@ -87,6 +95,11 @@ class AuthRepositorioRest(
             }
             throw peticion
         }
+    }
+
+    private fun sesionSinRed(guardada: Sesion?, causa: Throwable): Sesion {
+        if (guardada != null && guardada.expiracionEpochSegundos > Clock.System.now().epochSeconds) return guardada
+        throw ErrorSesionException(ErrorSesion.SinConexion, causa)
     }
 
     override suspend fun cerrarSesion() {

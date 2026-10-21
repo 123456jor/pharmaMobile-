@@ -16,13 +16,20 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import pe.edu.upeu.pharmamobil.domain.model.ErrorSesion
 import pe.edu.upeu.pharmamobil.domain.model.ErrorSesionException
+import pe.edu.upeu.pharmamobil.domain.model.Sesion
+import kotlinx.io.IOException
+import kotlin.time.Clock
+import kotlin.test.assertNull
 
 class AuthRepositorioRestTest {
     private class AlmacenMemoria : AlmacenSeguro {
         var token: String? = null
+        var sesion: Sesion? = null
+        override fun guardarSesion(sesion: Sesion) { this.sesion = sesion }
+        override fun leerSesion(): Sesion? = sesion
         override fun guardarToken(token: String) { this.token = token }
         override fun leerToken(): String? = token
-        override fun borrarToken() { token = null }
+        override fun borrarToken() { token = null; sesion = null }
     }
 
     @Test
@@ -70,6 +77,47 @@ class AuthRepositorioRestTest {
             }
             assertEquals(ErrorSesion.CredencialesInvalidas, fallo.error)
             assertEquals(null, almacen.leerToken())
+        } finally { cliente.close() }
+    }
+
+    @Test
+    fun reabrirSinRedRestauraSoloSesionGuardadaVigente() = runTest {
+        val almacen = AlmacenMemoria().apply {
+            guardarToken("jwt-cache")
+            guardarSesion(Sesion("jwt-cache", "admin", "Admin", setOf("CATALOGO_LEER"), Clock.System.now().epochSeconds + 60))
+        }
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine { throw IOException("Sin red") }, esDepuracion = false)
+        try { assertEquals(almacen.sesion, AuthRepositorioRest(cliente, almacen).sesionGuardada()) }
+        finally { cliente.close() }
+    }
+
+    @Test
+    fun sesionVencidaNoSeRestauraSinRedYSeBorra() = runTest {
+        val almacen = AlmacenMemoria().apply {
+            guardarToken("vencido")
+            guardarSesion(Sesion("vencido", "admin", "Admin", emptySet(), 1))
+        }
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine { throw IOException("Sin red") }, esDepuracion = false)
+        try {
+            assertNull(AuthRepositorioRest(cliente, almacen).sesionGuardada())
+            assertNull(almacen.token)
+            assertNull(almacen.sesion)
+        } finally { cliente.close() }
+    }
+
+    @Test
+    fun respuesta401NoUsaLaSesionCacheada() = runTest {
+        val almacen = AlmacenMemoria().apply {
+            guardarToken("rechazado")
+            guardarSesion(Sesion("rechazado", "admin", "Admin", emptySet(), Clock.System.now().epochSeconds + 60))
+        }
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine {
+            respond("{}", HttpStatusCode.Unauthorized, headersOf(HttpHeaders.ContentType, "application/json"))
+        }, esDepuracion = false)
+        try {
+            assertFailsWith<ErrorSesionException> { AuthRepositorioRest(cliente, almacen).sesionGuardada() }
+            assertNull(almacen.sesion)
+            assertNull(almacen.token)
         } finally { cliente.close() }
     }
 }

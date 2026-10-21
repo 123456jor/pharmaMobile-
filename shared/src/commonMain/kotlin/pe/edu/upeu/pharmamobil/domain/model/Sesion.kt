@@ -2,11 +2,13 @@ package pe.edu.upeu.pharmamobil.domain.model
 
 data class Credenciales(val usuario: String, val clave: String)
 
+@kotlinx.serialization.Serializable
 data class Sesion(
     val token: String,
     val usuario: String,
     val nombreCompleto: String,
-    val permisos: Set<String>
+    val permisos: Set<String>,
+    val expiracionEpochSegundos: Long = 0
 ) {
     fun puede(permiso: String): Boolean = permiso in permisos
 }
