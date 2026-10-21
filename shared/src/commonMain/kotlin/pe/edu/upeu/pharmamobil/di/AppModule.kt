@@ -11,6 +11,8 @@ import pe.edu.upeu.pharmamobil.data.remote.ProductoApi
 import pe.edu.upeu.pharmamobil.data.remote.crearHttpClient
 import pe.edu.upeu.pharmamobil.data.remote.TIEMPO_SOLICITUD_POR_DEFECTO_MS
 import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguro
+import pe.edu.upeu.pharmamobil.data.local.CreadorDeDriver
+import pe.edu.upeu.pharmamobil.db.PharmaDb
 import pe.edu.upeu.pharmamobil.data.repository.AuthRepositorioRest
 import pe.edu.upeu.pharmamobil.domain.auth.SesionManager
 import pe.edu.upeu.pharmamobil.domain.repository.AuthRepository
@@ -32,6 +34,12 @@ import pe.edu.upeu.pharmamobil.presentation.producto.ProductoViewModel
 
 
 val dataModule = module {
+    single(createdAtStart = true) {
+        PharmaDb(get<CreadorDeDriver>().crear()).also {
+            // AndroidSqliteDriver abre el archivo al ejecutar la primera consulta.
+            it.productoQueries.listarTodos().executeAsList()
+        }
+    }
     single { SesionManager() }
     single {
         crearHttpClient(
