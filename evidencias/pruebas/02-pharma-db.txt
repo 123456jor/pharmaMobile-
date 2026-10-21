@@ -1,0 +1,3 @@
+total 24
+-rw-rw---- 1 u0_a229 u0_a229 16384 2026-10-21 19:23 pharma.db
+-rw-rw---- 1 u0_a229 u0_a229     0 2026-10-21 19:23 pharma.db-journal

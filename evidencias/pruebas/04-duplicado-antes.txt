@@ -1,0 +1,96 @@
+Calculating task graph as no cached configuration is available for tasks: :shared:testAndroidHostTest --tests *ProductoRepositorioOfflineTest.sincronizarNoDejaDuplicadosNiPendientesHuerfanos
+
+> Configure project :shared
+w: Native task 'iosSimulatorArm64Test' is disabled
+Task 'iosSimulatorArm64Test' for target 'ios_simulator_arm64' cannot run on the current host (windows-x86_64).
+Reason: simulator tests require macOS
+Solution: To suppress this warning, add 'kotlin.native.ignoreDisabledTargets=true' to gradle.properties.
+
+
+> Task :shared:generateAndroidHostTestAssets UP-TO-DATE
+> Task :shared:generateAndroidMainAssets UP-TO-DATE
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :shared:generateComposeResClass UP-TO-DATE
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :shared:generateCommonMainPharmaDbInterface UP-TO-DATE
+> Task :shared:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :shared:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:copyNonXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :shared:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:preAndroidHostTestBuild UP-TO-DATE
+> Task :shared:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :shared:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :shared:processAndroidMainManifest UP-TO-DATE
+> Task :shared:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :shared:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :shared:processAndroidHostTestJavaRes NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :shared:convertXmlValueResourcesForCommonMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :shared:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :shared:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :shared:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :shared:androidJar UP-TO-DATE
+> Task :shared:packageAndroidMainResources UP-TO-DATE
+> Task :shared:mergeAndroidMainAssets UP-TO-DATE
+> Task :shared:generateAndroidHostTestResources
+> Task :shared:parseAndroidMainLocalResources UP-TO-DATE
+> Task :shared:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :shared:generateAndroidMainRFile UP-TO-DATE
+> Task :shared:mapAndroidHostTestSourceSetPaths
+> Task :shared:mergeAndroidHostTestAssets
+> Task :shared:checkAndroidHostTestAarMetadata
+> Task :shared:processAndroidHostTestManifest
+> Task :shared:mergeAndroidHostTestResources
+> Task :shared:processAndroidHostTestResources
+> Task :shared:packageAndroidHostTestForUnitTest
+> Task :shared:generateAndroidHostTestConfig
+
+> Task :shared:compileAndroidMain
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/androidMain/kotlin/pe/edu/upeu/pharmamobil/platform/Formato.android.kt:7:38 'constructor(p0: String!, p1: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:90:13 'fun KoinContext(koin: Koin = ..., content: ComposableFunction0<Unit>): Unit' is deprecated. KoinContext is not needed anymore. This can be removed. Compose Koin context is setup with StartKoin().
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:192:44 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:209:52 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+
+> Task :shared:bundleAndroidMainClassesToCompileJar
+> Task :shared:bundleAndroidMainClassesToRuntimeJar
+> Task :shared:processAndroidMainJavaRes
+> Task :shared:compileAndroidHostTest
+
+> Task :shared:testAndroidHostTest
+
+ProductoRepositorioOfflineTest > sincronizarNoDejaDuplicadosNiPendientesHuerfanos STANDARD_ERROR
+    SLF4J(W): No SLF4J providers were found.
+    SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+    SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+
+ProductoRepositorioOfflineTest > sincronizarNoDejaDuplicadosNiPendientesHuerfanos FAILED
+    java.lang.AssertionError at ProductoRepositorioOfflineTest.kt:73
+
+> Task :shared:testAndroidHostTest FAILED
+
+1 test completed, 1 failed
+
+[Incubating] Problems report is available at: file:///H:/ProyectosUPEU/pharmaMobile-/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':shared:testAndroidHostTest'.
+> There were failing tests. See the report at: file:///H:/ProyectosUPEU/pharmaMobile-/shared/build/reports/tests/testAndroidHostTest/index.html
+
+* Try:
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+
+BUILD FAILED in 24s
+33 actionable tasks: 16 executed, 17 up-to-date
+Configuration cache entry stored.

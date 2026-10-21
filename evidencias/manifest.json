@@ -1,0 +1,73 @@
+[
+  {
+    "archivo": "evidencias/capturas/00-linea-base-android.png",
+    "sha256": "969ea8c51a173f7435a25c5c2ace43638e7ab08f261cce92932846c530b7d10e",
+    "bytes": 194341
+  },
+  {
+    "archivo": "evidencias/capturas/00-registro-con-red.png",
+    "sha256": "9f01ca6b55167315973718b18af6875df7b14c5ba95fd48216c4b6f47963a34d",
+    "bytes": 190695
+  },
+  {
+    "archivo": "evidencias/capturas/01-con-red-sincronizado.png",
+    "sha256": "9f573c0151c1b241ed18c3e408283c069de39e45c417655f31b09eaa943883c4",
+    "bytes": 202448
+  },
+  {
+    "archivo": "evidencias/capturas/02-modo-avion-activo.png",
+    "sha256": "5226d0aa0a9c4bf0a116efbddf86abc7d6a8a8ecbcd45243050840e918a7bddd",
+    "bytes": 152498
+  },
+  {
+    "archivo": "evidencias/capturas/03-listado-sin-red-android.png",
+    "sha256": "84edb27dfa55b23cc6cbe7892a0722b08a0e40637069c6bc085d29d55238956f",
+    "bytes": 207603
+  },
+  {
+    "archivo": "evidencias/capturas/04-registro-sin-red.png",
+    "sha256": "b59d960be163e5e4b5b25c7d4fb28e4a5a411ce9e7c62ff9c8aa81d8245c650b",
+    "bytes": 212594
+  },
+  {
+    "archivo": "evidencias/capturas/05-fila-pendiente.jpg",
+    "sha256": "e469870c9db2080282ec74f7fa143dd160ae67ac342d21ab17c63de4cfd168b3",
+    "bytes": 45434
+  },
+  {
+    "archivo": "evidencias/capturas/06-reconexion-sincronizar.png",
+    "sha256": "447b06034be2b7d85afd8cd3dc984007daf2b070267ded6a061b444eb177d8f1",
+    "bytes": 203139
+  },
+  {
+    "archivo": "evidencias/capturas/07-postman-producto-id-real.jpg",
+    "sha256": "88dddc9a1f4687ad6a4d01f6c8e9a4fcccb23c1e2051c6fe8ee2d7a86eafe2cc",
+    "bytes": 109224
+  },
+  {
+    "archivo": "evidencias/capturas/07b-postman-listado-pruebas.jpg",
+    "sha256": "cbe523e9e959eef230549154065dc26da2829d2d3374a5e6acf847714bb6e1a0",
+    "bytes": 102579
+  },
+  {
+    "archivo": "evidencias/capturas/08-backend-apagado-listado-android.png",
+    "sha256": "8d84cfa6f96b9fee7916758d12338c60ae6e23389642e92e046948ea5da72c72",
+    "bytes": 214982
+  },
+  {
+    "archivo": "evidencias/capturas/09-pruebas-build-successful.jpg",
+    "sha256": "985aa954089f1b0a05b66cf8446a3acff855d13b4edd792084367029d294e2b0",
+    "bytes": 77474
+  },
+  {
+    "archivo": "evidencias/capturas/10-archivo-pharma-db.jpg",
+    "sha256": "40bf58700276b8f907338b2999f4743e1205d284a907e4c568ac6b7189b13f95",
+    "bytes": 34001
+  },
+  {
+    "archivo": "output/pdf/Entregable_Sesion11_OfflineFirst_Quispe.pdf",
+    "sha256": "707effb700fe0b33c7bd1e3d12c5f82a7f15c0a0fc387ce556fb6b18aa434888",
+    "bytes": 1626222,
+    "paginas": 15
+  }
+]

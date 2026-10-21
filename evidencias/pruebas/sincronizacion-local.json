@@ -1,0 +1,16 @@
+{
+  "fechaLima": "2026-10-21T15:32:29.741888-05:00",
+  "producto": [
+    {
+      "id": 63,
+      "nombre": "A_Offline_S11_1531",
+      "precio": 6.75,
+      "stock": 12,
+      "pendiente": 0,
+      "estado": 1,
+      "categoriaId": 1,
+      "categoriaNombre": "Medicamentos"
+    }
+  ],
+  "pendientesTotales": 0
+}

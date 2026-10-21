@@ -1,0 +1,67 @@
+# Verificación de la práctica 11
+
+Alcance acordado: Android. iOS excluido expresamente. Postman sustituye Swagger por instrucción del usuario. La captura 02 se repitió en Ajustes tras el ciclo por una animación incompleta; la bitácora registra este hecho.
+
+| ID | Requisito | Estado | Archivos | Verificación real | Evidencia (relativa a evidencias/) |
+| --- | --- | --- | --- | --- | --- |
+| E1 | Rama autorizada desde sesión 10 | COMPLETADO Y VERIFICADO | Git | feature/offline-first-quispe desde ef38718; develop no existe | bitacora.md |
+| E2 | Login y listado con red antes del cambio | COMPLETADO Y VERIFICADO | App Android | Login admin y productos activos reales | capturas/00-linea-base-android.png |
+| E3 | Backend 200 y modo avión disponible | COMPLETADO Y VERIFICADO | PharmaSoft y AVD | API real 200; cmd connectivity airplane-mode | linea-base-api.json; pruebas/modo-avion.txt |
+| P1.1 | Catálogo SQLDelight 2.1.0, cinco librerías, plugin | COMPLETADO Y VERIFICADO | gradle/libs.versions.toml | Compilación Android correcta | pruebas/01-esquema.txt |
+| P1.2 | Plugin y PharmaDb | COMPLETADO Y VERIFICADO | shared/build.gradle.kts | Generación de interfaz y compilación | pruebas/01-esquema.txt |
+| P1.3 | Tabla y consultas de la guía | COMPLETADO Y VERIFICADO | Producto.sq | Generación y pruebas SQLite en memoria | pruebas/05-repositorio-offline.txt |
+| P1.4 | CP1: PharmaDb accesible | COMPLETADO Y VERIFICADO | Fuentes generadas de SQLDelight | compileAndroidMain correcto | pruebas/01-esquema.txt |
+| P2.1 | Interfaz del driver | COMPLETADO Y VERIFICADO | CreadorDeDriver.kt | Compilación correcta | pruebas/02-driver.txt |
+| P2.2 | Driver Android | COMPLETADO Y VERIFICADO | CreadorDeDriverAndroid.kt | Ejecución en AVD; pharma.db existe | pruebas/02-pharma-db.txt |
+| P2.3 | Driver iOS | FUERA DEL ALCANCE POR INDICACIÓN DEL USUARIO | Sin cambios | Excluido expresamente por el usuario; no se reclama implementación | bitacora.md |
+| P2.4 | PlatformModule Android; parte iOS excluida | COMPLETADO Y VERIFICADO | PlatformModule.android.kt | Compilación y grafo Koin verificados | pruebas/salida-pruebas.txt |
+| P2.5 | PharmaDb en Koin | COMPLETADO Y VERIFICADO | AppModule.kt | Pruebas AppModuleTest y ejecución Android | pruebas/reporte/index.html |
+| P2.6 | CP2: archivo pharma.db | COMPLETADO Y VERIFICADO | databases/pharma.db de la app | adb run-as ls -l databases | pruebas/02-pharma-db.txt |
+| P3.1 | observar Flow y pendientes | COMPLETADO Y VERIFICADO | ProductoLocal.kt | Ocho pruebas del repositorio | pruebas/reporte/index.html |
+| P3.2 | IDs locales negativos distintos | COMPLETADO Y VERIFICADO | ProductoLocal.kt | Prueba IDs distintos y registro real -1 | pruebas/fila-pendiente.json |
+| P3.3 | Reemplazo transaccional conserva pendientes | COMPLETADO Y VERIFICADO | ProductoLocal.kt | Prueba reemplazarSincronizadosPreservaPendientes | pruebas/reporte/index.html |
+| P3.4 | CP3: sin Ktor ni DTO | COMPLETADO Y VERIFICADO | ProductoLocal.kt | Búsqueda de imports: sin coincidencias | README.md: arquitectura |
+| P4.1 | Contrato observar y sincronizar | COMPLETADO Y VERIFICADO | ProductoRepository.kt | Compila y se resuelve por Koin | pruebas/salida-pruebas.txt |
+| P4.2 | Implementación offline | COMPLETADO Y VERIFICADO | ProductoRepositorioOffline.kt | Pruebas unitarias y ciclo Android | pruebas/reporte/index.html |
+| P4.3 | Registro local antes de intentar red | COMPLETADO Y VERIFICADO | ProductoRepositorioOffline.kt | Prueba modelo sin red y registro real | capturas/04-registro-sin-red.png |
+| P4.4 | Subir antes de bajar; CP4 | COMPLETADO Y VERIFICADO | ProductoRepositorioOffline.kt | Prueba de orden POST -> GET; ciclo real ID63 | pruebas/reporte/index.html |
+| P4.5 | Subir antes de bajar; CP4 | COMPLETADO Y VERIFICADO | ProductoRepositorioOffline.kt | Prueba de orden POST -> GET; ciclo real ID63 | pruebas/reporte/index.html |
+| P4.7 | Subir antes de bajar; CP4 | COMPLETADO Y VERIFICADO | ProductoRepositorioOffline.kt | Prueba de orden POST -> GET; ciclo real ID63 | pruebas/reporte/index.html |
+| P4.6 | Silenciar solo errores de transporte al registrar | COMPLETADO Y VERIFICADO | ProductoRepositorioOffline.kt | IOException conserva fila; 503 sigue siendo Servidor | pruebas/reporte/index.html |
+| P5.1 | init recoge Flow | COMPLETADO Y VERIFICADO | ProductoViewModel.kt | Lista viene de observar y cambia con SQLDelight | capturas/04-registro-sin-red.png |
+| P5.2 | Sincronización y aviso de conexión | COMPLETADO Y VERIFICADO | ProductoViewModel.kt; ProductoUiState.kt | Backend apagado y modo avión | capturas/03-listado-sin-red-android.png |
+| P5.3 | Sin recargas manuales tras mutaciones | COMPLETADO Y VERIFICADO | ProductoViewModel.kt | Sin cargarProductos, recargarTrasMutacion ni listar; prueba eliminar sin aumentar listados | pruebas/reporte/index.html |
+| P5.4 | Botón y aviso visibles | COMPLETADO Y VERIFICADO | ProductoScreen.kt | Ciclo real con aviso y botón | capturas/03-listado-sin-red-android.png |
+| P5.5 | CP5: alta con red actualiza por Flow | COMPLETADO Y VERIFICADO | ProductoViewModel.kt | Alta A_Prueba_con_red_S11_1431: POST201, lista con ID43 y 4 productos | capturas/00-registro-con-red.png; capturas/01-con-red-sincronizado.png |
+| P6.1 | Sincronizar con red y cerrar completamente | COMPLETADO Y VERIFICADO | App Android | force-stop tras listado con 4 productos | capturas/01-con-red-sincronizado.png |
+| P6.2 | Modo avión y reapertura | COMPLETADO Y VERIFICADO | AVD | Modo avión, Wi-Fi y datos desactivados | capturas/02-modo-avion-activo.png; pruebas/modo-avion.txt |
+| P6.3 | Mismo listado y aviso sin red | COMPLETADO Y VERIFICADO | App Android | Lista de 4 productos tras reapertura | capturas/03-listado-sin-red-android.png |
+| P6.4 | Alta inmediata sin red | COMPLETADO Y VERIFICADO | App Android y SQLite | 5 productos, ID -1 y pendiente 1 | capturas/04-registro-sin-red.png; capturas/05-fila-pendiente.jpg |
+| P6.5 | Reconectar y sincronizar | COMPLETADO Y VERIFICADO | App Android | ID63, pendiente0 y cero duplicados locales | capturas/06-reconexion-sincronizar.png; pruebas/sincronizacion-local.json |
+| P6.6 | Producto en servidor con ID positivo; Postman sustituye Swagger por indicación del usuario | COMPLETADO Y VERIFICADO | Postman colección S11 | GET200, ID63; listado con tres pruebas PASSED | capturas/07-postman-producto-id-real.jpg; capturas/07b-postman-listado-pruebas.jpg |
+| P6.7 | Producto en servidor con ID positivo; Postman sustituye Swagger por indicación del usuario | COMPLETADO Y VERIFICADO | Postman colección S11 | GET200, ID63; listado con tres pruebas PASSED | capturas/07-postman-producto-id-real.jpg; capturas/07b-postman-listado-pruebas.jpg |
+| T1 | Al menos tres pruebas comunes de red y sin red | COMPLETADO Y VERIFICADO | ProductoRepositorioOfflineTest.kt | 8 pruebas del repositorio, 76 totales aprobadas | pruebas/resumen.json |
+| T2 | Una base en memoria por prueba | COMPLETADO Y VERIFICADO | BaseEnMemoria.kt; BaseEnMemoria.android.kt | JDBC en androidHostTest con fábrica expect/actual | pruebas/reporte/index.html |
+| T3 | Prueba modelo: sin red queda pendiente y pantalla lo ve | COMPLETADO Y VERIFICADO | ProductoRepositorioOfflineTest.kt | observar().first contiene un producto sin red | pruebas/reporte/index.html |
+| T4 | Toda la suite pasa; salida conservada | COMPLETADO Y VERIFICADO | commonTest y androidHostTest | 76 casos; 0 fallos/errores/omitidas; BUILD SUCCESSFUL | pruebas/salida-pruebas.txt; pruebas/resumen.json |
+| D1 | Commits distribuidos en rama | COMPLETADO Y VERIFICADO | Git | 7 commits de implementación y documentación final | commits.txt |
+| D2 | Abre y lista con backend apagado | COMPLETADO Y VERIFICADO | Android; PharmaSoft | Puerto8080 sin listener; reapertura lista 5 productos con red activa | capturas/08-backend-apagado-listado-android.png; pruebas/backend-apagado.txt |
+| D3 | Capturas del ciclo y servidor | COMPLETADO Y VERIFICADO | evidencias/capturas | Archivos originales inspeccionados | capturas/ |
+| D4 | Salida y reporte de pruebas | COMPLETADO Y VERIFICADO | evidencias/pruebas | Log, resumen y reporte HTML conservados | pruebas/ |
+| D5 | Listado sin red Android; iOS excluido | COMPLETADO Y VERIFICADO | App Android | Captura real Android; iOS fuera del alcance por solicitud | capturas/03-listado-sin-red-android.png |
+| D6 | README de persistencia offline-first | COMPLETADO Y VERIFICADO | README.md | Arquitectura, reproducción, pruebas y adaptaciones documentadas | README.md |
+
+## Lista de cotejo docente
+
+| Criterio | Resultado |
+| --- | --- |
+| 1 Esquema compila | Verificado: generación y compileAndroidMain |
+| 2 Driver | Android y pruebas verificados; iOS excluido por el usuario |
+| 3 Capa local sin red/DTO | Verificado por revisión e imports |
+| 4 Contrato observar/sincronizar | Compilado y probado |
+| 5 Flow sin recargas manuales | Verificado por revisión, pruebas y Android |
+| 6 Backend apagado | Captura08 y comprobación de puerto |
+| 7 Pendiente marcado | ID -1, pendiente1, captura04 y consulta SQLite |
+| 8 Sube antes de bajar | Prueba de orden POST antes de GET aprobada |
+| 9 Producto en PharmaSoft | Postman 200, ID63, sin duplicados |
+| 10 Tres pruebas o más | 8 nuevas del repositorio; 76 totales aprobadas |

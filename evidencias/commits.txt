@@ -1,0 +1,7 @@
+217c036 fix(auth): restaura sesion cifrada vigente al abrir sin red
+147d3b6 feat(ui): observa el Flow local y sincroniza sin recargas manuales
+1e68494 test: cubre offline-first y corrige duplicacion confirmada de pendientes
+2997a2e feat(data): agrega repositorio offline con subida antes de descarga
+963e2a6 feat(local): observa productos y conserva pendientes en transacciones
+010de22 feat(db): registra driver Android y PharmaDb en Koin
+dbcc133 feat(db): agrega SQLDelight 2.1.0 y esquema de producto

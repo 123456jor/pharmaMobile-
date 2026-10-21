@@ -1,0 +1,7 @@
+Fecha Lima: 2026-10-21T15:36:27.8610196-05:00
+Proceso PharmaSoft 31796 detenido.
+Comprobacion de health: The request was canceled due to the configured HttpClient.Timeout of 3 seconds elapsing.
+disabled
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15 
+10.0.2.0/24 dev wlan0 proto kernel scope link src 10.0.2.16 
+Puerto 8080 sin proceso escuchando durante la captura.

@@ -1,0 +1,47 @@
+Calculating task graph as no cached configuration is available for tasks: :shared:generateCommonMainPharmaDbInterface :shared:compileAndroidMain
+
+> Configure project :shared
+w: [33m[1mNative task 'iosSimulatorArm64Test' is disabled[0m[0m
+Task 'iosSimulatorArm64Test' for target 'ios_simulator_arm64' cannot run on the current host (windows-x86_64).
+Reason: simulator tests require macOS
+[32m[1mSolution:[0m[0m
+[32m[3mTo suppress this warning, add 'kotlin.native.ignoreDisabledTargets=true' to gradle.properties.[0m[0m
+
+
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :shared:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :shared:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :shared:generateAndroidMainEmptyResourceFiles
+> Task :shared:copyNonXmlValueResourcesForCommonMain
+> Task :shared:convertXmlValueResourcesForCommonMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForCommonMain
+> Task :shared:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :shared:generateExpectResourceCollectorsForCommonMain
+> Task :shared:generateResourceAccessorsForCommonMain
+> Task :shared:generateComposeResClass
+> Task :shared:generateActualResourceCollectorsForAndroidMain
+> Task :shared:packageAndroidMainResources
+> Task :shared:parseAndroidMainLocalResources
+> Task :shared:generateAndroidMainRFile
+
+> Task :shared:generateCommonMainPharmaDbInterface
+WARN: Attempt to load key 'ide.hide.excluded.files' for not yet loaded registry
+WARN: Attempt to load key 'psi.sleep.in.validity.check' for not yet loaded registry
+WARN: Attempt to load key 'psi.incremental.reparse.depth.limit' for not yet loaded registry
+
+> Task :shared:compileAndroidMain
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/androidMain/kotlin/pe/edu/upeu/pharmamobil/platform/Formato.android.kt:7:38 'constructor(p0: String!, p1: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:90:13 'fun KoinContext(koin: Koin = ..., content: ComposableFunction0<Unit>): Unit' is deprecated. KoinContext is not needed anymore. This can be removed. Compose Koin context is setup with StartKoin().
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:192:44 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:209:52 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+
+[Incubating] Problems report is available at: file:///H:/ProyectosUPEU/pharmaMobile-/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 2m 13s
+14 actionable tasks: 14 executed
+Configuration cache entry stored.
