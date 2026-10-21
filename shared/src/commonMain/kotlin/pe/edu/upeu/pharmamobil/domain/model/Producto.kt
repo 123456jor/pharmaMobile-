@@ -7,7 +7,8 @@ data class Producto(
     val stock: Int,
     val estado: Boolean = true,
     val categoriaId: Long = 0L,
-    val categoriaNombre: String? = null
+    val categoriaNombre: String? = null,
+    val pendiente: Boolean = false
 ) {
 
 
