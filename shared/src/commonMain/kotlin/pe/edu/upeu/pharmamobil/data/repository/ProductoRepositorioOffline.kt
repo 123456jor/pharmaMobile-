@@ -48,7 +48,10 @@ class ProductoRepositorioOffline(
     }
 
     private suspend fun subirPendientes() {
-        local.pendientes().forEach { pendiente -> remoto.crear(pendiente.toRequest()) }
+        local.pendientes().forEach { pendiente ->
+            val confirmado = remoto.crear(pendiente.toRequest()).toDomain()
+            local.confirmarSubida(pendiente.id, confirmado)
+        }
     }
 
     // Editar y eliminar requieren conexión, según la decisión del usuario.

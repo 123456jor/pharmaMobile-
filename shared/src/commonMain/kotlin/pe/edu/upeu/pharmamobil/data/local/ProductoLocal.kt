@@ -33,6 +33,12 @@ class ProductoLocal(base: PharmaDb) {
 
     fun guardarSincronizado(producto: Producto) = insertar(producto.copy(pendiente = false))
 
+    /** Confirmar solo después del POST: sustituye temporal por id real atómicamente. */
+    fun confirmarSubida(idLocal: Long, confirmado: Producto) = consultas.transaction {
+        consultas.borrarPorId(idLocal)
+        guardarSincronizado(confirmado)
+    }
+
     private fun insertar(producto: Producto) = with(producto) {
         consultas.insertar(id, nombre, precio, stock.toLong(), if (pendiente) 1L else 0L,
             if (estado) 1L else 0L, categoriaId, categoriaNombre)
