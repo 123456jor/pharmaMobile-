@@ -42,7 +42,7 @@ class ProductoViewModelTest {
     private fun nuevoViewModel(repository: FakeProductoRepository = FakeProductoRepository()) =
         ProductoViewModel(
             registrarProducto = RegistrarProductoUseCase(repository),
-            listarProductos = ListarProductosUseCase(repository),
+            repositorio = repository,
             actualizarProducto = ActualizarProductoUseCase(repository),
             eliminarProducto = EliminarProductoUseCase(repository),
             obtenerProducto = ObtenerProductoUseCase(repository),
@@ -110,7 +110,7 @@ class ProductoViewModelTest {
     }
 
     @Test
-    fun eliminarExponeEnCursoLuegoRecargaLaListaYConfirmaExito() = runTest {
+    fun eliminarSeReflejaPorFlowSinRecargarLaListaYConfirmaExito() = runTest {
         val gate = CompletableDeferred<Unit>()
         val started = CompletableDeferred<Unit>()
         val repository = FakeProductoRepository(mutableListOf(producto())).apply {
@@ -133,7 +133,7 @@ class ProductoViewModelTest {
         assertIs<ProductoUiState.Fase.SinProductos>(viewModel.uiState.value.fase)
         assertIs<ProductoUiState.Operacion.Inactiva>(viewModel.uiState.value.operacion)
         assertEquals("Producto dado de baja", viewModel.uiState.value.mensajeExito)
-        assertTrue(repository.cantidadListados > listadosAntes)
+        assertEquals(listadosAntes, repository.cantidadListados)
     }
 
     @Test

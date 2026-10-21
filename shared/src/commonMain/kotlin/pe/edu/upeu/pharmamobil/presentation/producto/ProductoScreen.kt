@@ -48,6 +48,16 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, 
         modifier = modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text("Guardado en este dispositivo", modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.labelMedium)
+            OutlinedButton(onClick = viewModel::sincronizar, enabled = !uiState.sincronizando && !ocupada) {
+                Text(if (uiState.sincronizando) "Sincronizando…" else "Sincronizar")
+            }
+        }
+        uiState.avisoRed?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
+        }
         if (permiteEscritura) FormularioProductoCard(
             formulario = uiState.formulario,
             ocupado = ocupada,
@@ -86,7 +96,7 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, 
                     items(fase.productos, key = { it.id }) { producto ->
                         ProductoItem(
                             producto = producto,
-                            ocupado = ocupada,
+                            ocupado = ocupada || uiState.sincronizando || uiState.avisoRed != null,
                             permiteEscritura = permiteEscritura,
                             onCompartir = { viewModel.compartir(producto) },
                             onEditar = { viewModel.comenzarEdicion(producto) },
@@ -100,7 +110,7 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, 
                     descripcion = fase.mensaje,
                     colorIcono = MaterialTheme.colorScheme.error,
                     modifier = Modifier.align(Alignment.Center),
-                    accion = { FilledTonalButton(onClick = viewModel::cargarProductos) { Text("Reintentar") } }
+                    accion = { FilledTonalButton(onClick = viewModel::sincronizar) { Text("Reintentar") } }
                 )
             }
         }
@@ -190,6 +200,9 @@ private fun ProductoItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text("Categoría ${producto.categoriaId}", style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(if (producto.pendiente) "Pendiente de sincronizar · ID ${producto.id}" else "ID ${producto.id}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (producto.pendiente) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant)
             }
             if (producto.requiereReposicion) Surface(shape = MaterialTheme.shapes.small,
                 color = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer) {
@@ -199,10 +212,10 @@ private fun ProductoItem(
                 Icon(Icons.Default.Share, contentDescription = "Compartir ${producto.nombre}")
             }
             if (permiteEscritura) {
-                IconButton(onClick = onEditar, enabled = !ocupado) {
+                IconButton(onClick = onEditar, enabled = !ocupado && !producto.pendiente) {
                     Icon(Icons.Default.Edit, contentDescription = "Editar ${producto.nombre}")
                 }
-                IconButton(onClick = onEliminar, enabled = !ocupado) {
+                IconButton(onClick = onEliminar, enabled = !ocupado && !producto.pendiente) {
                     Icon(Icons.Default.Delete, contentDescription = "Dar de baja ${producto.nombre}")
                 }
             }

@@ -12,7 +12,8 @@ data class ProductoUi(
     val requiereReposicion: Boolean,
     val precioValor: Double,
     val stockValor: Int,
-    val categoriaId: Long
+    val categoriaId: Long,
+    val pendiente: Boolean = false
 )
 
 fun Producto.aUi(): ProductoUi = ProductoUi(
@@ -23,5 +24,6 @@ fun Producto.aUi(): ProductoUi = ProductoUi(
     requiereReposicion = requiereReposicion,
     precioValor = precio,
     stockValor = stock,
-    categoriaId = categoriaId
+    categoriaId = categoriaId,
+    pendiente = pendiente
 )

@@ -6,7 +6,8 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import pe.edu.upeu.pharmamobil.data.repository.ClienteRepositorioEnMemoria
-import pe.edu.upeu.pharmamobil.data.repository.ProductoRepositorioRest
+import pe.edu.upeu.pharmamobil.data.repository.ProductoRepositorioOffline
+import pe.edu.upeu.pharmamobil.data.local.ProductoLocal
 import pe.edu.upeu.pharmamobil.data.remote.ProductoApi
 import pe.edu.upeu.pharmamobil.data.remote.crearHttpClient
 import pe.edu.upeu.pharmamobil.data.remote.TIEMPO_SOLICITUD_POR_DEFECTO_MS
@@ -50,7 +51,8 @@ val dataModule = module {
         )
     }
     single { ProductoApi(get()) }
-    single<ProductoRepository> { ProductoRepositorioRest(get(), get()) }
+    single { ProductoLocal(get()) }
+    single<ProductoRepository> { ProductoRepositorioOffline(get(), get(), get()) }
     single<AuthRepository> { AuthRepositorioRest(get(), get()) }
     single<ClienteRepository> { ClienteRepositorioEnMemoria() }
 }

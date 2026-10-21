@@ -1,5 +1,6 @@
 package pe.edu.upeu.pharmamobil.data.repository
 
+import kotlinx.coroutines.flow.MutableStateFlow
 import pe.edu.upeu.pharmamobil.domain.model.Producto
 import pe.edu.upeu.pharmamobil.domain.repository.ProductoRepository
 
@@ -11,6 +12,9 @@ import pe.edu.upeu.pharmamobil.domain.repository.ProductoRepository
 class FakeProductoRepository(
     private val productos: MutableList<Producto> = mutableListOf()
 ) : ProductoRepository {
+
+    private val cambios = MutableStateFlow(productos.toList())
+    override fun observar() = cambios
 
     var fallaAlRegistrar: Throwable? = null
     var fallaAlListar: Throwable? = null
@@ -31,6 +35,7 @@ class FakeProductoRepository(
 
         val guardado = producto.copy(id = siguienteId++)
         productos.add(guardado)
+        cambios.value = productos.toList()
         return guardado
     }
 
@@ -55,6 +60,7 @@ class FakeProductoRepository(
         val indice = productos.indexOfFirst { it.id == producto.id }
         if (indice < 0) throw NoSuchElementException("Producto no encontrado")
         productos[indice] = producto
+        cambios.value = productos.toList()
         return producto
     }
 
@@ -65,5 +71,6 @@ class FakeProductoRepository(
         if (indice < 0) throw NoSuchElementException("Producto no encontrado")
         if (!productos[indice].estado) throw IllegalStateException("El producto ya se encuentra inactivo")
         productos[indice] = productos[indice].copy(estado = false)
+        cambios.value = productos.toList()
     }
 }

@@ -15,7 +15,8 @@ import pe.edu.upeu.pharmamobil.domain.model.Producto
 import pe.edu.upeu.pharmamobil.domain.platform.Compartidor
 import pe.edu.upeu.pharmamobil.domain.usecase.ActualizarProductoUseCase
 import pe.edu.upeu.pharmamobil.domain.usecase.EliminarProductoUseCase
-import pe.edu.upeu.pharmamobil.domain.usecase.ListarProductosUseCase
+import pe.edu.upeu.pharmamobil.domain.repository.ProductoRepository
+import kotlinx.coroutines.CancellationException
 import pe.edu.upeu.pharmamobil.domain.usecase.ObtenerProductoUseCase
 import pe.edu.upeu.pharmamobil.domain.usecase.ProductoInvalidoException
 import pe.edu.upeu.pharmamobil.domain.usecase.RegistrarProductoUseCase
@@ -23,7 +24,7 @@ import pe.edu.upeu.pharmamobil.domain.usecase.comoTextoParaCompartir
 
 class ProductoViewModel(
     private val registrarProducto: RegistrarProductoUseCase,
-    private val listarProductos: ListarProductosUseCase,
+    private val repositorio: ProductoRepository,
     private val actualizarProducto: ActualizarProductoUseCase,
     private val eliminarProducto: EliminarProductoUseCase,
     private val obtenerProducto: ObtenerProductoUseCase,
@@ -33,17 +34,33 @@ class ProductoViewModel(
     private val _uiState = MutableStateFlow(ProductoUiState())
     val uiState: StateFlow<ProductoUiState> = _uiState.asStateFlow()
 
-    init { cargarProductos() }
-
-    fun cargarProductos() {
+    init {
         viewModelScope.launch {
-            _uiState.update { it.copy(fase = ProductoUiState.Fase.Cargando) }
-            listarProductos().fold(
-                onSuccess = { productos -> _uiState.update { it.copy(fase = productos.aFase()) } },
-                onFailure = { fallo -> _uiState.update {
-                    it.copy(fase = ProductoUiState.Fase.Error(mensajeDe((fallo as? ErrorApiException)?.error, fallo)))
-                } }
-            )
+            repositorio.observar().collect { productos ->
+                _uiState.update { it.copy(fase = productos.aFase()) }
+            }
+        }
+        sincronizar()
+    }
+
+    fun sincronizar() {
+        if (_uiState.value.sincronizando) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(sincronizando = true) }
+            try {
+                repositorio.sincronizar()
+                _uiState.update { it.copy(avisoRed = null) }
+            } catch (cancelacion: CancellationException) {
+                throw cancelacion
+            } catch (fallo: Exception) {
+                val error = (fallo as? ErrorApiException)?.error
+                val aviso = if (error == ErrorApi.SinConexion || error == ErrorApi.TiempoAgotado)
+                    "Sin conexión: mostrando datos guardados"
+                else mensajeDe(error, fallo)
+                _uiState.update { it.copy(avisoRed = aviso) }
+            } finally {
+                _uiState.update { it.copy(sincronizando = false) }
+            }
         }
     }
 
@@ -62,7 +79,7 @@ class ProductoViewModel(
                 stock = formulario.stock,
                 categoriaId = formulario.categoriaId
             )
-            resolverMutacion(resultado, "Producto registrado")
+            resolverMutacion(resultado, "Producto guardado")
         }
     }
 
@@ -123,7 +140,7 @@ class ProductoViewModel(
         viewModelScope.launch {
             eliminarProducto(id).fold(
                 onSuccess = {
-                    recargarTrasMutacion("Producto dado de baja", limpiarFormulario = false)
+                    confirmarMutacion("Producto dado de baja", limpiarFormulario = false)
                 },
                 onFailure = ::manejarFallo
             )
@@ -142,34 +159,22 @@ class ProductoViewModel(
         return true
     }
 
-    private suspend fun <T> resolverMutacion(resultado: Result<T>, exito: String) {
+    private fun <T> resolverMutacion(resultado: Result<T>, exito: String) {
         resultado.fold(
-            onSuccess = { recargarTrasMutacion(exito, limpiarFormulario = true) },
+            onSuccess = { confirmarMutacion(exito, limpiarFormulario = true) },
             onFailure = ::manejarFallo
         )
     }
 
-    private suspend fun recargarTrasMutacion(exito: String, limpiarFormulario: Boolean) {
-        listarProductos().fold(
-            onSuccess = { productos ->
-                _uiState.update {
-                    it.copy(
-                        fase = productos.aFase(),
-                        operacion = ProductoUiState.Operacion.Inactiva,
-                        mensajeExito = exito,
-                        productoEditandoId = if (limpiarFormulario) null else it.productoEditandoId,
-                        formulario = if (limpiarFormulario) FormularioProducto() else it.formulario
-                    )
-                }
-            },
-            onFailure = { fallo ->
-                _uiState.update {
-                    it.copy(operacion = ProductoUiState.Operacion.Fallida(
-                        "Se completó la operación, pero no se pudo actualizar la lista: ${mensajeDe((fallo as? ErrorApiException)?.error, fallo)}"
-                    ))
-                }
-            }
-        )
+    private fun confirmarMutacion(exito: String, limpiarFormulario: Boolean) {
+        _uiState.update {
+            it.copy(
+                operacion = ProductoUiState.Operacion.Inactiva,
+                mensajeExito = exito,
+                productoEditandoId = if (limpiarFormulario) null else it.productoEditandoId,
+                formulario = if (limpiarFormulario) FormularioProducto() else it.formulario
+            )
+        }
     }
 
     private fun manejarFallo(fallo: Throwable) {

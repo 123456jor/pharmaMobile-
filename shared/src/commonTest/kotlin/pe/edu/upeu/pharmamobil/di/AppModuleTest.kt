@@ -10,8 +10,11 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import pe.edu.upeu.pharmamobil.data.repository.ClienteRepositorioEnMemoria
+import pe.edu.upeu.pharmamobil.data.local.CreadorDeDriver
+import pe.edu.upeu.pharmamobil.data.local.crearDriverEnMemoria
+import pe.edu.upeu.pharmamobil.db.PharmaDb
 import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguro
-import pe.edu.upeu.pharmamobil.data.repository.ProductoRepositorioRest
+import pe.edu.upeu.pharmamobil.data.repository.ProductoRepositorioOffline
 import pe.edu.upeu.pharmamobil.data.repository.FakeProductoRepository
 import pe.edu.upeu.pharmamobil.domain.platform.Compartidor
 import pe.edu.upeu.pharmamobil.domain.platform.FakeCompartidor
@@ -66,17 +69,17 @@ class AppModuleTest {
             platformModule,
             // El Compartidor real necesita Context/UIKit; en pruebas se sustituye por un doble.
             module { single<Compartidor> { FakeCompartidor() } },
-            module { single<AlmacenSeguro> { AlmacenSeguroFake() } }
+            module { single<AlmacenSeguro> { AlmacenSeguroFake() }; single<CreadorDeDriver> { object : CreadorDeDriver { override fun crear() = crearDriverEnMemoria().also { PharmaDb.Schema.create(it) } } } }
         )
     }.koin
 
     @Test
-    fun registraLaImplementacionRestDeProductos() {
+    fun registraLaImplementacionOfflineDeProductos() {
         val koin = startKoin {
             allowOverride(true)
-            modules(dataModule, platformModule, module { single<AlmacenSeguro> { AlmacenSeguroFake() } })
+            modules(dataModule, platformModule, module { single<AlmacenSeguro> { AlmacenSeguroFake() }; single<CreadorDeDriver> { object : CreadorDeDriver { override fun crear() = crearDriverEnMemoria().also { PharmaDb.Schema.create(it) } } } })
         }.koin
-        assertIs<ProductoRepositorioRest>(koin.get<ProductoRepository>())
+        assertIs<ProductoRepositorioOffline>(koin.get<ProductoRepository>())
     }
 
     @Test
