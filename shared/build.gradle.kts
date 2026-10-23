@@ -99,6 +99,7 @@ dependencies {
 }
 tasks.withType<Test>().configureEach {
     testLogging {
+        events("passed", "failed", "skipped")
         showStandardStreams = true
     }
 }
