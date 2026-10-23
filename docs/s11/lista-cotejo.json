@@ -1,0 +1,57 @@
+[
+  [
+    1,
+    "PDF con nombre S11_ActividadAutonoma_Quispe_Huaman.pdf",
+    "Sí"
+  ],
+  [
+    2,
+    "Portada: nombre completo, sesión, fecha y enlace a rama",
+    "Sí; enlace pendiente de publicación"
+  ],
+  [
+    3,
+    "Seis pruebas en commonTest y todas pasan",
+    "Sí"
+  ],
+  [
+    4,
+    "Salida completa de la ejecución adjunta",
+    "Sí"
+  ],
+  [
+    5,
+    "Cinco escenarios con capturas respectivas",
+    "Sí"
+  ],
+  [
+    6,
+    "Escenario 3 con evidencia desde Swagger",
+    "No: Postman por instrucción del usuario"
+  ],
+  [
+    7,
+    "Escenario 5 argumenta el comportamiento observado",
+    "Sí; revisión personal pendiente"
+  ],
+  [
+    8,
+    "Pantalla indica última sincronización correcta",
+    "Sí"
+  ],
+  [
+    9,
+    "Caso nunca sincronizado resuelto",
+    "Sí"
+  ],
+  [
+    10,
+    "Guion cubre los cinco criterios de Producto U2",
+    "No completamente: iOS excluido; Android documentado"
+  ],
+  [
+    11,
+    "Commits accesibles desde el enlace entregado",
+    "No todavía: falta confirmar publicación"
+  ]
+]

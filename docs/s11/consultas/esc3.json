@@ -1,0 +1,104 @@
+{
+  "fecha_hora_lima": "2026-10-23T14:17:43.083076-05:00",
+  "consulta": "SELECT id,nombre,precio,stock,pendiente,estado,categoriaId FROM Producto ORDER BY nombre",
+  "filas": [
+    {
+      "id": 83,
+      "nombre": "AA_Autonoma_Jorge_23Oct",
+      "precio": 8.5,
+      "stock": 17,
+      "pendiente": 0,
+      "estado": 1,
+      "categoriaId": 1
+    },
+    {
+      "id": 63,
+      "nombre": "A_Offline_S11_1531",
+      "precio": 6.75,
+      "stock": 12,
+      "pendiente": 0,
+      "estado": 1,
+      "categoriaId": 1
+    },
+    {
+      "id": 43,
+      "nombre": "A_Prueba_con_red_S11_1431",
+      "precio": 4.5,
+      "stock": 20,
+      "pendiente": 0,
+      "estado": 1,
+      "categoriaId": 1
+    },
+    {
+      "id": 21,
+      "nombre": "Producto CRUD Android",
+      "precio": 19.9,
+      "stock": 20,
+      "pendiente": 0,
+      "estado": 0,
+      "categoriaId": 1
+    },
+    {
+      "id": 24,
+      "nombre": "Producto admin 155114",
+      "precio": 11.25,
+      "stock": 5,
+      "pendiente": 0,
+      "estado": 1,
+      "categoriaId": 1
+    },
+    {
+      "id": 25,
+      "nombre": "Producto almacen 155114",
+      "precio": 11.25,
+      "stock": 5,
+      "pendiente": 0,
+      "estado": 1,
+      "categoriaId": 1
+    },
+    {
+      "id": 1,
+      "nombre": "Producto evidencia 134312 editado",
+      "precio": 13.75,
+      "stock": 30,
+      "pendiente": 0,
+      "estado": 0,
+      "categoriaId": 1
+    },
+    {
+      "id": 2,
+      "nombre": "Producto evidencia editado 135522",
+      "precio": 13.75,
+      "stock": 30,
+      "pendiente": 0,
+      "estado": 0,
+      "categoriaId": 1
+    },
+    {
+      "id": 23,
+      "nombre": "Producto matriz 155114",
+      "precio": 10.5,
+      "stock": 18,
+      "pendiente": 0,
+      "estado": 1,
+      "categoriaId": 1
+    },
+    {
+      "id": 22,
+      "nombre": "Producto prueba Postman editado",
+      "precio": 13.75,
+      "stock": 30,
+      "pendiente": 0,
+      "estado": 0,
+      "categoriaId": 1
+    }
+  ],
+  "consulta_fecha": "SELECT * FROM Sincronizacion",
+  "sincronizacion": [
+    {
+      "id": 1,
+      "ultimaMillis": 1792783061571
+    }
+  ],
+  "version": 2
+}

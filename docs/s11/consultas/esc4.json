@@ -1,0 +1,8 @@
+{
+  "fecha_hora_lima": "2026-10-23T14:19:04.658576-05:00",
+  "consulta": "SELECT id,nombre,precio,stock,pendiente,estado,categoriaId FROM Producto ORDER BY nombre",
+  "filas": [],
+  "consulta_fecha": "SELECT * FROM Sincronizacion",
+  "sincronizacion": [],
+  "version": 2
+}

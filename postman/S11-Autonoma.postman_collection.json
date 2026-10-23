@@ -1,0 +1,159 @@
+{
+  "info": {
+    "name": "S11 Autonoma Jorge - Evidencia producto 83",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Comprobación de producto creado desde Android sin internet y sincronizado. Capturas reales del 23 de octubre de 2026. No crea filas nuevas."
+  },
+  "variable": [
+    {
+      "key": "jwt",
+      "value": ""
+    },
+    {
+      "key": "nombreMiProducto",
+      "value": "AA_Autonoma_Jorge_23Oct"
+    },
+    {
+      "key": "precioEsperado",
+      "value": "8.5"
+    },
+    {
+      "key": "stockEsperado",
+      "value": "17"
+    },
+    {
+      "key": "categoriaEsperada",
+      "value": "1"
+    },
+    {
+      "key": "productoId",
+      "value": "83"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Iniciar sesion - primero pulsa Send",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"{{claveAdmin}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "http://localhost:8080/api/v1/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.unset('jwt');",
+              "pm.test('Inicio de sesion correcto (200)', () => pm.response.to.have.status(200));",
+              "if (pm.response.code === 200) {",
+              "  const token = pm.response.json().token;",
+              "  pm.test('El servidor entrega un token', () => pm.expect(token).to.be.a('string').and.not.empty);",
+              "  if (typeof token === 'string' && token.length) pm.collectionVariables.set('jwt', token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Encontrar mi producto - despues de sincronizar",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "http://localhost:8080/api/v1/productos?tamanio=100"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.unset('productoId');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('El listado responde 200', () => pm.response.to.have.status(200));",
+              "if (pm.response.code === 200) {",
+              "  const respuesta = pm.response.json();",
+              "  const nombre = pm.collectionVariables.get('nombreMiProducto');",
+              "  const encontrados = (respuesta.contenido || []).filter(p => p.nombre === nombre);",
+              "  pm.test('Se reviso el listado completo', () => pm.expect(respuesta.ultima).to.eql(true));",
+              "  pm.test('Mi producto aparece una sola vez: ' + nombre, () => pm.expect(encontrados.length, 'Crea el producto en Android y pulsa Sincronizar; revisa que el nombre sea exacto').to.eql(1));",
+              "  if (respuesta.ultima && encontrados.length === 1) {",
+              "    const producto = encontrados[0];",
+              "    pm.test('El servidor le asigno un ID positivo', () => pm.expect(producto.id).to.be.a('number').and.above(0));",
+              "    pm.test('Precio correcto', () => pm.expect(producto.precio).to.eql(Number(pm.collectionVariables.get('precioEsperado'))));",
+              "    pm.test('Stock correcto', () => pm.expect(producto.stock).to.eql(Number(pm.collectionVariables.get('stockEsperado'))));",
+              "    pm.test('Categoria correcta', () => pm.expect(producto.categoriaId).to.eql(Number(pm.collectionVariables.get('categoriaEsperada'))));",
+              "    pm.test('Producto activo', () => pm.expect(producto.estado).to.eql(true));",
+              "    if (typeof producto.id === 'number' && producto.id > 0) pm.collectionVariables.set('productoId', String(producto.id));",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Ver mi producto - ID automatico",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "http://localhost:8080/api/v1/productos/83"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Busqueda correcta (200)', () => pm.response.to.have.status(200));",
+              "if (pm.response.code === 200) {",
+              "  const producto = pm.response.json();",
+              "  pm.test('Es mi producto por nombre', () => pm.expect(producto.nombre).to.eql(pm.collectionVariables.get('nombreMiProducto')));",
+              "  pm.test('Coincide el ID encontrado', () => pm.expect(producto.id).to.eql(Number(pm.collectionVariables.get('productoId'))));",
+              "  pm.test('ID positivo del servidor', () => pm.expect(producto.id).to.be.a('number').and.above(0));",
+              "  pm.test('Precio correcto', () => pm.expect(producto.precio).to.eql(Number(pm.collectionVariables.get('precioEsperado'))));",
+              "  pm.test('Stock correcto', () => pm.expect(producto.stock).to.eql(Number(pm.collectionVariables.get('stockEsperado'))));",
+              "  pm.test('Categoria correcta', () => pm.expect(producto.categoriaId).to.eql(Number(pm.collectionVariables.get('categoriaEsperada'))));",
+              "  pm.test('Producto activo', () => pm.expect(producto.estado).to.eql(true));",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

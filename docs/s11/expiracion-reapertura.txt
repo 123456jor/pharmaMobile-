@@ -1,0 +1,2 @@
+10-23 19:21:25.303 10625 10625 I AuthDebugReceiver: METADATA token_presente=true jwt_exp=1792783267 ahora=1792783285 vencido=true sesion_exp=1792783267
+1792783325

@@ -1,0 +1,52 @@
+[
+  {
+    "Identificador y nombre": "E1. Apertura sin red con datos previos",
+    "Fecha y hora real": "2026-10-23T14:15:20.356694-05:00",
+    "Plataforma": "Android - Pixel 8 Pro, API 37.1",
+    "Pasos exactos seguidos": "Con red: iniciar sesión como admin y abrir Productos; sincronizar. Forzar cierre, activar modo avión y desactivar wifi y datos. Reabrir y entrar a Productos.",
+    "Qué mostró la aplicación": "Inventario visible, cinco productos activos y aviso «Sin conexión: mostrando datos guardados».",
+    "Qué había en la base local": "9 filas totales, 5 activas, 0 pendientes. Marca de sincronización: [{'id': 1, 'ultimaMillis': 1792782864862}]. Consulta: SELECT id,nombre,precio,stock,pendiente,estado,categoriaId FROM Producto ORDER BY nombre. Archivo: consultas/esc1.json.",
+    "Captura": "capturas/esc1_listado_sin_red.png",
+    "Conclusión en una línea": "Cerrar el proceso no elimina la copia local: el catálogo sigue disponible sin volver a descargarlo."
+  },
+  {
+    "Identificador y nombre": "E2. Registro sin red",
+    "Fecha y hora real": "2026-10-23T14:16:46.751154-05:00",
+    "Plataforma": "Android - Pixel 8 Pro, API 37.1",
+    "Pasos exactos seguidos": "Mantener modo avión. Registrar AA_Autonoma_Jorge_23Oct, precio 8.50, stock 17, categoría 1. Cerrar teclado y desplazar el inventario al inicio para ver el nuevo registro.",
+    "Qué mostró la aplicación": "Seis productos activos; el nuevo aparece con «Pendiente de sincronizar · ID -1». Se intentó reconectar antes de tomar la captura final, pero la consulta comprobó que no hubo envío; se volvió a modo avión para documentar el pendiente.",
+    "Qué había en la base local": "10 filas totales, 6 activas, 1 pendientes. Producto observado: id=-1, pendiente=1, precio=8.5, stock=17. Marca de sincronización: [{'id': 1, 'ultimaMillis': 1792782864862}]. Consulta: SELECT id,nombre,precio,stock,pendiente,estado,categoriaId FROM Producto ORDER BY nombre. Archivo: consultas/esc2_final.json.",
+    "Captura": "capturas/esc2_pendiente_visible.png",
+    "Conclusión en una línea": "El registro se conserva con ID temporal negativo aunque el servidor no pueda recibirlo."
+  },
+  {
+    "Identificador y nombre": "E3. Reconexión y envío",
+    "Fecha y hora real": "2026-10-23T14:17:43.083076-05:00",
+    "Plataforma": "Android - Pixel 8 Pro, API 37.1",
+    "Pasos exactos seguidos": "Desactivar modo avión, habilitar wifi y datos, esperar conexión y pulsar Sincronizar. En Postman: login de la colección S11 Autonoma Jorge, después GET /api/v1/productos/83.",
+    "Qué mostró la aplicación": "Desaparece la marca pendiente; el producto queda con ID 83. Postman responde 200 OK y devuelve nombre AA_Autonoma_Jorge_23Oct, precio 8.5 y stock 17.",
+    "Qué había en la base local": "10 filas totales, 6 activas, 0 pendientes. Producto observado: id=83, pendiente=0, precio=8.5, stock=17. Marca de sincronización: [{'id': 1, 'ultimaMillis': 1792783061571}]. Consulta: SELECT id,nombre,precio,stock,pendiente,estado,categoriaId FROM Producto ORDER BY nombre. Archivo: consultas/esc3.json.",
+    "Captura": "capturas/esc3_producto_sincronizado.png",
+    "Conclusión en una línea": "El GET independiente de Postman confirma que el producto llegó a PharmaSoft y recibió el ID 83."
+  },
+  {
+    "Identificador y nombre": "E4. Primera apertura sin red",
+    "Fecha y hora real": "2026-10-23T14:19:04.658576-05:00",
+    "Plataforma": "Android - Pixel 8 Pro, API 37.1",
+    "Pasos exactos seguidos": "Confirmar cero pendientes y respaldar SQLite. Forzar cierre, activar modo avión, ejecutar pm clear pe.edu.upeu.pharmamobil y abrir la app.",
+    "Qué mostró la aplicación": "«Todavía no hay productos», explicación para conectarse e iniciar sesión y «Aún no se ha sincronizado». No se presenta una pantalla de error.",
+    "Qué había en la base local": "0 filas totales, 0 activas, 0 pendientes. Marca de sincronización: []. Consulta: SELECT id,nombre,precio,stock,pendiente,estado,categoriaId FROM Producto ORDER BY nombre. Archivo: consultas/esc4.json.",
+    "Captura": "capturas/esc4_primera_apertura_sin_red.png",
+    "Conclusión en una línea": "Una instalación sin caché informa que no tiene datos en vez de aparentar un fallo del inventario."
+  },
+  {
+    "Identificador y nombre": "E5. Sesión expirada sin red",
+    "Fecha y hora real": "2026-10-23T14:22:58.982742-05:00",
+    "Plataforma": "Android - Pixel 8 Pro, API 37.1",
+    "Pasos exactos seguidos": "Arrancar temporalmente el backend con APP_JWT_EXPIRACION_MINUTOS=1. Iniciar sesión en Android, sincronizar y cerrar. Esperar el vencimiento emitido por el backend. Activar modo avión, forzar cierre y comprobar metadatos antes de reabrir. Abrir ya con jwt_exp=1792783267 y ahora=1792783361. Después reconectar y comprobar el login.",
+    "Qué mostró la aplicación": "«Sesión vencida. Sin conexión: solo consulta local», seis productos activos, sin formulario ni botones de edición/eliminación y Sincronizar deshabilitado. El token se borra. Al reconectar se solicita iniciar sesión nuevamente.",
+    "Qué había en la base local": "10 filas totales, 6 activas, 0 pendientes. Producto observado: id=83, pendiente=0, precio=8.5, stock=17. Marca de sincronización: [{'id': 1, 'ultimaMillis': 1792783225926}]. Consulta: SELECT id,nombre,precio,stock,pendiente,estado,categoriaId FROM Producto ORDER BY nombre. Archivo: consultas/esc5_final.json.",
+    "Captura": "capturas/esc5_consulta_local_verificada.png",
+    "Conclusión en una línea": "Vencer la autorización bloquea los cambios, pero no impide consultar el inventario ya guardado en este dispositivo."
+  }
+]

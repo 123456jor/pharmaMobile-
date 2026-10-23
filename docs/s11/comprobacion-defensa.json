@@ -1,0 +1,34 @@
+{
+  "fecha": "2026-10-23T14:26:56.667244-05:00",
+  "login_admin": 200,
+  "login_vendedor": 200,
+  "login_incorrecto": 401,
+  "put_vendedor": 403,
+  "validacion_admin": 400,
+  "respuesta_validacion": {
+    "timestamp": "2026-10-23T14:26:56.6355284",
+    "status": 400,
+    "error": "Bad Request",
+    "message": "Existen errores de validación",
+    "path": "/api/v1/productos",
+    "validationErrors": {
+      "precio": "El precio debe ser mayor que cero",
+      "stock": "El stock no puede ser negativo",
+      "nombre": "El nombre debe tener entre 3 y 150 caracteres",
+      "estado": "El estado es obligatorio"
+    }
+  },
+  "producto_get_status": 200,
+  "producto": {
+    "id": 83,
+    "nombre": "AA_Autonoma_Jorge_23Oct",
+    "precio": 8.5,
+    "stock": 17,
+    "estado": true,
+    "categoriaId": 1,
+    "categoriaNombre": "Medicamentos",
+    "fechaCreacion": "2026-10-23T14:17:40.758306",
+    "fechaModificacion": null
+  },
+  "expiraEnSegundos": 3600
+}
