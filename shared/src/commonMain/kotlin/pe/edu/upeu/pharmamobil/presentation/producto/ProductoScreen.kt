@@ -47,7 +47,8 @@ import pe.edu.upeu.pharmamobil.presentation.components.MensajeExito
 import pe.edu.upeu.pharmamobil.presentation.components.ValidatedTextField
 
 @Composable
-fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, permiteEscritura: Boolean = true) {
+fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, permiteEscritura: Boolean = true,
+    soloConsulta: Boolean = false) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val ocupada = uiState.operacion is ProductoUiState.Operacion.EnCurso
     var ahora by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
@@ -65,7 +66,7 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, 
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text("Guardado en este dispositivo", modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.labelMedium)
-            OutlinedButton(onClick = viewModel::sincronizar, enabled = !uiState.sincronizando && !ocupada) {
+            OutlinedButton(onClick = viewModel::sincronizar, enabled = !soloConsulta && !uiState.sincronizando && !ocupada) {
                 Text(if (uiState.sincronizando) "Sincronizando…" else "Sincronizar")
             }
         }
@@ -105,7 +106,8 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, 
                 ProductoUiState.Fase.SinProductos -> EstadoVacio(
                     icono = Icons.Default.Inventory2,
                     titulo = "Todavía no hay productos",
-                    descripcion = "Registra el primero con el formulario de arriba.",
+                    descripcion = if (soloConsulta) "No hay datos guardados. Conéctate e inicia sesión para sincronizar."
+                        else "Registra el primero con el formulario de arriba.",
                     modifier = Modifier.align(Alignment.Center)
                 )
                 is ProductoUiState.Fase.ConProductos -> LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {

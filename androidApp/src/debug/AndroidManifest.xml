@@ -7,6 +7,8 @@
             <intent-filter>
                 <action android:name="pe.edu.upeu.pharmamobil.DEBUG_ALTERAR_TOKEN" />
                 <action android:name="pe.edu.upeu.pharmamobil.DEBUG_PETICION_PROTEGIDA" />
+                <action android:name="pe.edu.upeu.pharmamobil.DEBUG_METADATA_SESION" />
+                <action android:name="pe.edu.upeu.pharmamobil.DEBUG_ANTIGUEDAD_26_HORAS" />
             </intent-filter>
         </receiver>
     </application>

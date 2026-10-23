@@ -28,7 +28,8 @@ class ProductoViewModel(
     private val actualizarProducto: ActualizarProductoUseCase,
     private val eliminarProducto: EliminarProductoUseCase,
     private val obtenerProducto: ObtenerProductoUseCase,
-    private val compartidor: Compartidor
+    private val compartidor: Compartidor,
+    private val soloConsulta: Boolean = false
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductoUiState())
@@ -45,10 +46,11 @@ class ProductoViewModel(
                 _uiState.update { it.copy(ultimaSincronizacion = ultima) }
             }
         }
-        sincronizar()
+        if (!soloConsulta) sincronizar()
     }
 
     fun sincronizar() {
+        if (soloConsulta) return
         if (_uiState.value.sincronizando) return
         viewModelScope.launch {
             _uiState.update { it.copy(sincronizando = true) }
@@ -153,6 +155,7 @@ class ProductoViewModel(
     }
 
     private fun iniciarOperacion(tipo: ProductoUiState.Tipo): Boolean {
+        if (soloConsulta) return false
         if (_uiState.value.operacion is ProductoUiState.Operacion.EnCurso) return false
         _uiState.update {
             it.copy(

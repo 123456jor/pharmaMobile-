@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguro
 import pe.edu.upeu.pharmamobil.data.remote.crearHttpClient
 import pe.edu.upeu.pharmamobil.domain.model.Credenciales
+import pe.edu.upeu.pharmamobil.domain.model.ConsultaLocalException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -20,6 +21,8 @@ import pe.edu.upeu.pharmamobil.domain.model.Sesion
 import kotlinx.io.IOException
 import kotlin.time.Clock
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import kotlin.test.assertFalse
 
 class AuthRepositorioRestTest {
     private class AlmacenMemoria : AlmacenSeguro {
@@ -92,17 +95,44 @@ class AuthRepositorioRestTest {
     }
 
     @Test
-    fun sesionVencidaNoSeRestauraSinRedYSeBorra() = runTest {
+    fun sesionVencidaNoSeRestauraYPermiteSoloConsultaSinToken() = runTest {
         val almacen = AlmacenMemoria().apply {
             guardarToken("vencido")
             guardarSesion(Sesion("vencido", "admin", "Admin", emptySet(), 1))
         }
         val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine { throw IOException("Sin red") }, esDepuracion = false)
         try {
-            assertNull(AuthRepositorioRest(cliente, almacen).sesionGuardada())
+            val consulta = assertFailsWith<ConsultaLocalException> {
+                AuthRepositorioRest(cliente, almacen).sesionGuardada()
+            }
+            assertTrue(consulta.sesionExpirada)
             assertNull(almacen.token)
             assertNull(almacen.sesion)
         } finally { cliente.close() }
+    }
+
+    @Test
+    fun primeraAperturaSinTokenYSinRedPermiteConsultaVaciaSinAutenticar() = runTest {
+        val almacen = AlmacenMemoria()
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine { throw IOException("Sin red") },
+            almacen = almacen, esDepuracion = false)
+        try {
+            val consulta = assertFailsWith<ConsultaLocalException> { AuthRepositorioRest(cliente, almacen).sesionGuardada() }
+            assertFalse(consulta.sesionExpirada)
+            assertNull(almacen.token)
+            assertNull(almacen.sesion)
+        } finally { cliente.close() }
+    }
+
+    @Test
+    fun alReconectarSinTokenPideLoginYNoRestauraSesion() = runTest {
+        val almacen = AlmacenMemoria()
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine { request ->
+            assertNull(request.headers[HttpHeaders.Authorization])
+            respond("{}", HttpStatusCode.Unauthorized, headersOf(HttpHeaders.ContentType, "application/json"))
+        }, almacen = almacen, esDepuracion = false)
+        try { assertNull(AuthRepositorioRest(cliente, almacen).sesionGuardada()) }
+        finally { cliente.close() }
     }
 
     @Test

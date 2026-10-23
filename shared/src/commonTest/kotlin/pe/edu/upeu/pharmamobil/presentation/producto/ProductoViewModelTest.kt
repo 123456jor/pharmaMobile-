@@ -54,6 +54,35 @@ class ProductoViewModelTest {
     )
 
     @Test
+    fun consultaLocalMuestraCacheYBloqueaSincronizacionYMutaciones() = runTest {
+        val repositorio = FakeProductoRepository(mutableListOf(producto())).apply {
+            // Si se intenta escribir, el test falla por la excepción en lugar de ocultarla.
+            fallaAlRegistrar = IllegalStateException("No se debe registrar en modo consulta")
+        }
+        val vm = ProductoViewModel(RegistrarProductoUseCase(repositorio), repositorio,
+            ActualizarProductoUseCase(repositorio), EliminarProductoUseCase(repositorio),
+            ObtenerProductoUseCase(repositorio), compartidor, soloConsulta = true)
+        try {
+            advanceUntilIdle()
+            vm.onNombreChange("No debe guardarse")
+            vm.onPrecioChange("12")
+            vm.onStockChange("3")
+            vm.onCategoriaIdChange("1")
+            vm.registrar()
+            vm.eliminar(1)
+            vm.sincronizar()
+            advanceUntilIdle()
+            assertEquals(0, repositorio.cantidadListados, "La consulta local no debe iniciar sincronización")
+            assertTrue(repositorio.observar().value.single().estado, "No debe eliminar el producto")
+            val fase = assertIs<ProductoUiState.Fase.ConProductos>(vm.uiState.value.fase)
+            assertEquals("Paracetamol", fase.productos.single().nombre)
+            assertEquals(1, repositorio.listar().size)
+            assertNull(vm.uiState.value.mensajeExito)
+            assertIs<ProductoUiState.Operacion.Inactiva>(vm.uiState.value.operacion)
+        } finally { vm.viewModelScope.cancel() }
+    }
+
+    @Test
     fun cargaExitosaMuestraLaListaEsperada() = runTest {
         val viewModel = nuevoViewModel(FakeProductoRepository(mutableListOf(producto())))
         advanceUntilIdle()

@@ -50,6 +50,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import org.koin.core.parameter.parametersOf
 import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -91,6 +93,13 @@ fun App() = KoinContext {
     val sesionViewModel: SesionViewModel = koinViewModel()
     val sesionState by sesionViewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { sesionViewModel.cargarSesionGuardada() }
+    // Al recuperar conexión, auth/me pide un nuevo login. No sincroniza con credenciales vencidas.
+    LaunchedEffect(sesionState.consultaLocal) {
+        while (sesionState.consultaLocal) {
+            delay(5_000)
+            sesionViewModel.cargarSesionGuardada()
+        }
+    }
 
     var pantallaActual by rememberSaveable(stateSaver = ScreenSaver) {
         mutableStateOf<Screen>(Screen.Inicio)
@@ -118,7 +127,19 @@ fun App() = KoinContext {
         darkTheme = darkTheme
     ) {
         val sesion = sesionState.sesion
-        if (sesion == null) {
+        if (sesionState.consultaLocal) {
+            Column(Modifier.fillMaxSize().padding(top = 40.dp)) {
+                Text(if (sesionState.sesionLocalExpirada)
+                    "Sesión vencida. Sin conexión: solo consulta local."
+                    else "Sin conexión: solo consulta de datos guardados.",
+                    modifier = Modifier.padding(horizontal = 16.dp))
+                androidx.compose.material3.TextButton(onClick = sesionViewModel::irAlLogin) {
+                    Text("Iniciar sesión al reconectar")
+                }
+                ProductoScreen(viewModel = koinViewModel(key = "productos-locales",
+                    parameters = { parametersOf(true) }), permiteEscritura = false, soloConsulta = true)
+            }
+        } else if (sesion == null) {
             if (sesionState.cargando) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { androidx.compose.material3.CircularProgressIndicator() }
             } else {

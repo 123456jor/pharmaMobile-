@@ -22,6 +22,7 @@ import pe.edu.upeu.pharmamobil.data.remote.dto.UsuarioActualDto
 import pe.edu.upeu.pharmamobil.data.remote.dto.aSesion
 import pe.edu.upeu.pharmamobil.data.remote.mapearErrorSesion
 import pe.edu.upeu.pharmamobil.domain.model.Credenciales
+import pe.edu.upeu.pharmamobil.domain.model.ConsultaLocalException
 import pe.edu.upeu.pharmamobil.domain.model.ErrorSesion
 import pe.edu.upeu.pharmamobil.domain.model.ErrorSesionException
 import pe.edu.upeu.pharmamobil.domain.model.Sesion
@@ -55,14 +56,17 @@ class AuthRepositorioRest(
     }
 
     override suspend fun sesionGuardada(): Sesion? {
-        val token = almacen.leerToken() ?: return null
+        val token = almacen.leerToken()
         val guardada = almacen.leerSesion()?.takeIf { it.token == token }
-        if (guardada != null && guardada.expiracionEpochSegundos <= Clock.System.now().epochSeconds) {
-            cerrarSesion()
-            return null
-        }
+        val vencida = guardada != null && guardada.expiracionEpochSegundos <= Clock.System.now().epochSeconds
         return try {
+            // También comprueba conectividad en una primera apertura sin token.
+            // Un 401 con red lleva al login; un fallo de transporte habilita solo consulta local.
             val usuario: UsuarioActualDto = cliente.get("auth/me").body()
+            if (vencida || token == null) {
+                cerrarSesion()
+                return null
+            }
             Sesion(
                 token = almacen.leerToken().orEmpty(),
                 usuario = usuario.username,
@@ -88,6 +92,7 @@ class AuthRepositorioRest(
         } catch (peticion: ClientRequestException) {
             if (peticion.response.status == HttpStatusCode.Unauthorized) {
                 cerrarSesion()
+                if (token == null) return null
                 throw ErrorSesionException(ErrorSesion.SesionExpirada, peticion)
             }
             if (peticion.response.status == HttpStatusCode.Forbidden) {
@@ -97,9 +102,11 @@ class AuthRepositorioRest(
         }
     }
 
-    private fun sesionSinRed(guardada: Sesion?, causa: Throwable): Sesion {
+    private suspend fun sesionSinRed(guardada: Sesion?, causa: Throwable): Sesion {
         if (guardada != null && guardada.expiracionEpochSegundos > Clock.System.now().epochSeconds) return guardada
-        throw ErrorSesionException(ErrorSesion.SinConexion, causa)
+        // El token vencido se borra antes de abrir la consulta; nunca se reutiliza como autorización.
+        cerrarSesion()
+        throw ConsultaLocalException(sesionExpirada = guardada != null, causa = causa)
     }
 
     override suspend fun cerrarSesion() {

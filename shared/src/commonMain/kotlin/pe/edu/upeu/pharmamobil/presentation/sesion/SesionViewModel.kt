@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pe.edu.upeu.pharmamobil.domain.auth.SesionManager
 import pe.edu.upeu.pharmamobil.domain.model.Credenciales
+import pe.edu.upeu.pharmamobil.domain.model.ConsultaLocalException
 import pe.edu.upeu.pharmamobil.domain.model.ErrorSesion
 import pe.edu.upeu.pharmamobil.domain.model.ErrorSesionException
 import pe.edu.upeu.pharmamobil.domain.usecase.CerrarSesionUseCase
@@ -43,8 +44,14 @@ class SesionViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(cargando = true, error = null) }
             obtenerGuardada().fold(
-                onSuccess = { sesion -> _uiState.update { it.copy(cargando = false, sesion = sesion) } },
+                onSuccess = { sesion -> _uiState.update { it.copy(cargando = false, sesion = sesion, consultaLocal = false,
+                    aviso = if (it.sesionLocalExpirada && sesion == null) "Tu sesión expiró. Inicia sesión nuevamente." else it.aviso) } },
                 onFailure = { fallo ->
+                    if (fallo is ConsultaLocalException) {
+                        _uiState.update { it.copy(cargando = false, sesion = null, consultaLocal = true,
+                            sesionLocalExpirada = it.sesionLocalExpirada || fallo.sesionExpirada, error = null) }
+                        return@fold
+                    }
                     val expirada = (fallo as? ErrorSesionException)?.error == ErrorSesion.SesionExpirada
                     _uiState.update {
                         it.copy(
@@ -68,7 +75,8 @@ class SesionViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(cargando = true, error = null, aviso = null) }
             iniciar(Credenciales(estado.usuario.trim(), estado.clave)).fold(
-                onSuccess = { sesion -> _uiState.update { it.copy(cargando = false, clave = "", sesion = sesion) } },
+                onSuccess = { sesion -> _uiState.update { it.copy(cargando = false, clave = "", sesion = sesion,
+                    consultaLocal = false, sesionLocalExpirada = false) } },
                 onFailure = { fallo -> _uiState.update { it.copy(cargando = false, error = mensaje(fallo)) } }
             )
         }
@@ -79,7 +87,7 @@ class SesionViewModel(
             cerrar()
             _uiState.update {
                 it.copy(
-                    usuario = "", clave = "", cargando = false, error = null, sesion = null,
+                    usuario = "", clave = "", cargando = false, error = null, sesion = null, consultaLocal = false,
                     aviso = if (sesionExpirada) "Tu sesión expiró. Inicia sesión nuevamente." else null
                 )
             }
@@ -87,6 +95,7 @@ class SesionViewModel(
     }
 
     fun limpiarAviso() { _uiState.update { it.copy(aviso = null) } }
+    fun irAlLogin() { _uiState.update { it.copy(consultaLocal = false, cargando = false) } }
 
     private fun mensaje(fallo: Throwable): String = when ((fallo as? ErrorSesionException)?.error) {
         ErrorSesion.CredencialesInvalidas -> "Usuario o contraseña incorrectos."

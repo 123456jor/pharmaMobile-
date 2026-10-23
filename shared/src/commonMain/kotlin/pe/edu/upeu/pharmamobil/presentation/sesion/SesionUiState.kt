@@ -8,5 +8,7 @@ data class SesionUiState(
     val cargando: Boolean = false,
     val error: String? = null,
     val sesion: Sesion? = null,
-    val aviso: String? = null
+    val aviso: String? = null,
+    val consultaLocal: Boolean = false,
+    val sesionLocalExpirada: Boolean = false
 )

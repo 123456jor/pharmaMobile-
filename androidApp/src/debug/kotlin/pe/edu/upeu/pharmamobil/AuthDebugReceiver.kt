@@ -20,6 +20,24 @@ import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguroAndroid
 /** Herramienta disponible solo en el APK debug para provocar un JWT inválido. */
 class AuthDebugReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == "pe.edu.upeu.pharmamobil.DEBUG_ANTIGUEDAD_26_HORAS") {
+            val instante = System.currentTimeMillis() - 26L * 60 * 60 * 1000
+            GlobalContext.get().get<pe.edu.upeu.pharmamobil.db.PharmaDb>()
+                .sincronizacionQueries.guardarUltima(instante)
+            Log.i(TAG, "ANTIGUEDAD_CONTROLADA ultimaMillis=$instante metodo=edicion_debug_26_horas reloj_sin_cambios=true")
+            return
+        }
+        if (intent.action == "pe.edu.upeu.pharmamobil.DEBUG_METADATA_SESION") {
+            val almacen = AlmacenSeguroAndroid(context.applicationContext)
+            val token = almacen.leerToken()
+            val exp = runCatching {
+                val contenido = String(android.util.Base64.decode(token!!.split('.')[1], android.util.Base64.URL_SAFE))
+                Json.parseToJsonElement(contenido).jsonObject["exp"]!!.jsonPrimitive.content.toLong()
+            }.getOrNull()
+            val ahora = System.currentTimeMillis() / 1000
+            Log.i(TAG, "METADATA token_presente=${token != null} jwt_exp=$exp ahora=$ahora vencido=${exp != null && exp <= ahora} sesion_exp=${almacen.leerSesion()?.expiracionEpochSegundos}")
+            return
+        }
         if (intent.action == ACCION_PETICION_PROTEGIDA) {
             val pendiente = goAsync()
             CoroutineScope(Dispatchers.IO).launch {
