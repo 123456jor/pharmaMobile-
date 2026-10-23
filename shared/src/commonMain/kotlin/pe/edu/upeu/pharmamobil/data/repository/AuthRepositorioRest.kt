@@ -59,6 +59,7 @@ class AuthRepositorioRest(
         val token = almacen.leerToken()
         val guardada = almacen.leerSesion()?.takeIf { it.token == token }
         val vencida = guardada != null && guardada.expiracionEpochSegundos <= Clock.System.now().epochSeconds
+        if (vencida) cerrarSesion()
         return try {
             // También comprueba conectividad en una primera apertura sin token.
             // Un 401 con red lleva al login; un fallo de transporte habilita solo consulta local.

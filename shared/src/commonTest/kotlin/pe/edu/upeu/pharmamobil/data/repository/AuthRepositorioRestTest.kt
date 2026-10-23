@@ -136,6 +136,24 @@ class AuthRepositorioRestTest {
     }
 
     @Test
+    fun jwtVencidoNoSeAdjuntaNiDuranteLaComprobacionDeReconexion() = runTest {
+        val almacen = AlmacenMemoria().apply {
+            guardarToken("vencido")
+            guardarSesion(Sesion("vencido", "admin", "Admin", emptySet(), 1))
+        }
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine { request ->
+            assertNull(request.headers[HttpHeaders.Authorization])
+            respond("{}", HttpStatusCode.Unauthorized, headersOf(HttpHeaders.ContentType, "application/json"))
+        }, almacen = almacen, esDepuracion = false)
+        try {
+            val fallo = assertFailsWith<ErrorSesionException> { AuthRepositorioRest(cliente, almacen).sesionGuardada() }
+            assertEquals(ErrorSesion.SesionExpirada, fallo.error)
+            assertNull(almacen.token)
+            assertNull(almacen.sesion)
+        } finally { cliente.close() }
+    }
+
+    @Test
     fun respuesta401NoUsaLaSesionCacheada() = runTest {
         val almacen = AlmacenMemoria().apply {
             guardarToken("rechazado")

@@ -12,3 +12,7 @@ Las pruebas 2 y 4 se ejecutaron alterando temporalmente guardarPendiente para gu
 La suite completa se repitió después de restaurar: 91 pruebas, 0 fallos, 0 errores y 0 omitidas. Incluye las seis obligatorias y pruebas adicionales de antigüedad y consulta local. El APK debug también compiló. La salida íntegra está en salida-pruebas.txt y el informe HTML en reporte-pruebas/index.html.
 
 Se añadió la revisión de expiración mientras la app permanece abierta para solicitar la reevaluación de sesión al alcanzar la fecha guardada. Se compila junto con la corrección; la evidencia manual E5 documenta específicamente la reapertura posterior al vencimiento.
+
+## Cierre de sesión durante la reevaluación
+
+La revisión final añadió bloqueo inmediato si la fecha vence mientras la app sigue abierta: no se mantiene la sesión anterior durante HTTP. Un 401 retira explícitamente la sesión previa. El repositorio borra el JWT vencido antes de comprobar auth/me, por lo que no adjunta esa credencial. Se agregaron dos pruebas de SesionViewModel y una de ausencia de Authorization con JWT vencido. Suite final: 94/94, cero fallos, errores u omitidas. La evidencia E5 comprueba la reapertura; estas pruebas adicionales comprueban la transición mientras la app permanece abierta sin esperas reales.

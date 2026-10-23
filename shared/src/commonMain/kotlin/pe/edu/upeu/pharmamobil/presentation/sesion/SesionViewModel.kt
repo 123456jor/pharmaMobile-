@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
 import pe.edu.upeu.pharmamobil.domain.auth.SesionManager
 import pe.edu.upeu.pharmamobil.domain.model.Credenciales
 import pe.edu.upeu.pharmamobil.domain.model.ConsultaLocalException
@@ -42,7 +43,14 @@ class SesionViewModel(
     fun cargarSesionGuardada() {
         if (_uiState.value.cargando) return
         viewModelScope.launch {
-            _uiState.update { it.copy(cargando = true, error = null) }
+            // Si caduca mientras la app está abierta, bloquear escritura antes de esperar HTTP.
+            val vencida = _uiState.value.sesion?.expiracionEpochSegundos?.let {
+                it > 0 && it <= Clock.System.now().epochSeconds
+            } ?: false
+            _uiState.update { it.copy(cargando = true, error = null,
+                sesion = if (vencida) null else it.sesion,
+                consultaLocal = vencida || it.consultaLocal,
+                sesionLocalExpirada = vencida || it.sesionLocalExpirada) }
             obtenerGuardada().fold(
                 onSuccess = { sesion -> _uiState.update { it.copy(cargando = false, sesion = sesion, consultaLocal = false,
                     aviso = if (it.sesionLocalExpirada && sesion == null) "Tu sesión expiró. Inicia sesión nuevamente." else it.aviso) } },
@@ -56,6 +64,8 @@ class SesionViewModel(
                     _uiState.update {
                         it.copy(
                             cargando = false,
+                            sesion = if (expirada) null else it.sesion,
+                            consultaLocal = if (expirada) false else it.consultaLocal,
                             error = if (expirada) null else mensaje(fallo),
                             aviso = if (expirada) "Tu sesión expiró. Inicia sesión nuevamente." else it.aviso
                         )
