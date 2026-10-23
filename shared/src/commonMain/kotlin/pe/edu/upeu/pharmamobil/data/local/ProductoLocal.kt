@@ -2,6 +2,7 @@ package pe.edu.upeu.pharmamobil.data.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -12,6 +13,12 @@ import pe.edu.upeu.pharmamobil.domain.model.Producto
 /** Persistencia de dominio: no conoce HTTP ni DTO. */
 class ProductoLocal(base: PharmaDb) {
     private val consultas = base.productoQueries
+    private val sincronizacion = base.sincronizacionQueries
+
+    fun observarUltimaSincronizacion(): Flow<Long?> = sincronizacion.leerUltima().asFlow()
+        .mapToOneOrNull(Dispatchers.Default)
+
+    fun ultimaSincronizacion(): Long? = sincronizacion.leerUltima().executeAsOneOrNull()
 
     fun observar(): Flow<List<Producto>> = consultas.listarTodos().asFlow()
         .mapToList(Dispatchers.Default).map { filas -> filas.map { it.aDominio() } }
@@ -29,6 +36,12 @@ class ProductoLocal(base: PharmaDb) {
     fun reemplazarSincronizados(productos: List<Producto>) = consultas.transaction {
         consultas.borrarSincronizados()
         productos.forEach { insertar(it.copy(pendiente = false)) }
+    }
+
+    /** Lista y marca se confirman juntas; una descarga incompleta no renueva la fecha. */
+    fun confirmarSincronizacion(productos: List<Producto>, ahora: Long) = consultas.transaction {
+        reemplazarSincronizados(productos)
+        sincronizacion.guardarUltima(ahora)
     }
 
     fun guardarSincronizado(producto: Producto) = insertar(producto.copy(pendiente = false))

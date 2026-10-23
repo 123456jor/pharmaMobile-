@@ -40,6 +40,11 @@ class ProductoViewModel(
                 _uiState.update { it.copy(fase = productos.aFase()) }
             }
         }
+        viewModelScope.launch {
+            repositorio.observarUltimaSincronizacion().collect { ultima ->
+                _uiState.update { it.copy(ultimaSincronizacion = ultima) }
+            }
+        }
         sincronizar()
     }
 

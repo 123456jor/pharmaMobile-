@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 interface ProductoRepository {
+    fun observarUltimaSincronizacion(): Flow<Long?> = flow { emit(null) }
     /** La implementación offline observa exclusivamente SQLDelight. */
     fun observar(): Flow<List<Producto>> = flow { emit(listar()) }
     suspend fun sincronizar() { listar() }

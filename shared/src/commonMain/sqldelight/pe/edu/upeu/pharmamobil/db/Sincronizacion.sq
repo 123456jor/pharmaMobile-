@@ -1,0 +1,10 @@
+CREATE TABLE Sincronizacion (
+    id INTEGER NOT NULL PRIMARY KEY CHECK (id = 1),
+    ultimaMillis INTEGER NOT NULL
+);
+
+leerUltima:
+SELECT ultimaMillis FROM Sincronizacion WHERE id = 1;
+
+guardarUltima:
+INSERT OR REPLACE INTO Sincronizacion(id, ultimaMillis) VALUES (1, ?);

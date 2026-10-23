@@ -7,7 +7,8 @@ data class ProductoUiState(
     val operacion: Operacion = Operacion.Inactiva,
     val mensajeExito: String? = null,
     val sincronizando: Boolean = false,
-    val avisoRed: String? = null
+    val avisoRed: String? = null,
+    val ultimaSincronizacion: Long? = null
 ) {
     sealed interface Fase {
         data object Cargando : Fase

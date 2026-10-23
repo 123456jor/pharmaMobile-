@@ -1,0 +1,96 @@
+{
+  "fecha": "2026-10-23T14:08:40.055837-05:00",
+  "version": 1,
+  "productos": [
+    [
+      1,
+      "Producto evidencia 134312 editado",
+      13.75,
+      30,
+      0,
+      0,
+      1,
+      "Medicamentos"
+    ],
+    [
+      2,
+      "Producto evidencia editado 135522",
+      13.75,
+      30,
+      0,
+      0,
+      1,
+      "Medicamentos"
+    ],
+    [
+      21,
+      "Producto CRUD Android",
+      19.9,
+      20,
+      0,
+      0,
+      1,
+      "Medicamentos"
+    ],
+    [
+      22,
+      "Producto prueba Postman editado",
+      13.75,
+      30,
+      0,
+      0,
+      1,
+      "Medicamentos"
+    ],
+    [
+      23,
+      "Producto matriz 155114",
+      10.5,
+      18,
+      0,
+      1,
+      1,
+      "Medicamentos"
+    ],
+    [
+      24,
+      "Producto admin 155114",
+      11.25,
+      5,
+      0,
+      1,
+      1,
+      "Medicamentos"
+    ],
+    [
+      25,
+      "Producto almacen 155114",
+      11.25,
+      5,
+      0,
+      1,
+      1,
+      "Medicamentos"
+    ],
+    [
+      43,
+      "A_Prueba_con_red_S11_1431",
+      4.5,
+      20,
+      0,
+      1,
+      1,
+      "Medicamentos"
+    ],
+    [
+      63,
+      "A_Offline_S11_1531",
+      6.75,
+      12,
+      0,
+      1,
+      1,
+      "Medicamentos"
+    ]
+  ]
+}

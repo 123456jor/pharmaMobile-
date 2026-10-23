@@ -1,0 +1,5 @@
+-- Actualiza bases existentes sin modificar productos ni pendientes.
+CREATE TABLE Sincronizacion (
+    id INTEGER NOT NULL PRIMARY KEY CHECK (id = 1),
+    ultimaMillis INTEGER NOT NULL
+);

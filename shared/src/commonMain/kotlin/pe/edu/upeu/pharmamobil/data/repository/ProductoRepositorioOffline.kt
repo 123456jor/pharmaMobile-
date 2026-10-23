@@ -1,6 +1,7 @@
 package pe.edu.upeu.pharmamobil.data.repository
 
 import kotlinx.coroutines.flow.Flow
+import kotlin.time.Clock
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import pe.edu.upeu.pharmamobil.data.local.ProductoLocal
@@ -15,11 +16,13 @@ import pe.edu.upeu.pharmamobil.domain.repository.ProductoRepository
 class ProductoRepositorioOffline(
     private val local: ProductoLocal,
     private val remoto: ProductoApi,
-    private val sesionManager: SesionManager? = null
+    private val sesionManager: SesionManager? = null,
+    private val ahora: () -> Long = { Clock.System.now().toEpochMilliseconds() }
 ) : ProductoRepository {
     private val sincronizacion = Mutex()
 
     override fun observar(): Flow<List<Producto>> = local.observar()
+    override fun observarUltimaSincronizacion(): Flow<Long?> = local.observarUltimaSincronizacion()
     override suspend fun listar(): List<Producto> = local.listar()
 
     override suspend fun registrar(producto: Producto): Producto {
@@ -43,7 +46,7 @@ class ProductoRepositorioOffline(
                 val respuesta = remoto.listar(pagina = pagina++)
                 productos += respuesta.contenido.map { it.toDomain() }
             } while (!respuesta.ultima)
-            local.reemplazarSincronizados(productos)
+            local.confirmarSincronizacion(productos, ahora())
         }
     }
 

@@ -1,0 +1,364 @@
+Calculating task graph as configuration cache cannot be reused because file 'shared\build.gradle.kts' has changed.
+
+> Configure project :shared
+w: Native task 'iosSimulatorArm64Test' is disabled
+Task 'iosSimulatorArm64Test' for target 'ios_simulator_arm64' cannot run on the current host (windows-x86_64).
+Reason: simulator tests require macOS
+Solution: To suppress this warning, add 'kotlin.native.ignoreDisabledTargets=true' to gradle.properties.
+
+
+> Task :shared:generateAndroidMainAssets UP-TO-DATE
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :shared:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:generateAndroidHostTestAssets UP-TO-DATE
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :shared:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:preAndroidHostTestBuild UP-TO-DATE
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:androidJar UP-TO-DATE
+> Task :shared:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:generateAndroidHostTestResources UP-TO-DATE
+> Task :shared:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :shared:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :shared:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :shared:processAndroidMainManifest UP-TO-DATE
+> Task :shared:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :shared:processAndroidHostTestJavaRes NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :androidApp:generateDebugAssets UP-TO-DATE
+> Task :androidApp:preBuild UP-TO-DATE
+> Task :shared:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :shared:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :androidApp:preDebugBuild UP-TO-DATE
+> Task :shared:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :shared:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :shared:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :shared:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :androidApp:generateDebugBuildConfig UP-TO-DATE
+> Task :androidApp:generateDebugResources UP-TO-DATE
+> Task :shared:processAndroidHostTestManifest UP-TO-DATE
+> Task :androidApp:javaPreCompileDebug UP-TO-DATE
+> Task :androidApp:packageDebugResources UP-TO-DATE
+> Task :androidApp:desugarDebugFileDependencies UP-TO-DATE
+> Task :androidApp:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :androidApp:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :androidApp:extractDeepLinksDebug UP-TO-DATE
+> Task :shared:generateComposeResClass UP-TO-DATE
+> Task :androidApp:mergeDebugJniLibFolders UP-TO-DATE
+> Task :androidApp:writeDebugAppMetadata UP-TO-DATE
+> Task :shared:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :androidApp:validateSigningDebug UP-TO-DATE
+> Task :androidApp:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :shared:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :shared:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :shared:convertXmlValueResourcesForCommonMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :shared:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :shared:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :shared:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :shared:packageAndroidMainResources UP-TO-DATE
+> Task :shared:parseAndroidMainLocalResources UP-TO-DATE
+> Task :shared:generateAndroidMainRFile UP-TO-DATE
+> Task :shared:mergeAndroidMainAssets UP-TO-DATE
+> Task :shared:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :shared:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :shared:mergeAndroidHostTestResources UP-TO-DATE
+> Task :shared:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :androidApp:mapDebugSourceSetPaths UP-TO-DATE
+> Task :androidApp:mergeDebugAssets UP-TO-DATE
+> Task :androidApp:mergeDebugResources UP-TO-DATE
+> Task :androidApp:compressDebugAssets UP-TO-DATE
+> Task :androidApp:checkDebugAarMetadata UP-TO-DATE
+> Task :androidApp:checkDebugDuplicateClasses UP-TO-DATE
+> Task :androidApp:processDebugNavigationResources UP-TO-DATE
+> Task :androidApp:mergeDebugNativeLibs UP-TO-DATE
+> Task :androidApp:compileDebugNavigationResources UP-TO-DATE
+> Task :androidApp:parseDebugLocalResources UP-TO-DATE
+> Task :androidApp:stripDebugDebugSymbols UP-TO-DATE
+> Task :androidApp:generateDebugRFile UP-TO-DATE
+> Task :androidApp:processDebugMainManifest UP-TO-DATE
+> Task :androidApp:processDebugManifest UP-TO-DATE
+> Task :androidApp:processDebugManifestForPackage UP-TO-DATE
+> Task :shared:processAndroidHostTestResources UP-TO-DATE
+> Task :shared:packageAndroidHostTestForUnitTest UP-TO-DATE
+> Task :androidApp:mergeExtDexDebug UP-TO-DATE
+> Task :shared:generateAndroidHostTestConfig UP-TO-DATE
+> Task :androidApp:processDebugResources UP-TO-DATE
+
+> Task :shared:generateCommonMainPharmaDbInterface
+WARN: Attempt to load key 'ide.hide.excluded.files' for not yet loaded registry
+WARN: Attempt to load key 'psi.sleep.in.validity.check' for not yet loaded registry
+WARN: Attempt to load key 'psi.incremental.reparse.depth.limit' for not yet loaded registry
+
+> Task :shared:compileAndroidMain
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/androidMain/kotlin/pe/edu/upeu/pharmamobil/platform/Formato.android.kt:7:38 'constructor(p0: String!, p1: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:90:13 'fun KoinContext(koin: Koin = ..., content: ComposableFunction0<Unit>): Unit' is deprecated. KoinContext is not needed anymore. This can be removed. Compose Koin context is setup with StartKoin().
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:192:44 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:209:52 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+
+> Task :shared:processAndroidMainJavaRes
+> Task :shared:bundleAndroidMainClassesToRuntimeJar
+> Task :shared:bundleAndroidMainClassesToCompileJar
+> Task :shared:bundleLibRuntimeToDirAndroidMain
+> Task :androidApp:compileDebugKotlin
+> Task :androidApp:processDebugJavaRes UP-TO-DATE
+> Task :androidApp:compileDebugJavaWithJavac UP-TO-DATE
+> Task :androidApp:dexBuilderDebug UP-TO-DATE
+> Task :androidApp:mergeProjectDexDebug UP-TO-DATE
+> Task :androidApp:mergeDebugJavaResource
+> Task :shared:compileAndroidHostTest
+> Task :androidApp:mergeLibDexDebug
+> Task :androidApp:packageDebug
+> Task :androidApp:assembleDebug
+> Task :androidApp:createDebugApkListingFileRedirect UP-TO-DATE
+
+> Task :shared:testAndroidHostTest
+
+SharedCommonTest > example PASSED
+
+SharedLogicAndroidHostTest > example PASSED
+
+EjecutarLlamadaTest > un401ProtegidoSeConvierteEnSesionExpirada STANDARD_ERROR
+    SLF4J(W): No SLF4J providers were found.
+    SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+    SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+
+EjecutarLlamadaTest > un401ProtegidoSeConvierteEnSesionExpirada PASSED
+
+EjecutarLlamadaTest > traduce409AlMensajeDelServidor STANDARD_OUT
+    REQUEST: http://test/api/v1/productos/99
+    METHOD: GET
+    COMMON HEADERS
+    -> Accept: application/json
+    -> Content-Type: application/json
+    CONTENT HEADERS
+    -> Content-Length: 0
+    RESPONSE: 409 Conflict
+    METHOD: GET
+    FROM: http://test/api/v1/productos/99
+    COMMON HEADERS
+    -> Content-Type: application/json
+
+EjecutarLlamadaTest > traduce409AlMensajeDelServidor PASSED
+
+EjecutarLlamadaTest > traduce404ANoEncontrado STANDARD_OUT
+    REQUEST: http://test/api/v1/productos/99
+    METHOD: GET
+    COMMON HEADERS
+    -> Accept: application/json
+    -> Content-Type: application/json
+    CONTENT HEADERS
+    -> Content-Length: 0
+    RESPONSE: 404 Not Found
+    METHOD: GET
+    FROM: http://test/api/v1/productos/99
+    COMMON HEADERS
+    -> Content-Type: application/json
+
+EjecutarLlamadaTest > traduce404ANoEncontrado PASSED
+
+EjecutarLlamadaTest > clienteAdjuntaTokenEnRutaProtegidaPeroNoEnLogin PASSED
+
+EjecutarLlamadaTest > traduce400ConLosErroresPorCampo STANDARD_OUT
+    REQUEST: http://test/api/v1/productos/99
+    METHOD: GET
+    COMMON HEADERS
+    -> Accept: application/json
+    -> Content-Type: application/json
+    CONTENT HEADERS
+    -> Content-Length: 0
+    RESPONSE: 400 Bad Request
+    METHOD: GET
+    FROM: http://test/api/v1/productos/99
+    COMMON HEADERS
+    -> Content-Type: application/json
+
+EjecutarLlamadaTest > traduce400ConLosErroresPorCampo PASSED
+
+AuthRepositorioRestTest > respuesta401NoUsaLaSesionCacheada PASSED
+
+AuthRepositorioRestTest > login401SeExponeComoCredencialesInvalidasSinGuardarToken PASSED
+
+AuthRepositorioRestTest > guardaTokenTrasLoginYLoUsaParaReconstruirSesion PASSED
+
+AuthRepositorioRestTest > sesionVencidaNoSeRestauraSinRedYSeBorra PASSED
+
+AuthRepositorioRestTest > reabrirSinRedRestauraSoloSesionGuardadaVigente PASSED
+
+ClienteRepositorioEnMemoriaTest > asignaIdCorrelativoAlRegistrar PASSED
+
+ClienteRepositorioEnMemoriaTest > listarDevuelveLosClientesRegistrados PASSED
+
+ProductoRepositorioEnMemoriaTest > listarDevuelveLosProductosRegistrados PASSED
+
+ProductoRepositorioEnMemoriaTest > asignaIdCorrelativoAlRegistrar PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba04LaBajadaNoBorraElProductoPendiente PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba01SincronizarConRedGuardaYEmiteLaListaCompleta PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba05ProductoLocalYRemotoNoSeSobrescriben PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba03ReconectarEnviaElPendienteYLoConfirmaConIdReal PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba02RegistroSinRedConservaPendienteYLoEmiteElFlow PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba06SincronizarDosVecesConservaCantidadYNoRepitePost PASSED
+
+ProductoRepositorioOfflineTest > errorServidorNoSeSilenciaComoSinConexion PASSED
+
+ProductoRepositorioOfflineTest > descargaTodasLasPaginas PASSED
+
+ProductoRepositorioOfflineTest > falloPostConservaPendienteYNoEjecutaGet PASSED
+
+ProductoRepositorioOfflineTest > sincronizarNoDejaDuplicadosNiPendientesHuerfanos PASSED
+
+ProductoRepositorioOfflineTest > subirPendientesOcurreAntesDeBajar PASSED
+
+ProductoRepositorioOfflineTest > idsLocalesSonNegativosDistintosYConservanCategoria PASSED
+
+ProductoRepositorioOfflineTest > sin red el producto queda pendiente y la pantalla lo ve PASSED
+
+ProductoRepositorioOfflineTest > reemplazarSincronizadosPreservaPendientes PASSED
+
+SincronizacionFechaTest > fechaSeGuardaSoloTrasExitoYUnFalloNoLaRenueva FAILED
+    io.ktor.serialization.JsonConvertException at SincronizacionFechaTest.kt:21
+        Caused by: kotlinx.serialization.MissingFieldException at SincronizacionFechaTest.kt:21
+            Caused by: kotlinx.serialization.MissingFieldException at SincronizacionFechaTest.kt:21
+
+AppModuleTest > resuelveLosViewModelConSusCasosDeUso PASSED
+
+AppModuleTest > losRepositoriosSonUnicosEnTodaLaAplicacion PASSED
+
+AppModuleTest > resuelveLosRepositoriosPorSuInterfazDeDominio PASSED
+
+AppModuleTest > registraLaImplementacionOfflineDeProductos PASSED
+
+AppModuleTest > resuelveLosCuatroCasosDeUsoConSusRepositorios PASSED
+
+AntiguedadTest > nuncaSincronizado PASSED
+
+AntiguedadTest > segundosYRelojAtrasado PASSED
+
+AntiguedadTest > dias PASSED
+
+AntiguedadTest > horas PASSED
+
+AntiguedadTest > minutos PASSED
+
+ClienteTest > aceptaUnClienteConTelefono PASSED
+
+ClienteTest > elTelefonoPuedeFaltar PASSED
+
+ClienteTest > noSeConstruyeSinNombre PASSED
+
+ClienteTest > noSeConstruyeConTelefonoVacio PASSED
+
+ProductoTest > noRequiereReposicionEnElStockMinimo PASSED
+
+ProductoTest > requiereReposicionPorDebajoDelStockMinimo PASSED
+
+ProductoTest > noSeConstruyeSinNombre PASSED
+
+ProductoTest > aceptaPrecioCeroParaQueElServidorValideElMinimo PASSED
+
+ProductoTest > noSeConstruyeConStockNegativo PASSED
+
+SesionTest > traduceEstadosDeSesion PASSED
+
+SesionTest > permisoSeConsultaPorAutoridad PASSED
+
+ListarProductosUseCaseTest > devuelveElInventarioDelRepositorio PASSED
+
+ListarProductosUseCaseTest > relanzaLaCancelacionEnLugarDeConvertirlaEnFailure PASSED
+
+ListarProductosUseCaseTest > devuelveFailureCuandoElRepositorioFalla PASSED
+
+RegistrarClienteUseCaseTest > rechazaNombreVacio PASSED
+
+RegistrarClienteUseCaseTest > aceptaUnClienteValido PASSED
+
+RegistrarClienteUseCaseTest > elIdLoAsignaElRepositorio PASSED
+
+RegistrarClienteUseCaseTest > devuelveFailureCuandoElRepositorioFalla PASSED
+
+RegistrarClienteUseCaseTest > rechazaCorreoConFormatoInvalido PASSED
+
+RegistrarClienteUseCaseTest > rechazaTelefonoConMenosDeSeisDigitos PASSED
+
+RegistrarClienteUseCaseTest > elTelefonoEsOpcionalYSeGuardaComoNull PASSED
+
+RegistrarClienteUseCaseTest > reportaLosTresErroresALaVez PASSED
+
+RegistrarProductoUseCaseTest > aceptaStockCero PASSED
+
+RegistrarProductoUseCaseTest > rechazaNombreVacio PASSED
+
+RegistrarProductoUseCaseTest > rechazaNaNComoPrecio PASSED
+
+RegistrarProductoUseCaseTest > rechazaInfinityComoPrecio PASSED
+
+RegistrarProductoUseCaseTest > devuelveFailureCuandoElRepositorioFalla PASSED
+
+RegistrarProductoUseCaseTest > rechazaStockNegativo PASSED
+
+RegistrarProductoUseCaseTest > precioCeroSeDejaLlegarAlServidor PASSED
+
+RegistrarProductoUseCaseTest > rechazaPrecioNoNumerico PASSED
+
+RegistrarProductoUseCaseTest > elIdLoAsignaElRepositorioNoLaPantalla PASSED
+
+RegistrarProductoUseCaseTest > reportaLosTresErroresALaVez PASSED
+
+RegistrarProductoUseCaseTest > aceptaUnPrecioValido PASSED
+
+FormatoTest > formateaSolesConDosDecimales PASSED
+
+ClienteViewModelTest > elTelefonoAusenteSeMuestraComoNoRegistrado PASSED
+
+ClienteViewModelTest > arrancaEnSinClientesCuandoLaCarteraEstaVacia PASSED
+
+ClienteViewModelTest > elCorreoInvalidoCaeEnElFormulario PASSED
+
+ClienteViewModelTest > elClienteRegistradoApareceEnLaCartera PASSED
+
+ProductoViewModelTest > cargaExitosaMuestraLaListaEsperada PASSED
+
+ProductoViewModelTest > errorDeRedAlEliminarConservaLaListaPrevia PASSED
+
+ProductoViewModelTest > eliminarSeReflejaPorFlowSinRecargarLaListaYConfirmaExito PASSED
+
+ProductoViewModelTest > productosInactivosNoAparecenEnElInventarioActivo PASSED
+
+ProductoViewModelTest > listadoVacioTerminaEnSinProductos PASSED
+
+ProductoViewModelTest > compartirEnviaAlCompartidorElTextoArmadoEnCodigoComun PASSED
+
+ProductoViewModelTest > validacionDelServidorSeMuestraEnElFormularioSinCambiarLaFase PASSED
+
+ProductoViewModelTest > precioCeroSeEnviaParaQueLoValideElServidor PASSED
+
+ProductoViewModelTest > cancelarLaCorrutinaNoProduceEstadoFallidoNiMensajeDeError PASSED
+
+88 tests completed, 1 failed
+
+> Task :shared:testAndroidHostTest FAILED
+
+[Incubating] Problems report is available at: file:///H:/ProyectosUPEU/pharmaMobile-/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':shared:testAndroidHostTest'.
+> There were failing tests. See the report at: file:///H:/ProyectosUPEU/pharmaMobile-/shared/build/reports/tests/testAndroidHostTest/index.html
+
+* Try:
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+
+BUILD FAILED in 27s
+73 actionable tasks: 13 executed, 60 up-to-date
+Configuration cache entry stored.

@@ -30,6 +30,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+import kotlin.time.Clock
+import pe.edu.upeu.pharmamobil.domain.model.formatearAntiguedad
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,6 +50,13 @@ import pe.edu.upeu.pharmamobil.presentation.components.ValidatedTextField
 fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, permiteEscritura: Boolean = true) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val ocupada = uiState.operacion is ProductoUiState.Operacion.EnCurso
+    var ahora by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
+    LaunchedEffect(uiState.ultimaSincronizacion) {
+        while (true) {
+            ahora = Clock.System.now().toEpochMilliseconds()
+            delay(60_000) // Actualiza el texto visible; no realiza peticiones HTTP.
+        }
+    }
 
     Column(
         modifier = modifier.fillMaxSize().padding(16.dp),
@@ -55,6 +69,8 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, 
                 Text(if (uiState.sincronizando) "Sincronizando…" else "Sincronizar")
             }
         }
+        Text(formatearAntiguedad(ahora, uiState.ultimaSincronizacion),
+            style = MaterialTheme.typography.bodySmall)
         uiState.avisoRed?.let {
             Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
         }
