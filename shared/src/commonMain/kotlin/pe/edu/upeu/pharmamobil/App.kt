@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlin.time.Clock
 import org.koin.core.parameter.parametersOf
 import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
@@ -93,6 +94,13 @@ fun App() = KoinContext {
     val sesionViewModel: SesionViewModel = koinViewModel()
     val sesionState by sesionViewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { sesionViewModel.cargarSesionGuardada() }
+    LaunchedEffect(sesionState.sesion?.expiracionEpochSegundos) {
+        val vence = sesionState.sesion?.expiracionEpochSegundos ?: return@LaunchedEffect
+        if (vence > 0) {
+            delay((vence * 1000 - Clock.System.now().toEpochMilliseconds()).coerceAtLeast(0) + 1)
+            sesionViewModel.cargarSesionGuardada()
+        }
+    }
     // Al recuperar conexión, auth/me pide un nuevo login. No sincroniza con credenciales vencidas.
     LaunchedEffect(sesionState.consultaLocal) {
         while (sesionState.consultaLocal) {

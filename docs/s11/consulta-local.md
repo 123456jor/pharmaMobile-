@@ -5,3 +5,10 @@ El cambio autorizado permite consultar únicamente SQLite cuando auth/me no pued
 Primera apertura sin red: se muestra el inventario vacío con explicación y «Aún no se ha sincronizado». La consulta local está limitada a los datos de este dispositivo, igual que en el escenario solicitado. No autoriza llamadas protegidas.
 
 La prueba anterior de expiración se actualizó para exigir que el token siga borrándose y que la excepción solo habilite consulta local, sin sesión autenticada. Se añadieron pruebas de apertura sin token, reconexión sin cabecera Authorization y bloqueo de mutaciones en el ViewModel. Las pruebas de rechazo 401 y las seis offline permanecen activas.
+## Verificación adicional
+
+Las pruebas 2 y 4 se ejecutaron alterando temporalmente guardarPendiente para guardar pendiente=false. Ambas FALLARON, tal como debía ocurrir. El archivo original se restauró automáticamente en finally y git diff confirmó que no quedó el defecto. La salida sensibilidad-fallo-esperado.txt conserva las dos aserciones fallidas. Ese cambio nunca se confirmó.
+
+La suite completa se repitió después de restaurar: 91 pruebas, 0 fallos, 0 errores y 0 omitidas. Incluye las seis obligatorias y pruebas adicionales de antigüedad y consulta local. El APK debug también compiló. La salida íntegra está en salida-pruebas.txt y el informe HTML en reporte-pruebas/index.html.
+
+Se añadió la revisión de expiración mientras la app permanece abierta para solicitar la reevaluación de sesión al alcanzar la fecha guardada. Se compila junto con la corrección; la evidencia manual E5 documenta específicamente la reapertura posterior al vencimiento.
