@@ -112,6 +112,6 @@ Archivo: `shared/src/commonTest/kotlin/pe/edu/upeu/pharmamobil/data/repository/P
 
 El guion indica lo que diré y haré, usuario, tiempo y plan B por tramo. Debo practicarlo realmente con cronómetro y entender por qué un 401 es distinto de un 403. Postman es otro cliente del backend: no necesita que el emulador esté corriendo. Docker mantiene Oracle y el backend atiende HTTP; SQLDelight conserva los datos del teléfono cuando esos servicios no se pueden alcanzar.
 
-Debo revisar las conclusiones de los escenarios antes de asumirlas como propias. No se ejecutó iOS ni se simuló el ensayo. Los cambios están en una rama local; su publicación requiere mi confirmación final. La entrega al aula y la sustentación las realizo personalmente.
+Debo revisar las conclusiones de los escenarios antes de asumirlas como propias. No se ejecutó iOS ni se simuló el ensayo. Los cambios están publicados en mi rama de GitHub, tras mi confirmación final. La entrega al aula y la sustentación las realizo personalmente.
 
 - Refuerzo final: SesionViewModel retira inmediatamente una sesión ya vencida antes de esperar HTTP. Un rechazo 401 no conserva el objeto Sesion anterior. AuthRepositorioRest borra el token vencido antes de auth/me; el nuevo test exige ausencia de Authorization. Las dos pruebas del ViewModel controlan la respuesta con CompletableDeferred, sin dormir ni usar red.

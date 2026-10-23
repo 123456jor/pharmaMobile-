@@ -7,7 +7,7 @@
   [
     2,
     "Portada: nombre completo, sesión, fecha y enlace a rama",
-    "Sí; enlace pendiente de publicación"
+    "Sí; enlace publicado y verificado"
   ],
   [
     3,
@@ -52,6 +52,6 @@
   [
     11,
     "Commits accesibles desde el enlace entregado",
-    "No todavía: falta confirmar publicación"
+    "Sí; rama publicada y enlace verificado"
   ]
 ]

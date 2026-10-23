@@ -4,3 +4,4 @@ fc3067e Jorge Armando Quispe Huaman <joorge0148@gmail.com> feat: persiste antigu
 de29d57 Jorge Armando Quispe Huaman <joorge0148@gmail.com> fix: permite consultar cache sin red con sesion vencida y bloquea modificaciones
 c052b69 Jorge Armando Quispe Huaman <joorge0148@gmail.com> test: acredita sensibilidad del patron offline y 91 pruebas completas
 f9fdf1d Jorge Armando Quispe Huaman <joorge0148@gmail.com> fix: bloquea escritura al caducar y retira sesion previa ante rechazo
+f09721e Jorge Armando Quispe Huaman <joorge0148@gmail.com> docs: entrega bitacora real capturas Postman y PDF de actividad autonoma 11

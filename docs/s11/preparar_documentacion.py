@@ -107,18 +107,18 @@ fila('P4-usuarios y preparación','Incluye además qué usuario usarás en cada 
 fila('P4-iOS','La misma funcionalidad ejecutándose en Android y en iOS.','Mantener alcance Android del usuario','Sin Mac ni Xcode; no se simula','entorno.md','Windows; exclusión expresa','Bloqueado')
 fila('P4-ensayo','Ensaya el guion de sustentación en voz alta con el cronómetro.','Corresponde al estudiante','Por realizar','guion-sustentacion.md','No se simula','Pendiente')
 fila('PDF-nombre','S11_ActividadAutonoma_Apellidos.pdf','Usar Quispe_Huaman','PDF preparado','../../output/pdf/S11_ActividadAutonoma_Quispe_Huaman.pdf','Revisión visual de páginas','Completado')
-fila('PDF-portada','Incluye portada con nombre completo, sesión, fecha y enlace a la rama del repositorio.','Portada con identidad del estudiante','Incluida; publicación pendiente','../../output/pdf/S11_ActividadAutonoma_Quispe_Huaman.pdf','Campos contrastados','Completado')
-fila('PDF-enlace a rama','Los commits de esta actividad están en mi rama y son accesibles desde el enlace entregado.','Preparar URL de rama nueva','Se publicará solo con confirmación',URL,'Commits locales; remoto aún pendiente','Pendiente')
-fila('commits en la rama','actualiza tu rama del repositorio con los commits correspondientes.','Commits pequeños con autoría Jorge','Confirmados localmente','commits.txt','git log')
+fila('PDF-portada','Incluye portada con nombre completo, sesión, fecha y enlace a la rama del repositorio.','Portada con identidad del estudiante','Incluida; enlace publicado y verificado','../../output/pdf/S11_ActividadAutonoma_Quispe_Huaman.pdf','Campos contrastados','Completado')
+fila('PDF-enlace a rama','Los commits de esta actividad están en mi rama y son accesibles desde el enlace entregado.','Publicar rama autorizada y comprobar URL','GitHub devuelve HTTP 200',URL,'git ls-remote y página muestran commit publicado','Verificado')
+fila('commits en la rama','actualiza tu rama del repositorio con los commits correspondientes.','Commits pequeños con autoría Jorge','Confirmados y publicados','commits.txt; publicacion.json','git log y git ls-remote')
 fila('commits de correcciones citados','corrige el código y registra el commit de la corrección en el documento.','Citar fc3067e/de29d57/c052b69','Referencias incluidas','bitacora.md; commits.txt','git show')
-fila('lista de cotejo 1-11','Verifica cada punto antes de subir el archivo al aula virtual.','Responder según evidencia','No se marca 100 %','lista-cotejo.json','Swagger/iOS/publicación declarados','Completado')
+fila('lista de cotejo 1-11','Verifica cada punto antes de subir el archivo al aula virtual.','Responder según evidencia','No se marca 100 %','lista-cotejo.json','Swagger/iOS declarados; publicación verificada','Completado')
 matrix='# Matriz de cumplimiento\n\nLas citas se transcriben del PDF de actividad; los saltos de línea de tablas se normalizan. Postman e iOS reflejan las decisiones expresas del usuario.\n\n'
 matrix+='| Actividad | Requisito (cita exacta de la guía) | Acción | Resultado | Evidencia | Verificación | Estado |\n|---|---|---|---|---|---|---|\n'
 matrix+='\n'.join('| '+' | '.join(str(c).replace('|','/') for c in f)+' |' for f in filas)+'\n'
 (D/'matriz.md').write_text(matrix,encoding='utf8')
 check=[
  (1,'PDF con nombre S11_ActividadAutonoma_Quispe_Huaman.pdf','Sí'),
- (2,'Portada: nombre completo, sesión, fecha y enlace a rama','Sí; enlace pendiente de publicación'),
+ (2,'Portada: nombre completo, sesión, fecha y enlace a rama','Sí; enlace publicado y verificado'),
  (3,'Seis pruebas en commonTest y todas pasan','Sí'),
  (4,'Salida completa de la ejecución adjunta','Sí'),
  (5,'Cinco escenarios con capturas respectivas','Sí'),
@@ -127,7 +127,7 @@ check=[
  (8,'Pantalla indica última sincronización correcta','Sí'),
  (9,'Caso nunca sincronizado resuelto','Sí'),
  (10,'Guion cubre los cinco criterios de Producto U2','No completamente: iOS excluido; Android documentado'),
- (11,'Commits accesibles desde el enlace entregado','No todavía: falta confirmar publicación')]
+ (11,'Commits accesibles desde el enlace entregado','Sí; rama publicada y enlace verificado')]
 (D/'lista-cotejo.json').write_text(json.dumps(check,ensure_ascii=False,indent=2),encoding='utf8')
 commits=subprocess.check_output(['git','log','--reverse','--format=%h %an <%ae> %s','7adc1ad..HEAD'],cwd=R).decode('utf8')
 (D/'commits.txt').write_text(commits,encoding='utf8')
