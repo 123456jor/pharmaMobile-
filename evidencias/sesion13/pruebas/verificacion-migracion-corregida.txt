@@ -1,0 +1,20 @@
+
+> Configure project :shared
+w: Native task 'iosSimulatorArm64Test' is disabled
+Task 'iosSimulatorArm64Test' for target 'ios_simulator_arm64' cannot run on the current host (windows-x86_64).
+Reason: simulator tests require macOS
+Solution: To suppress this warning, add 'kotlin.native.ignoreDisabledTargets=true' to gradle.properties.
+
+
+> Task :shared:compilarInicializadorSqlite
+> Task :shared:inicializadorSqlite
+
+WARN: Attempt to load key 'ide.hide.excluded.files' for not yet loaded registry
+WARN: Attempt to load key 'psi.sleep.in.validity.check' for not yet loaded registry
+WARN: Attempt to load key 'psi.incremental.reparse.depth.limit' for not yet loaded registry
+> Task :shared:verifyCommonMainPharmaDbMigration
+
+[Incubating] Problems report is available at: file:///H:/ProyectosUPEU/pharmaMobile-/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 5s
+3 actionable tasks: 3 executed

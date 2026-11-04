@@ -1,4 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import app.cash.sqldelight.gradle.DriverInitializer
+import app.cash.sqldelight.gradle.VerifyMigrationTask
+import app.cash.sqldelight.core.SqlDelightDatabaseProperties
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.tasks.Jar
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -101,6 +106,35 @@ sqldelight {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+// SQLDelight 2.1.0 / Windows: el worker aislado pierde el temporal del proceso padre.
+// Su extensión pública DriverInitializer fija la ruta dentro del propio worker.
+// Conserva la tarea original y la comparación de esquemas, sin privilegios de administrador.
+val compilarInicializadorSqlite by tasks.registering(JavaCompile::class) {
+    source(rootProject.file("gradle/sqlite-worker/src"))
+    classpath = files(
+        DriverInitializer::class.java.protectionDomain.codeSource.location,
+        SqlDelightDatabaseProperties::class.java.protectionDomain.codeSource.location
+    )
+    destinationDirectory.set(layout.buildDirectory.dir("sqlite-worker/classes"))
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
+}
+val inicializadorSqlite by tasks.registering(Jar::class) {
+    archiveFileName.set("sqlite-worker.jar")
+    destinationDirectory.set(layout.buildDirectory.dir("sqlite-worker"))
+    from(compilarInicializadorSqlite.flatMap { it.destinationDirectory })
+    from(rootProject.file("gradle/sqlite-worker/resources"))
+}
+// El plugin registra estas tareas al terminar la evaluación y fija su classpath.
+// Adjuntar después evita que ese setFrom sustituya nuestro inicializador.
+afterEvaluate {
+    tasks.withType<VerifyMigrationTask>().configureEach {
+        classpath.from(inicializadorSqlite)
+        driverProperties.put("directorioTemporalSqlite",
+            layout.buildDirectory.dir("tmp/sqlite-jdbc").map { it.asFile.absolutePath })
+    }
 }
 tasks.withType<Test>().configureEach {
     testLogging {
