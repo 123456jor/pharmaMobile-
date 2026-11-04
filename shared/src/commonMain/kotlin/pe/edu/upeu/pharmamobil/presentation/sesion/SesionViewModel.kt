@@ -94,7 +94,7 @@ class SesionViewModel(
 
     fun cerrarSesion(sesionExpirada: Boolean = false) {
         viewModelScope.launch {
-            cerrar()
+            cerrar(porExpiracion = sesionExpirada)
             _uiState.update {
                 it.copy(
                     usuario = "", clave = "", cargando = false, error = null, sesion = null, consultaLocal = false,

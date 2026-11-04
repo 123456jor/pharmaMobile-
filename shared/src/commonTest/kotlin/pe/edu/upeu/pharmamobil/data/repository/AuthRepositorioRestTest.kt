@@ -26,6 +26,9 @@ import kotlin.test.assertFalse
 
 class AuthRepositorioRestTest {
     private class AlmacenMemoria : AlmacenSeguro {
+        var bloqueada = false
+        override fun bloquearConsultaLocal(bloqueada: Boolean) { this.bloqueada = bloqueada }
+        override fun consultaLocalBloqueada() = bloqueada
         var token: String? = null
         var sesion: Sesion? = null
         override fun guardarSesion(sesion: Sesion) { this.sesion = sesion }
@@ -168,4 +171,41 @@ class AuthRepositorioRestTest {
             assertNull(almacen.token)
         } finally { cliente.close() }
     }
+    @Test
+    fun logoutVoluntarioBloqueaConsultaInclusoConRepositorioNuevo() = runTest {
+        val almacen = AlmacenMemoria().apply { guardarToken("token-prueba") }
+        var llamadas = 0
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/",
+            engine = MockEngine { llamadas++; throw IOException("Sin red") }, esDepuracion = false)
+        try {
+            AuthRepositorioRest(cliente, almacen).cerrarSesion()
+            assertTrue(almacen.bloqueada)
+            assertNull(almacen.token)
+            assertNull(AuthRepositorioRest(cliente, almacen).sesionGuardada())
+            assertEquals(0, llamadas, "El bloqueo no necesita red ni abre consulta local")
+        } finally { cliente.close() }
+    }
+
+    @Test
+    fun expirarNoBloqueaConsultaYUnLoginValidoDesbloqueaLogout() = runTest {
+        val almacen = AlmacenMemoria()
+        var conRed = false
+        val cliente = crearHttpClient(baseUrl = "http://test/api/v1/", engine = MockEngine {
+            if (!conRed) throw IOException("Sin red")
+            respond("""{"token":"prueba","tipo":"Bearer","expiraEnSegundos":3600,"username":"admin","nombreCompleto":"Admin","roles":[],"permisos":[]}""",
+                headers = headersOf(HttpHeaders.ContentType, "application/json"))
+        }, esDepuracion = false)
+        try {
+            val repo = AuthRepositorioRest(cliente, almacen)
+            repo.invalidarSesion()
+            assertFalse(almacen.bloqueada)
+            assertFailsWith<ConsultaLocalException> { repo.sesionGuardada() }
+            repo.cerrarSesion()
+            assertTrue(almacen.bloqueada)
+            conRed = true
+            repo.iniciarSesion(Credenciales("admin", "prueba"))
+            assertFalse(almacen.bloqueada)
+        } finally { cliente.close() }
+    }
+
 }
