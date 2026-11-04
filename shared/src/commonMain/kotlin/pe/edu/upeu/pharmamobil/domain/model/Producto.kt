@@ -8,7 +8,9 @@ data class Producto(
     val estado: Boolean = true,
     val categoriaId: Long = 0L,
     val categoriaNombre: String? = null,
-    val pendiente: Boolean = false
+    val pendiente: Boolean = false,
+    val intentos: Int = 0,
+    val ultimoError: String? = null
 ) {
 
 
@@ -32,6 +34,7 @@ data class Producto(
         get() = stock < STOCK_MINIMO
 
     companion object {
+        const val MAX_INTENTOS = 5
         const val STOCK_MINIMO = 10
     }
 }

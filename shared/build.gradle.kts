@@ -90,7 +90,12 @@ kotlin {
 
 sqldelight {
     databases {
-        create("PharmaDb") { packageName.set("pe.edu.upeu.pharmamobil.db") }
+        create("PharmaDb") {
+            packageName.set("pe.edu.upeu.pharmamobil.db")
+            // verifyCommonMainPharmaDbMigration compara databases/2.db + 2.sqm con el CREATE actual.
+            // La generación conserva su modo previo: 1.sqm empieza en la sesión 11 y no
+            // contiene el CREATE histórico de producto. No se inventa una migración 0.
+        }
     }
 }
 

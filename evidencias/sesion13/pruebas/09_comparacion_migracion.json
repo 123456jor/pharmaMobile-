@@ -1,0 +1,11 @@
+{
+  "fecha": "2026-11-04T15:00:55.767928-05:00",
+  "metodo": "adb install -r; AndroidSqliteDriver; sin pm clear ni desinstalar",
+  "version_antes": 2,
+  "version_despues": 3,
+  "filas_conservadas": 12,
+  "pendientes_conservados": 1,
+  "todos_los_campos_anteriores_iguales": true,
+  "ultima_sincronizacion_igual": true,
+  "valores_iniciales_correctos": true
+}
