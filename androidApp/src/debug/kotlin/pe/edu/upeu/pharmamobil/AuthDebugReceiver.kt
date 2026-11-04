@@ -20,6 +20,23 @@ import pe.edu.upeu.pharmamobil.data.local.AlmacenSeguroAndroid
 /** Herramienta disponible solo en el APK debug para provocar un JWT inválido. */
 class AuthDebugReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == "pe.edu.upeu.pharmamobil.DEBUG_FIREBASE_NO_FATAL") {
+            val trabajo = goAsync()
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val telemetria = GlobalContext.get().get<pe.edu.upeu.pharmamobil.domain.port.Telemetria>()
+                    val tecnico = mapOf("pantalla" to "diagnostico", "operacion" to "prueba_no_fatal", "tipo_error" to "controlado")
+                    telemetria.registrarEvento("prueba_no_fatal", tecnico)
+                    telemetria.registrarError(IllegalStateException("Prueba controlada"), tecnico)
+                    val mensajeria = GlobalContext.get().get<pe.edu.upeu.pharmamobil.data.firebase.TelemetriaFirebase>()
+                        .comprobarMensajeria()
+                    Log.i(TAG, "FIREBASE_DIAGNOSTICO mensajeria_token_disponible=$mensajeria token_omitido=true")
+                } catch (error: Exception) {
+                    Log.i(TAG, "FIREBASE_DIAGNOSTICO estado=error tipo=${error.javaClass.simpleName}")
+                } finally { trabajo.finish() }
+            }
+            return
+        }
         if (intent.action == "pe.edu.upeu.pharmamobil.DEBUG_ANTIGUEDAD_26_HORAS") {
             val instante = System.currentTimeMillis() - 26L * 60 * 60 * 1000
             GlobalContext.get().get<pe.edu.upeu.pharmamobil.db.PharmaDb>()

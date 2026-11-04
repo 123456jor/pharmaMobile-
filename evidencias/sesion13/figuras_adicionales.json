@@ -1,33 +1,33 @@
 [
   {
     "archivo": "11b_explicacion_previa.png",
-    "titulo": "22 Explicación antes del permiso",
-    "descripcion": "Se explica el resultado útil de los avisos antes de solicitar autorización. La app sigue funcionando si se rechaza."
+    "titulo": "22 ExplicaciÃ³n antes del permiso",
+    "descripcion": "Se explica el resultado Ãºtil de los avisos antes de solicitar autorizaciÃ³n. La app sigue funcionando si se rechaza."
   },
   {
     "archivo": "11c_dialogo_real_android.png",
-    "titulo": "23 Diálogo auténtico de Android",
-    "descripcion": "El sistema solicita permitir las notificaciones de PharmaMobil. No es un diálogo simulado de la app."
+    "titulo": "23 DiÃ¡logo autÃ©ntico de Android",
+    "descripcion": "El sistema solicita permitir las notificaciones de PharmaMobil. No es un diÃ¡logo simulado de la app."
   },
   {
     "archivo": "11d_permiso_denegado.png",
     "titulo": "24 Permiso denegado",
-    "descripcion": "Después del primer rechazo, la app permite volver a solicitar tras explicar la finalidad."
+    "descripcion": "DespuÃ©s del primer rechazo, la app permite volver a solicitar tras explicar la finalidad."
   },
   {
     "archivo": "11e_permiso_denegado_permanente.png",
-    "titulo": "25 Denegación definitiva",
-    "descripcion": "Después del segundo rechazo, la app deja de solicitar diálogos y ofrece Ir a Ajustes."
+    "titulo": "25 DenegaciÃ³n definitiva",
+    "descripcion": "DespuÃ©s del segundo rechazo, la app deja de solicitar diÃ¡logos y ofrece Ir a Ajustes."
   },
   {
     "archivo": "11f_acceso_ajustes_android.png",
     "titulo": "26 Acceso real a Ajustes",
-    "descripcion": "El botón abre App info de PharmaMobil en Android. Desde aquí se puede conceder el permiso."
+    "descripcion": "El botÃ³n abre App info de PharmaMobil en Android. Desde aquÃ­ se puede conceder el permiso."
   },
   {
     "archivo": "11g_permiso_activado_en_ajustes.png",
-    "titulo": "27 Concesión desde el sistema",
-    "descripcion": "Se habilitaron las notificaciones en los Ajustes auténticos de Android, sin pm grant."
+    "titulo": "27 ConcesiÃ³n desde el sistema",
+    "descripcion": "Se habilitaron las notificaciones en los Ajustes autÃ©nticos de Android, sin pm grant."
   },
   {
     "archivo": "11h_permiso_concedido.png",
@@ -36,7 +36,37 @@
   },
   {
     "archivo": "11i_aviso_real_sincronizacion.png",
-    "titulo": "29 Notificación de sincronización",
-    "descripcion": "Después de sincronizar aparece un aviso auténtico con los contadores reales. No se generó una imagen de ejemplo."
+    "titulo": "29 NotificaciÃ³n de sincronizaciÃ³n",
+    "descripcion": "DespuÃ©s de sincronizar aparece un aviso autÃ©ntico con los contadores reales. No se generÃ³ una imagen de ejemplo."
+  },
+  {
+    "carpeta": "firebase",
+    "archivo": "03_logcat_real_android_studio.jpg",
+    "titulo": "30 Inicialización y prueba real del SDK",
+    "descripcion": "Terminal de Android Studio mostrando el Logcat real filtrado: inicialización, registro no fatal y Messaging con token disponible. El token no se imprime."
+  },
+  {
+    "carpeta": "firebase",
+    "archivo": "06_no_fatal_recibido_consola.jpg",
+    "titulo": "31 Reporte recibido en Firebase",
+    "descripcion": "Consola del proyecto PharmaMobil-JorgeQuispe: un evento recuperable real, identificado como Fallo técnico: controlado. No se provocó un cierre por excepción."
+  },
+  {
+    "carpeta": "firebase",
+    "archivo": "08_no_fatal_detalle_consola.jpg",
+    "titulo": "32 Detalle del no fatal",
+    "descripcion": "Firebase muestra Non-fatal Exception, la clase ReporteTecnicoSeguro y la recepción real del emulador el 4 de noviembre de 2026 a las 15:50:27."
+  },
+  {
+    "carpeta": "firebase",
+    "archivo": "07_claves_tecnicas_consola.jpg",
+    "titulo": "33 Claves técnicas sin datos personales",
+    "descripcion": "Las claves recibidas son únicamente operación, pantalla y tipo de error. No incluyen JWT, contraseña, usuario ni nombre de producto."
+  },
+  {
+    "carpeta": "firebase",
+    "archivo": "09_evento_tecnico_consola.jpg",
+    "titulo": "34 Evento técnico recibido",
+    "descripcion": "Registro prueba_no_fatal asociado al reporte de Crashlytics. Es un log técnico de Crashlytics, no un evento de Analytics."
   }
 ]

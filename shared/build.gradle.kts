@@ -61,6 +61,8 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
         commonMain.dependencies {
+            implementation(libs.firebase.crashlytics)
+            implementation(libs.firebase.messaging)
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines)
             // api: androidApp llama a initKoin(), cuya firma expone KoinAppDeclaration.

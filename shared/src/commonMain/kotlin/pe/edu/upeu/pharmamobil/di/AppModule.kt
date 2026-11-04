@@ -35,6 +35,8 @@ import pe.edu.upeu.pharmamobil.presentation.producto.ProductoViewModel
 
 
 val dataModule = module {
+    single { pe.edu.upeu.pharmamobil.data.firebase.TelemetriaFirebase() }
+    single<pe.edu.upeu.pharmamobil.domain.port.Telemetria> { get<pe.edu.upeu.pharmamobil.data.firebase.TelemetriaFirebase>() }
     single(createdAtStart = true) {
         PharmaDb(get<CreadorDeDriver>().crear()).also {
             // AndroidSqliteDriver abre el archivo al ejecutar la primera consulta.
@@ -52,7 +54,7 @@ val dataModule = module {
     }
     single { ProductoApi(get()) }
     single { ProductoLocal(get()) }
-    single<ProductoRepository> { ProductoRepositorioOffline(get(), get(), get(), conectividad = getOrNull()) }
+    single<ProductoRepository> { ProductoRepositorioOffline(get(), get(), get(), conectividad = getOrNull(), telemetria = get()) }
     single<AuthRepository> { AuthRepositorioRest(get(), get()) }
     single<ClienteRepository> { ClienteRepositorioEnMemoria() }
 }

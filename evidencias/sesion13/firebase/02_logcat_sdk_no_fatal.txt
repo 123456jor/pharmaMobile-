@@ -1,0 +1,6 @@
+11-04 20:50:24.487 I/FirebaseApp(20534): Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+11-04 20:50:24.775 I/FirebaseCrashlytics(20534): Initializing Firebase Crashlytics 20.1.0 for pe.edu.upeu.pharmamobil
+11-04 20:50:25.080 I/FirebaseInitProvider(20534): FirebaseApp initialization successful
+11-04 20:50:25.395 I/System.out(20534): TELEMETRIA_EVENTO nombre=prueba_no_fatal contexto={pantalla=diagnostico, operacion=prueba_no_fatal, tipo_error=controlado} sdk_llamado=true
+11-04 20:50:25.396 I/System.out(20534): TELEMETRIA_NO_FATAL contexto={pantalla=diagnostico, operacion=prueba_no_fatal, tipo_error=controlado} sdk_llamado=true
+11-04 20:50:33.903 I/AuthDebugReceiver(20534): FIREBASE_DIAGNOSTICO mensajeria_token_disponible=true token_omitido=true

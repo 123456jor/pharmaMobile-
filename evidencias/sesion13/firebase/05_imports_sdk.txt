@@ -1,0 +1,3 @@
+shared/src\commonMain\kotlin\pe\edu\upeu\pharmamobil\data\firebase\TelemetriaFirebase.kt:3:import dev.gitlive.firebase.Firebase
+shared/src\commonMain\kotlin\pe\edu\upeu\pharmamobil\data\firebase\TelemetriaFirebase.kt:4:import dev.gitlive.firebase.crashlytics.crashlytics
+shared/src\commonMain\kotlin\pe\edu\upeu\pharmamobil\data\firebase\TelemetriaFirebase.kt:5:import dev.gitlive.firebase.messaging.messaging

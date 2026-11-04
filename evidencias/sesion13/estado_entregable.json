@@ -1,6 +1,7 @@
 {
   "finalizado": false,
   "permisos": true,
-  "permisos_detalle": "Tres estados, explicación, Ajustes y aviso real comprobados en emulador; 112 pruebas aprobadas.",
-  "firebase": false
+  "permisos_detalle": "Tres estados, explicaciÃ³n, Ajustes y aviso real comprobados en emulador; 112 pruebas aprobadas.",
+  "firebase": true,
+  "firebase_detalle": "SDK real, no fatal y Messaging comprobados; reporte, claves y log observados en la consola del proyecto."
 }

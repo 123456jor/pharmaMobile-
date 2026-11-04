@@ -29,7 +29,8 @@ class ProductoRepositorioOffline(
     private val remoto: ProductoApi,
     private val sesionManager: SesionManager? = null,
     private val ahora: () -> Long = { Clock.System.now().toEpochMilliseconds() },
-    private val conectividad: Conectividad? = null
+    private val conectividad: Conectividad? = null,
+    private val telemetria: pe.edu.upeu.pharmamobil.domain.port.Telemetria? = null
 ) : ProductoRepository {
     private val sincronizacion = Mutex()
 
@@ -53,6 +54,9 @@ class ProductoRepositorioOffline(
     override suspend fun sincronizar(): ResumenSync = sincronizarInterno()
 
     private suspend fun sincronizarInterno(idRegistro: Long? = null): ResumenSync = sincronizacion.withLock {
+        val contexto = mapOf("pantalla" to "productos", "operacion" to "sincronizar")
+        telemetria?.registrarEvento("sync_inicio", contexto)
+        try {
         var enviadas = 0
         var transporteInterrumpido = false
         var falloDelRegistro: Throwable? = null
@@ -83,9 +87,13 @@ class ProductoRepositorioOffline(
                     local.confirmarSubida(pendiente.id, checkNotNull(confirmado))
                     enviadas++
                 }
-                is ResultadoEnvio.Permanente -> local.marcarFallida(pendiente.id,
-                    if (fallo != null && resultadoPostIncierto(fallo)) MOTIVO_INCIERTO else resultado.motivo)
+                is ResultadoEnvio.Permanente -> {
+                    telemetria?.registrarEvento("error_permanente", contexto + contextoTecnicoError(fallo))
+                    local.marcarFallida(pendiente.id,
+                        if (fallo != null && resultadoPostIncierto(fallo)) MOTIVO_INCIERTO else resultado.motivo)
+                }
                 is ResultadoEnvio.Transitorio -> {
+                    telemetria?.registrarEvento("error_transitorio", contexto + contextoTecnicoError(fallo))
                     if (fallo != null && resultadoPostIncierto(fallo)) {
                         // PharmaSoft no implementa claves de idempotencia. No repetir un POST ambiguo.
                         local.marcarFallida(pendiente.id, MOTIVO_INCIERTO)
@@ -125,7 +133,38 @@ class ProductoRepositorioOffline(
             val api = (error as? ErrorApiException)?.error
             if (api != ErrorApi.SinConexion && api != ErrorApi.TiempoAgotado) throw error
         }
-        ResumenSync(enviadas, local.contarFallidas(), local.contarPendientes())
+        ResumenSync(enviadas, local.contarFallidas(), local.contarPendientes()).also {
+            telemetria?.registrarEvento("sync_fin", contexto + mapOf("enviadas" to it.enviadas.toString(),
+                "fallidas" to it.fallidas.toString(), "pendientes" to it.pendientes.toString()))
+        }
+        } catch (cancelacion: CancellationException) { throw cancelacion }
+        catch (error: Exception) {
+            val tecnico = contexto + contextoTecnicoError(error)
+            if (error !is ErrorApiException && error !is ErrorSesionException) {
+                telemetria?.registrarEvento("error_inesperado", tecnico)
+                telemetria?.registrarError(error, tecnico)
+            }
+            telemetria?.registrarEvento("sync_fin", tecnico)
+            throw error
+        }
+    }
+
+    private fun contextoTecnicoError(error: Throwable?): Map<String, String> {
+        val (tipo, codigo) = when (val api = (error as? ErrorApiException)?.error) {
+            is ErrorApi.Validacion -> "validacion" to "400"
+            is ErrorApi.Conflicto -> "conflicto" to "409"
+            ErrorApi.NoEncontrado -> "no_encontrado" to "404"
+            ErrorApi.Servidor -> "servidor" to null
+            ErrorApi.SinConexion -> "sin_conexion" to null
+            ErrorApi.TiempoAgotado -> "tiempo_agotado" to null
+            null -> when ((error as? ErrorSesionException)?.error) {
+                ErrorSesion.SinPermiso -> "sin_privilegio" to "403"
+                ErrorSesion.SesionExpirada, ErrorSesion.CredencialesInvalidas -> "no_autorizado" to "401"
+                ErrorSesion.SinConexion -> "sin_conexion" to null
+                null -> "inesperado" to null
+            }
+        }
+        return mapOf("tipo_error" to tipo) + if (codigo != null) mapOf("codigo_estado" to codigo) else emptyMap()
     }
 
     override suspend fun corregirPendiente(producto: Producto) = sincronizacion.withLock {
