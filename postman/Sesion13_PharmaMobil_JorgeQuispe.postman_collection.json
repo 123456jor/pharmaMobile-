@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "Sesion 13 - PharmaMobil - Jorge Quispe",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Verificación real del producto creado sin red en Android. Sin credenciales ni tokens en la plantilla."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1/"
+    },
+    {
+      "key": "usuario",
+      "value": "admin"
+    },
+    {
+      "key": "claveAdmin",
+      "value": ""
+    },
+    {
+      "key": "jwt",
+      "value": ""
+    },
+    {
+      "key": "productoId",
+      "value": "103"
+    },
+    {
+      "key": "nombreProductoReal",
+      "value": "A0_S13_Jorge_20261104_142729"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Login admin - obtener JWT",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"{{usuario}}\", \"password\": \"{{claveAdmin}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.unset('jwt');",
+              "pm.collectionVariables.unset('claveAdmin');",
+              "pm.test('Login correcto', () => pm.response.to.have.status(200));",
+              "if(pm.response.code === 200) { const token=pm.response.json().token; pm.test('JWT recibido', () => pm.expect(token).to.be.a('string').and.not.empty); pm.collectionVariables.set('jwt',token); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Producto creado offline - ID confirmado",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "{{baseUrl}}productos/{{productoId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Producto confirmado HTTP 200', () => pm.response.to.have.status(200));",
+              "if(pm.response.code === 200) { const p=pm.response.json(); pm.test('ID real positivo', () => pm.expect(p.id).to.eql(Number(pm.collectionVariables.get('productoId')))); pm.test('Nombre creado en Android', () => pm.expect(p.nombre).to.eql(pm.collectionVariables.get('nombreProductoReal'))); pm.test('Precio y stock conservados', () => { pm.expect(p.precio).to.eql(5.5); pm.expect(p.stock).to.eql(15); }); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Listado - sin duplicados del producto offline",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "{{baseUrl}}productos?tamanio=100"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Listado HTTP 200', () => pm.response.to.have.status(200));",
+              "if(pm.response.code === 200) { const r=pm.response.json(); pm.test('Listado completo', () => pm.expect(r.ultima).to.eql(true)); const p=r.contenido.filter(x => x.nombre === pm.collectionVariables.get('nombreProductoReal')); pm.test('Una sola coincidencia', () => pm.expect(p.length).to.eql(1)); }"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

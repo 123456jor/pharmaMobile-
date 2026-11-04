@@ -1,0 +1,17 @@
+{
+  "fecha": "2026-11-04T14:30:18.236724-05:00",
+  "get_producto_status": 200,
+  "producto": {
+    "id": 103,
+    "nombre": "A0_S13_Jorge_20261104_142729",
+    "precio": 5.5,
+    "stock": 15,
+    "estado": true,
+    "categoriaId": 1,
+    "categoriaNombre": "Medicamentos",
+    "fechaCreacion": "2026-11-04T14:28:30.781355",
+    "fechaModificacion": null
+  },
+  "coincidencias_en_servidor": 1,
+  "listado_completo": true
+}

@@ -1,0 +1,4 @@
+--------- beginning of main
+11-04 19:32:42.285 10739 10739 I AuthDebugReceiver: METADATA token_presente=false jwt_exp=null ahora=1793820762 vencido=false sesion_exp=null
+11-04 19:40:50.327 12813 12813 I AuthDebugReceiver: METADATA token_presente=true jwt_exp=1793821285 ahora=1793821250 vencido=false sesion_exp=1793821285
+11-04 19:46:28.275 14768 14768 I AuthDebugReceiver: METADATA token_presente=true jwt_exp=1793821596 ahora=1793821588 vencido=false sesion_exp=1793821595
