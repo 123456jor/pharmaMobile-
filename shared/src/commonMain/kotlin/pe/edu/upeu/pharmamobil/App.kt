@@ -261,6 +261,7 @@ fun App() = KoinContext {
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
                             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     )
@@ -290,7 +291,7 @@ fun App() = KoinContext {
 
                         Screen.Productos ->
                             ProductoScreen(
-                                viewModel = koinViewModel(),
+                                viewModel = koinViewModel(key = "productos-${sesion.usuario}"),
                                 permiteEscritura = sesion.puede("CATALOGO_ESCRIBIR")
                             )
 

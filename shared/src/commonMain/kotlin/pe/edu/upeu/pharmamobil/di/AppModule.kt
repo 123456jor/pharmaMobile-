@@ -77,7 +77,8 @@ val domainModule = module {
 val presentationModule = module {
     viewModel { SesionViewModel(get(), get(), get(), get()) }
     viewModel { parametros -> ProductoViewModel(get(), get(), get(), get(), get(), get(),
-        soloConsulta = parametros.getOrNull<Boolean>() ?: false) }
+        soloConsulta = parametros.getOrNull<Boolean>() ?: false,
+        conectividad = getOrNull(), sincronizarProductos = get()) }
     viewModel { ClienteViewModel(get(), get()) }
 }
 

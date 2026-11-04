@@ -13,7 +13,9 @@ data class ProductoUi(
     val precioValor: Double,
     val stockValor: Int,
     val categoriaId: Long,
-    val pendiente: Boolean = false
+    val pendiente: Boolean = false,
+    val intentos: Int = 0,
+    val ultimoError: String? = null
 )
 
 fun Producto.aUi(): ProductoUi = ProductoUi(
@@ -25,5 +27,16 @@ fun Producto.aUi(): ProductoUi = ProductoUi(
     precioValor = precio,
     stockValor = stock,
     categoriaId = categoriaId,
-    pendiente = pendiente
+    pendiente = pendiente,
+    intentos = intentos,
+    ultimoError = ultimoError
 )
+
+enum class EstadoEnvioUi { Sincronizado, Pendiente, Fallido }
+val ProductoUi.estadoEnvio: EstadoEnvioUi get() = when {
+    !pendiente -> EstadoEnvioUi.Sincronizado
+    intentos >= Producto.MAX_INTENTOS -> EstadoEnvioUi.Fallido
+    else -> EstadoEnvioUi.Pendiente
+}
+val ProductoUi.requiereConciliacion: Boolean get() = ultimoError == pe.edu.upeu.pharmamobil.domain.model.PoliticaEnvio.INCIERTO
+val ProductoUi.puedeReintentar: Boolean get() = ultimoError in pe.edu.upeu.pharmamobil.domain.model.PoliticaEnvio.recuperables

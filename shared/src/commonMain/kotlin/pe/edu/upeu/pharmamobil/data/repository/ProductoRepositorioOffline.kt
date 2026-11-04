@@ -159,9 +159,8 @@ class ProductoRepositorioOffline(
     }
 
     companion object {
-        const val MOTIVO_INCIERTO = "Resultado incierto: revisa PharmaSoft. Si ya existe, concilia su ID; reenvía solo si confirmas que no llegó."
-        val ERRORES_RECUPERABLES = setOf("Sin conexión con PharmaSoft", "Se agotó el tiempo de espera",
-            "El servidor no pudo atender la solicitud")
+        const val MOTIVO_INCIERTO = pe.edu.upeu.pharmamobil.domain.model.PoliticaEnvio.INCIERTO
+        val ERRORES_RECUPERABLES = pe.edu.upeu.pharmamobil.domain.model.PoliticaEnvio.recuperables
     }
 
     // Editar y eliminar requieren conexión, según la decisión del usuario.
