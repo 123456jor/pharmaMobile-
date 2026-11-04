@@ -56,3 +56,6 @@ WHERE id = :id AND pendiente = 1;
 
 reiniciarIntentos:
 UPDATE producto SET intentos = 0, ultimoError = NULL WHERE id = :id AND pendiente = 1;
+
+restaurarIntentosTrasRechazo:
+UPDATE producto SET intentos = :intentos WHERE id = :id AND pendiente = 1;

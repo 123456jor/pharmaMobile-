@@ -52,7 +52,7 @@ val dataModule = module {
     }
     single { ProductoApi(get()) }
     single { ProductoLocal(get()) }
-    single<ProductoRepository> { ProductoRepositorioOffline(get(), get(), get()) }
+    single<ProductoRepository> { ProductoRepositorioOffline(get(), get(), get(), conectividad = getOrNull()) }
     single<AuthRepository> { AuthRepositorioRest(get(), get()) }
     single<ClienteRepository> { ClienteRepositorioEnMemoria() }
 }
@@ -61,6 +61,7 @@ val dataModule = module {
 private const val MODO_TIMEOUT_PARA_PRUEBAS = false
 
 val domainModule = module {
+    factory { pe.edu.upeu.pharmamobil.domain.usecase.SincronizarUseCase(get()) }
     factory { IniciarSesionUseCase(get()) }
     factory { ObtenerSesionGuardadaUseCase(get()) }
     factory { CerrarSesionUseCase(get()) }

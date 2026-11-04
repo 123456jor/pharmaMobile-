@@ -11,6 +11,9 @@ import pe.edu.upeu.pharmamobil.data.local.CreadorDeDriver
 import pe.edu.upeu.pharmamobil.data.local.CreadorDeDriverAndroid
 
 actual val platformModule: Module = module {
+    single<pe.edu.upeu.pharmamobil.domain.port.Conectividad> {
+        pe.edu.upeu.pharmamobil.data.network.ConectividadAndroid(androidContext())
+    }
     single<CreadorDeDriver> { CreadorDeDriverAndroid(androidContext()) }
     single<Compartidor> { CompartidorAndroid(androidContext()) }
     single<AlmacenSeguro> { AlmacenSeguroAndroid(androidContext()) }

@@ -36,6 +36,12 @@ class ProductoLocal(base: PharmaDb) {
     fun contarPendientes(): Int = consultas.contarPendientes(Producto.MAX_INTENTOS.toLong()).executeAsOne().toInt()
     fun contarFallidas(): Int = consultas.contarFallidas(Producto.MAX_INTENTOS.toLong()).executeAsOne().toInt()
     fun sumarIntento(id: Long, motivo: String) = consultas.sumarIntento(motivo, id, Producto.MAX_INTENTOS.toLong())
+    /** Recupera el contador anterior solo tras un rechazo conocido; todo sigue siendo atómico. */
+    fun registrarFalloTransitorio(id: Long, anteriores: Int, motivo: String) = consultas.transaction {
+        require(anteriores in 0 until Producto.MAX_INTENTOS)
+        consultas.restaurarIntentosTrasRechazo(anteriores.toLong(), id)
+        sumarIntento(id, motivo)
+    }
     /** El límite es también el estado excluido de envío. No significa cinco peticiones reales. */
     fun marcarFallida(id: Long, motivo: String) = consultas.marcarFallida(Producto.MAX_INTENTOS.toLong(), motivo, id)
     fun reiniciarIntentos(id: Long) = consultas.reiniciarIntentos(id)
