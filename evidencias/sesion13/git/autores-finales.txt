@@ -1,0 +1,46 @@
+15db0d7 2026-11-04 Jorge Quispe <joorge0148@gmail.com> test(integrador): verificar reintentos permisos y sincronizacion
+7467096 2026-11-04 Jorge Quispe <joorge0148@gmail.com> feat(firebase): registrar telemetria mediante interfaz de dominio
+a8f45be 2026-11-04 Jorge Quispe <joorge0148@gmail.com> feat(permisos): integrar gestor nativo con tres estados
+a3ce153 2026-11-04 Jorge Quispe <joorge0148@gmail.com> docs(s13): guardar avance del entregable con capturas reales
+d30930f 2026-11-04 Jorge Quispe <joorge0148@gmail.com> feat(ui): mostrar pendientes fallidas y ultima sincronizacion
+7bdbe76 2026-11-04 Jorge Quispe <joorge0148@gmail.com> feat(sync): distinguir fallos y aplicar espera creciente
+afbd490 2026-11-04 Jorge Quispe <joorge0148@gmail.com> fix(build): inicializar SQLite en el worker de migraciones
+30a6899 2026-11-04 Jorge Quispe <joorge0148@gmail.com> feat(local): guardar intentos y errores de sincronizacion
+4f89b54 2026-11-04 Jorge Quispe <joorge0148@gmail.com> fix(auth): bloquear consulta local tras cierre voluntario
+abae5a8 2026-11-04 Jorge Quispe <joorge0148@gmail.com> docs(integrador): registrar huecos del flujo completo
+8184dc7 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> docs: finaliza entregable con enlace de GitHub publicado y verificado
+f09721e 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> docs: entrega bitacora real capturas Postman y PDF de actividad autonoma 11
+f9fdf1d 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> fix: bloquea escritura al caducar y retira sesion previa ante rechazo
+c052b69 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> test: acredita sensibilidad del patron offline y 91 pruebas completas
+de29d57 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> fix: permite consultar cache sin red con sesion vencida y bloquea modificaciones
+fc3067e 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> feat: persiste antiguedad de sincronizacion y migra la base sin perder productos
+d33a5b1 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> test: verifica sincronizacion completa ids y ausencia de duplicados
+f49b9cd 2026-10-23 Jorge Armando Quispe Huaman <joorge0148@gmail.com> test: acredita registro sin red y conservacion de pendientes en actividad autonoma
+7adc1ad 2026-10-21 123456jor <joorge0148@gmail.com> feat(postman): prepara comprobaciones reutilizables del producto offline de Jorge
+9c526de 2026-10-21 123456jor <joorge0148@gmail.com> docs: entrega persistencia offline-first con PDF y evidencias reales de Postman
+217c036 2026-10-21 123456jor <joorge0148@gmail.com> fix(auth): restaura sesion cifrada vigente al abrir sin red
+147d3b6 2026-10-21 123456jor <joorge0148@gmail.com> feat(ui): observa el Flow local y sincroniza sin recargas manuales
+1e68494 2026-10-21 123456jor <joorge0148@gmail.com> test: cubre offline-first y corrige duplicacion confirmada de pendientes
+2997a2e 2026-10-21 123456jor <joorge0148@gmail.com> feat(data): agrega repositorio offline con subida antes de descarga
+963e2a6 2026-10-21 123456jor <joorge0148@gmail.com> feat(local): observa productos y conserva pendientes en transacciones
+010de22 2026-10-21 123456jor <joorge0148@gmail.com> feat(db): registra driver Android y PharmaDb en Koin
+dbcc133 2026-10-21 123456jor <joorge0148@gmail.com> feat(db): agrega SQLDelight 2.1.0 y esquema de producto
+ef38718 2026-10-15 123456jor <joorge0148@gmail.com> docs(auth): completar entrega S10 y confirmar publicacion
+171afd3 2026-10-15 123456jor <joorge0148@gmail.com> docs(auth): agregar evidencias reales de actividad autonoma S10
+08b05ef 2026-10-15 123456jor <joorge0148@gmail.com> test(auth): verificar cliente real tras cerrar sesion
+2c787d0 2026-10-15 123456jor <joorge0148@gmail.com> fix(auth): ajustar acceso de productos segun permiso
+9c84377 2026-10-15 123456jor <joorge0148@gmail.com> test(auth): agregar utilidad debug para alterar token
+507da07 2026-10-15 123456jor <joorge0148@gmail.com> fix(auth): asegurar redireccion al expirar la sesion
+cd19a6f 2026-10-14 123456jor <joorge0148@gmail.com> fix(productos): enviar estado en solicitudes Android
+da27088 2026-10-14 123456jor <joorge0148@gmail.com> fix(auth): restaurar sesión con respuesta real del backend
+b56af1c 2026-10-14 123456jor <joorge0148@gmail.com> docs(postman): agregar solicitudes CRUD de PharmaSoft
+a3b3ac1 2026-10-14 123456jor <joorge0148@gmail.com> docs(auth): documentar flujo de autenticación
+f9dbfe4 2026-10-14 123456jor <joorge0148@gmail.com> feat(auth): agregar login y guardia por permisos
+1b35b3e 2026-10-14 123456jor <joorge0148@gmail.com> feat(auth): implementar repositorio y sesión JWT
+5594841 2026-10-14 123456jor <joorge0148@gmail.com> feat(auth): configurar Auth Bearer y errores HTTP
+d6af687 2026-10-14 123456jor <joorge0148@gmail.com> feat(auth): almacenar JWT cifrado en Android
+e0684f0 2026-10-14 123456jor <joorge0148@gmail.com> feat(auth): modelar sesión en dominio
+a39f208 2026-10-07 123456jor <joorge0148@gmail.com> feat(presentation): botón Compartir en inventario, pruebas con FakeCompartidor y README de capacidades nativas
+2f71316 2026-10-07 123456jor <joorge0148@gmail.com> feat(domain): interfaz Compartidor, implementaciones por plataforma y registro en platformModule
+3dbfaea 2026-10-07 123456jor <joorge0148@gmail.com> feat(platform): expect/actual formatearSoles para Android e iOS y uso en ProductoUi
+7de564c 2026-10-04 Jorge Quispe <joorge0148@gmail.com> feat: add PharmaMobil product CRUD session 08

@@ -1,113 +1,198 @@
 {
   "pdf": "output/pdf/Entregable_Sesion13_Proyecto_Integrador_Jorge_Quispe.pdf",
-  "paginas": 25,
-  "generado": "2026-11-04T15:29:05.999757-05:00",
-  "finalizado": false,
+  "paginas": 43,
+  "generado": "2026-11-04T16:15:40.302239-05:00",
+  "finalizado": true,
   "figuras": [
     {
       "archivo": "evidencias/sesion13/capturas/01_primera_apertura.png",
       "sha256": "483af23cfefa51c12bbdfcdc1d70a1db6442bf640a51fb5cf491e3f395c1efbb",
-      "pagina_pdf": 4
+      "pagina_pdf": 5
     },
     {
       "archivo": "evidencias/sesion13/capturas/02_login_incorrecto.png",
       "sha256": "9dd80b01453fe0f0850745f6b7c7751fe6dd1f03d59553170319047da772fd4e",
-      "pagina_pdf": 5
+      "pagina_pdf": 6
     },
     {
       "archivo": "evidencias/sesion13/capturas/03_inventario_vacio.png",
       "sha256": "fc9a1f63256794eaddb84808deb835f3f7d3c640ecc82daa6f8a48680226b364",
-      "pagina_pdf": 6
+      "pagina_pdf": 7
     },
     {
       "archivo": "evidencias/sesion13/capturas/04_producto_pendiente.png",
       "sha256": "1128d9c69ee8b09fa5dd64b9b14e91093c88ddd55c1db54aea4902259dacca4a",
-      "pagina_pdf": 7
+      "pagina_pdf": 8
     },
     {
       "archivo": "evidencias/sesion13/capturas/05_producto_sincronizado.png",
       "sha256": "7f7e108af419c7d9d286281ba5da798894c94b13a2cb1f69a5172285c758d018",
-      "pagina_pdf": 8
+      "pagina_pdf": 9
     },
     {
       "archivo": "evidencias/sesion13/capturas/05b_postman_producto_103.jpg",
       "sha256": "d9a88c8489df25c18e6f891665ad9da3d690f36d444ab4f8b9ba20be1848feb4",
-      "pagina_pdf": 9
+      "pagina_pdf": 10
     },
     {
       "archivo": "evidencias/sesion13/capturas/06_precio_rechazado_servidor.png",
       "sha256": "9af9eb410731df4c97be53afdd63390e415f2ad4392da5cd24952bfdba003ebe",
-      "pagina_pdf": 10
+      "pagina_pdf": 11
     },
     {
       "archivo": "evidencias/sesion13/capturas/07a_borrador_antes_de_expirar.png",
       "sha256": "0918e3c2ac687fafe9ab0c3f344cb95264a00b5eda0eee5428dc013e0ae27d05",
-      "pagina_pdf": 11
+      "pagina_pdf": 12
     },
     {
       "archivo": "evidencias/sesion13/capturas/07b_sesion_expirada.png",
       "sha256": "dd782b2c4d80f5c5ab1bb8fa7388034a9d727f8ca7124b14a6940dda7cfa02a8",
-      "pagina_pdf": 12
+      "pagina_pdf": 13
     },
     {
       "archivo": "evidencias/sesion13/capturas/07c_formulario_tras_reautenticar.png",
       "sha256": "922882fe33251e4d2915e319c779653a7fd1b7589c76bff1e5c608d92faffbd3",
-      "pagina_pdf": 13
+      "pagina_pdf": 14
     },
     {
       "archivo": "evidencias/sesion13/capturas/08_cierre_sesion.png",
       "sha256": "eca0fd2ff990acae9546c008f0bfeb37e257075e252ac42799fe8a2eb761ebca",
-      "pagina_pdf": 14
+      "pagina_pdf": 15
     },
     {
       "archivo": "evidencias/sesion13/capturas/08b_cache_sin_sesion_tras_logout.png",
       "sha256": "632b48a71db7b822dedd71c45bbc9a5b2a4085da7e9eb086037807ec4d2aaf47",
-      "pagina_pdf": 15
+      "pagina_pdf": 16
     },
     {
       "archivo": "evidencias/sesion13/capturas/08c_logout_offline_bloqueado.png",
       "sha256": "c0ff401363e9175bfaf6c12416add6001562d58df37d6b370b90c3e2370d8a9b",
-      "pagina_pdf": 16
+      "pagina_pdf": 17
     },
     {
       "archivo": "evidencias/sesion13/capturas/10_estado_sincronizacion_con_fallida.png",
       "sha256": "ce40a8f4b03c5787fc71f930871b41edef2088d632c14ec497e3da2a9b6afcaf",
-      "pagina_pdf": 17
+      "pagina_pdf": 18
     },
     {
       "archivo": "evidencias/sesion13/capturas/10b_contador_pendiente_sin_red.png",
       "sha256": "c092367b2631b8ca83d0f3559e5e485e22ea5f540736b6d6e282b11ea8b38faf",
-      "pagina_pdf": 18
+      "pagina_pdf": 19
     },
     {
       "archivo": "evidencias/sesion13/capturas/10c_contador_tras_sincronizar.png",
       "sha256": "fa6317fea4087553bd17a07bfbdebbcc2fcf252829ff2061cb8ed3c2898140ec",
-      "pagina_pdf": 19
+      "pagina_pdf": 20
     },
     {
       "archivo": "evidencias/sesion13/capturas/10d_fila_fallida_visible.png",
       "sha256": "4ec4f1456ca2c48711813c244c127f9468e9347ebf0aa55b8f9d40a088615f0c",
-      "pagina_pdf": 20
+      "pagina_pdf": 21
     },
     {
       "archivo": "evidencias/sesion13/capturas/10e_motivo_real_y_accion_corregir.png",
       "sha256": "4aa839ec2629460e0bd88e8bb386d3cccefc3e9a1ad7259786c4d0a105ae5c35",
-      "pagina_pdf": 21
+      "pagina_pdf": 22
     },
     {
       "archivo": "evidencias/sesion13/capturas/10f_correccion_guardada.png",
       "sha256": "3b5d16dff6b398677f3118323a10760131eda502a35398bda42422dca8b5db8f",
-      "pagina_pdf": 22
+      "pagina_pdf": 23
     },
     {
       "archivo": "evidencias/sesion13/capturas/10g_sincronizacion_completa.png",
       "sha256": "c26a94788f2505340a9eec2e1558360ce441e983b4e16e8caec3909b4ba6de5b",
-      "pagina_pdf": 23
+      "pagina_pdf": 24
     },
     {
       "archivo": "evidencias/sesion13/capturas/10h_reapertura_sin_red_fecha_persistida.png",
       "sha256": "8a18dca53ba735f5d303c246e5d00176dd3c9e441625943b4ec44b7e0063592b",
-      "pagina_pdf": 24
+      "pagina_pdf": 25
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11b_explicacion_previa.png",
+      "sha256": "8d1425410763c186f5e483c3e142a0c5a4b1b772105c59b0d807ad3758f7bb35",
+      "pagina_pdf": 26
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11c_dialogo_real_android.png",
+      "sha256": "e96b7427d5a9607576e306fb2a759d1579982161088d92efe526fafafc3ec644",
+      "pagina_pdf": 27
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11d_permiso_denegado.png",
+      "sha256": "a6e3d0606485145df28486f137920e22dbbea50de1b22cacf982aa8450b023c3",
+      "pagina_pdf": 28
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11e_permiso_denegado_permanente.png",
+      "sha256": "52b295140319880d13e041e00eb860ecd51c78de9cc17de7b98670abec6d2e01",
+      "pagina_pdf": 29
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11f_acceso_ajustes_android.png",
+      "sha256": "f503ce77ca608cb2008252953bc2d9d9c99095bc9b9e0b91b27fcea11b7c7b0d",
+      "pagina_pdf": 30
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11g_permiso_activado_en_ajustes.png",
+      "sha256": "7738c67f3e4451ef04585d26ff872c2a2863733b91863c55c5be325f776d86d8",
+      "pagina_pdf": 31
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11h_permiso_concedido.png",
+      "sha256": "305c607ca23f880446076a6e23aecfa7939358c3b3b09d6ce086416258cd2f97",
+      "pagina_pdf": 32
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/11i_aviso_real_sincronizacion.png",
+      "sha256": "0350a0502c41d142f9ff33e0fada6685f021173dfa197137e10c9a7576511c0a",
+      "pagina_pdf": 33
+    },
+    {
+      "archivo": "evidencias/sesion13/firebase/03_logcat_real_android_studio.jpg",
+      "sha256": "c13a80612d7bb1f32dd04e7095ff9168839c8dc9380a60591a35259f3938cce1",
+      "pagina_pdf": 34
+    },
+    {
+      "archivo": "evidencias/sesion13/firebase/06_no_fatal_recibido_consola.jpg",
+      "sha256": "444f232671cd7c82120b4f214d36ab3ce440d7c30f27512b97b0c802a6290e3d",
+      "pagina_pdf": 35
+    },
+    {
+      "archivo": "evidencias/sesion13/firebase/08_no_fatal_detalle_consola.jpg",
+      "sha256": "d0feebbdba32ed5a22f601f915a8c1531dc5c968518a3700c54e36711af95c0e",
+      "pagina_pdf": 36
+    },
+    {
+      "archivo": "evidencias/sesion13/firebase/07_claves_tecnicas_consola.jpg",
+      "sha256": "6bff1331490f325c667b5818e6a2f571aec959f8a885da84df54ebf1224728ad",
+      "pagina_pdf": 37
+    },
+    {
+      "archivo": "evidencias/sesion13/firebase/09_evento_tecnico_consola.jpg",
+      "sha256": "529a0a4410bdc508e00f41b06fa4dd89c990d8face5589a092dad4cebf68c1d4",
+      "pagina_pdf": 38
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/12_pruebas_finales.jpg",
+      "sha256": "a8b9a8911bead5a3b240157476208424a890eb820e3972505d8728ccc8471495",
+      "pagina_pdf": 39
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/13a_postman_resultados.jpg",
+      "sha256": "77923e96772a15103de180176cb616c34b55b1fc892a82b940fae6c334a3767e",
+      "pagina_pdf": 40
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/13b_postman_validaciones.jpg",
+      "sha256": "1c71f98a6afb3a4b1024d9bfced131adbec37dbfa5b16b83e45216c44cb93740",
+      "pagina_pdf": 41
+    },
+    {
+      "archivo": "evidencias/sesion13/capturas/13c_postman_403.jpg",
+      "sha256": "83e12256f5a8487da2e90e6287126417e9379fde496165fa0352b73a8d9c4ea1",
+      "pagina_pdf": 42
     }
   ]
 }

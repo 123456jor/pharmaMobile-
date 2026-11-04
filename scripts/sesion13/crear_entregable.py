@@ -39,10 +39,12 @@ def text(s,kind='body',x=46,width=None):
  if y-h<58:newpage()
  p.drawOn(C,x,y-h);y-=h+10
 
-def newpage(title=None):
- global page,y
+def newpage(title=None, landscape=False):
+ global page,y,W,H
+ W,H=tuple(reversed(A4)) if landscape else A4
  if page:C.showPage()
  page+=1
+ C.setPageSize((W,H))
  C.setFillColor(HexColor('#C8102E'));C.rect(0,H-10,W,10,fill=1,stroke=0)
  C.setFillColor(HexColor('#596174'));C.setFont(FONT,8)
  C.drawString(46,H-32,'PharmaMobil  /  Proyecto integrador  /  Sesión 13')
@@ -54,10 +56,10 @@ def newpage(title=None):
 def evidence(name,title,caption,folder='capturas'):
  global y
  p=EVI/folder/name
- if not p.exists():return
- newpage(title)
- text(caption,'body')
+ if not p.exists():raise FileNotFoundError(p)
  with Image.open(p) as im:iw,ih=im.size
+ newpage(title, landscape=iw/ih>1.4)
+ text(caption,'body')
  maxh=y-76;maxw=W-92;ratio=min(maxw/iw,maxh/ih)
  dw,dh=iw*ratio,ih*ratio
  C.drawImage(str(p),(W-dw)/2,y-dh,width=dw,height=dh,preserveAspectRatio=True,mask='auto')
@@ -83,7 +85,7 @@ text('<link href="'+link+'" color="#C8102E">'+link+'</link>')
 text('Alcance: Android y backend PharmaSoft. iOS se excluye por indicación del estudiante. Las solicitudes se comprueban en Postman.')
 text('Estado del informe','sub')
 text('Versión final verificada.' if final else '<b>Avance verificado.</b> Los pasos 1 a 4 están implementados y comprobados. Los permisos nativos, la integración del SDK de Firebase y la ampliación final de pruebas siguen en desarrollo; sus capturas se incorporarán después de ejecutarlos. Esta versión no acredita todavía el cumplimiento total de la guía.')
-text('Las imágenes de este documento son capturas originales del emulador o de Postman. No se reconstruyeron pantallas ni respuestas. El inventario se guarda en SQLDelight y consume el backend real. Cada figura se relaciona con su archivo de evidencia.')
+text('Las imágenes son capturas originales del emulador, Postman, Android Studio o la consola de Firebase. No se reconstruyeron pantallas ni respuestas. El inventario se guarda en SQLDelight y consume el backend real. Cada figura se relaciona con su archivo de evidencia.')
 newpage('Resultados comprobados')
 text('Se auditó el historial antes de elegir base. develop se creó desde feature/s11-autonoma-quispe (8184dc7), que incluía el trabajo previo. La implementación se realiza en feature/integrador-13; los commits nuevos usan Jorge Quispe &lt;joorge0148@gmail.com&gt;.')
 for h,b in [
@@ -93,11 +95,19 @@ for h,b in [
  ('Sincronización','Un único flujo con Mutex, envío antes de descarga, máximo cinco fallos y espera creciente. Un rechazo permanente queda visible. Un POST con respuesta perdida no se reproduce automáticamente: requiere conciliación o revisión explícita.'),
  ('Interfaz y prueba integrada','Los contadores y la fecha salen de consultas observables. Se creó un producto en modo avión con ID -2, precio 6.75 y stock 12: al reconectar obtuvo ID 123 y el contador bajó a cero. Se corrigió otra fila sin duplicarla y se verificó persistencia al reabrir sin internet.')]:
  text(h,'sub');text(b)
+newpage('Permisos y Firebase comprobados')
+text('Permisos nativos','sub')
+text('El contrato común distingue Concedido, Denegado y DenegadoParaSiempre. Android solicita POST_NOTIFICATIONS después de explicar su propósito. Se recorrieron el diálogo real, dos rechazos, el acceso a Ajustes y la concesión. Al sincronizar se vio una notificación real del sistema. Negar este permiso opcional no bloquea el inventario.')
+text('Firebase real y privacidad','sub')
+text('Crashlytics y Messaging se implementaron en la capa de datos detrás de Telemetria. El SDK se inicializó realmente y obtuvo un token de mensajería, cuyo valor no se exporta. El evento no fatal de prueba se recibió en la consola de Firebase a las 15:50:27 del 4 de noviembre: las capturas muestran el detalle, las claves técnicas y el registro del evento.')
+text('Se filtran claves y valores y se reemplaza la excepción por un reporte técnico seguro. No se envían nombres de productos, credenciales, JWT ni datos personales. google-services.json permanece local y excluido de Git. La notificación mostrada es local; no acredita una campaña push remota.')
+text('Prueba HTTP final en Postman','sub')
+text('14 solicitudes y 25 comprobaciones aprobadas, cero fallidas, omitidas o errores. Se confirmó el producto offline ID 123 y se ejecutó crear, consultar, editar y dar de baja un producto de prueba independiente (ID 125). Se verificaron respuestas 400 por precio cero, 401 por token inválido y 403 para escritura sin privilegios.')
 newpage('Pruebas y trazabilidad')
 rs=[ET.parse(p).getroot() for p in (ROOT/'shared/build/test-results/testAndroidHostTest').glob('TEST-*.xml')]
 counts={k:sum(int(r.attrib.get(k,0)) for r in rs) for k in ('tests','failures','errors','skipped')}
 text('Último resultado XML disponible: <b>{tests} pruebas; {failures} fallos, {errors} errores y {skipped} omitidas</b>.'.format(**counts))
-text('Compilación comprobada: :shared:testAndroidHostTest y :androidApp:assembleDebug. APK: androidApp/build/outputs/apk/debug/androidApp-debug.apk. Los logs completos se conservan en evidencias/sesion13/pruebas/.')
+text('Ejecución final sin reutilizar resultados: :shared:verifyCommonMainPharmaDbMigration :shared:testAndroidHostTest :androidApp:assembleDebug --rerun-tasks. BUILD SUCCESSFUL en 1 min 7 s; 79 tareas ejecutadas. APK: androidApp/build/outputs/apk/debug/androidApp-debug.apk. La salida completa está en evidencias/sesion13/salida-pruebas.txt; XML, resumen y HTML se relacionan en docs/sesion13/07_Pruebas_Resultados.md.')
 text('Decisiones que explican el comportamiento','sub')
 text('La pantalla observa la base local para funcionar sin internet. Primero se envían las creaciones y después se descargan todas las páginas. La bajada conserva las filas pendientes y fallidas. Solo se actualiza la fecha cuando termina una sincronización completa sin filas sin resolver.')
 text('El índice previo de fallos produce esperas de 1, 2, 4, 8 y 16 segundos. Como se detiene al quinto fallo, no espera 16 segundos después del último: las esperas efectivas máximas son 1+2+4+8 segundos. Las pruebas usan tiempo virtual.')
@@ -148,8 +158,8 @@ for title,status in [
  text('<b>'+title+'</b> · '+status,'small')
 text('Fuentes y archivos de soporte','sub')
 text('Guía práctica de laboratorio N.º 13, 14 páginas; diapositivas de la sesión 13, 19 páginas; prompt complementario del estudiante. El detalle de una futura actividad autónoma no se inventa a partir de esta práctica.')
-text('docs/sesion13/01_Tabla_Huecos_JorgeQuispe.md<br/>docs/sesion13/02_Esquema_Migracion.md<br/>docs/sesion13/03_Sincronizacion_Refinada.md<br/>docs/sesion13/04_Estados_Interfaz.md<br/>docs/sesion13/Matriz_Cumplimiento.md')
-text('Limitaciones: iOS excluido y sin evidencia de dispositivo físico. No se afirma que Firebase haya recibido un evento en consola hasta observarlo realmente. El estudiante debe revisar el informe y explicar sus decisiones antes de entregarlo.')
+text('docs/sesion13/01_Tabla_Huecos_JorgeQuispe.md<br/>docs/sesion13/02_Esquema_Migracion.md<br/>docs/sesion13/03_Sincronizacion_Refinada.md<br/>docs/sesion13/04_Estados_Interfaz.md<br/>docs/sesion13/05_Gestor_Permisos.md<br/>docs/sesion13/06_Integracion_Firebase.md<br/>docs/sesion13/07_Pruebas_Resultados.md<br/>docs/sesion13/Guia_Defensa.md<br/>docs/sesion13/Matriz_Cumplimiento.md')
+text('Limitaciones: iOS excluido y sin evidencia de dispositivo físico. El no fatal sí fue observado en la consola de Firebase; su recepción se acredita con las capturas originales. No se comprobó una campaña push remota. El estudiante debe revisar el informe y explicar sus decisiones antes de entregarlo.')
 C.save()
 (EVI/'indice_capturas_pdf.json').write_text(json.dumps({'pdf':str(OUT.relative_to(ROOT)).replace('\\','/'),'paginas':len(PdfReader(OUT).pages),'generado':datetime.datetime.now().astimezone().isoformat(),'finalizado':final,'figuras':manifest},ensure_ascii=False,indent=2),encoding='utf8')
 print(json.dumps({'pdf':str(OUT),'paginas':len(PdfReader(OUT).pages),'figuras':len(manifest),'bytes':OUT.stat().st_size,'finalizado':final},ensure_ascii=False))

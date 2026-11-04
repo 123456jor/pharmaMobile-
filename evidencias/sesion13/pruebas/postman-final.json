@@ -1,0 +1,22 @@
+{
+  "fecha": "2026-11-04T16:11:58-05:00",
+  "herramienta": "Postman Desktop Collection Runner",
+  "solicitudes": 14,
+  "comprobaciones": 25,
+  "aprobadas": 25,
+  "fallidas": 0,
+  "omitidas": 0,
+  "errores": 0,
+  "duracion_ms": 5388,
+  "producto_offline_id": 123,
+  "producto_crud_id": 125,
+  "estados": [
+    200,
+    201,
+    204,
+    400,
+    401,
+    403
+  ],
+  "fuente": "capturas/13a_postman_resultados.jpg;13b_postman_validaciones.jpg;13c_postman_403.jpg"
+}

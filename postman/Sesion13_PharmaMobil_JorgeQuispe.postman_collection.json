@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "Sesion 13 - PharmaMobil - Jorge Quispe",
+    "name": "Sesion 13 - PharmaMobil - Jorge Quispe - pruebas finales",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Verificación real del producto creado sin red en Android. Sin credenciales ni tokens en la plantilla."
+    "description": "Pruebas reales del integrador. Las claves se introducen localmente y se borran de variables al ejecutar login. No exportar tokens."
   },
   "variable": [
     {
@@ -28,6 +28,26 @@
     {
       "key": "nombreProductoReal",
       "value": "A0_S13_Jorge_20261104_142729"
+    },
+    {
+      "key": "host",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "claveVendedor",
+      "value": ""
+    },
+    {
+      "key": "jwtVendedor",
+      "value": ""
+    },
+    {
+      "key": "nombreCrud",
+      "value": "Prueba API Sesion13"
+    },
+    {
+      "key": "idCrud",
+      "value": ""
     }
   ],
   "item": [
@@ -121,6 +141,375 @@
             "exec": [
               "pm.test('Listado HTTP 200', () => pm.response.to.have.status(200));",
               "if(pm.response.code === 200) { const r=pm.response.json(); pm.test('Listado completo', () => pm.expect(r.ultima).to.eql(true)); const p=r.contenido.filter(x => x.nombre === pm.collectionVariables.get('nombreProductoReal')); pm.test('Una sola coincidencia', () => pm.expect(p.length).to.eql(1)); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Producto offline confirmado - ID 123",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "{{baseUrl}}productos/123"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Datos reales conservados',()=>{const p=pm.response.json();pm.expect(p.precio).to.eql(6.75);pm.expect(p.stock).to.eql(12);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Backend disponible",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [],
+        "url": "{{host}}/api/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Crear producto de prueba CRUD",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}productos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"{{nombreCrud}}\", \"precio\": 8.25, \"stock\": 10, \"estado\": true, \"categoriaId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "if(pm.response.code===201){pm.collectionVariables.set('idCrud',pm.response.json().id);}"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('nombreCrud','S13_Postman_Jorge_'+Date.now());"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Buscar producto CRUD",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "{{baseUrl}}productos/{{idCrud}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Precio inicial',()=>pm.expect(pm.response.json().precio).to.eql(8.25));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 Editar producto CRUD",
+      "request": {
+        "method": "PUT",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}productos/{{idCrud}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"{{nombreCrud}}\", \"precio\": 9.75, \"stock\": 12, \"estado\": true, \"categoriaId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Precio editado',()=>pm.expect(pm.response.json().precio).to.eql(9.75));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 Eliminar por baja logica",
+      "request": {
+        "method": "DELETE",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "{{baseUrl}}productos/{{idCrud}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 Comprobar persistencia de baja",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          }
+        ],
+        "url": "{{baseUrl}}productos/{{idCrud}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Conserva fila inactiva',()=>pm.expect(pm.response.json().estado).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 Validacion de precio - 400",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}productos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"Validacion API Sesion13\", \"precio\": 0, \"stock\": 3, \"estado\": true, \"categoriaId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+              "pm.test('Error en precio',()=>pm.expect(pm.response.json().validationErrors).to.have.property('precio'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 Token invalido - 401",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer token-invalido"
+          }
+        ],
+        "url": "{{baseUrl}}productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 Login vendedor",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"vendedor\", \"password\": \"{{claveVendedor}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.unset('claveVendedor'); if(pm.response.code===200)pm.collectionVariables.set('jwtVendedor',pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 Sin privilegio de escritura - 403",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtVendedor}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}productos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"Sin privilegio Sesion13\", \"precio\": 6.0, \"stock\": 2, \"estado\": true, \"categoriaId\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
             ]
           }
         }

@@ -1,7 +1,8 @@
 {
-  "finalizado": false,
+  "finalizado": true,
   "permisos": true,
-  "permisos_detalle": "Tres estados, explicaciÃ³n, Ajustes y aviso real comprobados en emulador; 112 pruebas aprobadas.",
+  "permisos_detalle": "Tres estados, explicación, Ajustes y aviso real comprobados en emulador; 112 pruebas aprobadas.",
   "firebase": true,
-  "firebase_detalle": "SDK real, no fatal y Messaging comprobados; reporte, claves y log observados en la consola del proyecto."
+  "firebase_detalle": "SDK real, no fatal y Messaging comprobados; reporte, claves y log observados en la consola del proyecto.",
+  "git_detalle": "Los siete pasos tienen commits reales publicados en feature/integrador-13, con autor Jorge Quispe. El cierre añade pruebas Postman, documentación y este PDF. No se fusiona la rama sin revisión."
 }

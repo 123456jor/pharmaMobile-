@@ -1,3 +1,27 @@
+# PharmaMobil - Sesión 13
+
+Jorge Quispe. Integrador Android: inventario offline con SQLDelight, sincronización con reintentos persistidos, permisos nativos y telemetría Firebase mediante interfaces de dominio. iOS está fuera del alcance de esta práctica.
+
+- [Entregable PDF](output/pdf/Entregable_Sesion13_Proyecto_Integrador_Jorge_Quispe.pdf)
+- [Matriz de cumplimiento](docs/sesion13/Matriz_Cumplimiento.md)
+- [Guía de defensa y demostración](docs/sesion13/Guia_Defensa.md)
+- [Pruebas y resultados](docs/sesion13/07_Pruebas_Resultados.md)
+- [Colección Postman](postman/Sesion13_PharmaMobil_JorgeQuispe.postman_collection.json)
+
+[Pull Request #1 en borrador para revisión](https://github.com/123456jor/pharmaMobile-/pull/1).
+
+## Ejecutar y comprobar en Windows
+
+Usar JDK 21 y Android SDK. Configurar JAVA_HOME con la ruta de su JDK (en este equipo: `C:\Users\joorg\.jdks\ms-21.0.12.1`). Colocar la configuración propia de Firebase en `androidApp/google-services.json`, que está excluida de Git. Iniciar el backend PharmaSoft y Oracle en Docker; el emulador accede a `http://10.0.2.2:8080/api/v1/` y Postman a `http://localhost:8080/api/v1/`.
+
+```powershell
+.\gradlew.bat :shared:verifyCommonMainPharmaDbMigration :shared:testAndroidHostTest :androidApp:assembleDebug --rerun-tasks --console=plain
+```
+
+Resultado comprobado el 4 de noviembre de 2026: 119 pruebas aprobadas, cero fallos, errores u omitidas; migración aprobada y APK generado. Postman ejecutó 14 solicitudes y aprobó 25 comprobaciones. Importar la colección y completar las variables locales de credenciales antes del login; sus valores no se distribuyen en esta colección. Las peticiones CRUD crean su propio producto de prueba y realizan una baja lógica.
+
+## Estructura original del proyecto
+
 This is a Kotlin Multiplatform project targeting Android, iOS.
 
 * [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
