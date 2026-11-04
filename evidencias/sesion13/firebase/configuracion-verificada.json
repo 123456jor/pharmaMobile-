@@ -1,0 +1,18 @@
+{
+  "fecha": "2026-11-04T14:27:52.526387-05:00",
+  "archivo": "androidApp/google-services.json",
+  "proyecto": "pharmamobil-jorgequispe",
+  "paquetes": [
+    "pe.edu.upeu.pharmamobil"
+  ],
+  "sha256": "841168f58c9f22b43bc898cdc25727db4aa9a60be66ac71f581d6dc96c298f5e",
+  "publicar_en_github": false,
+  "decision": "Mantenerlo local y fuera de GitHub; confirmaciÃƒÂ³n expresa del estudiante",
+  "sdk_integrado": true,
+  "evento_visto_en_consola": true,
+  "no_fatal_llamado_sdk": true,
+  "mensajeria_comprobada_sin_exportar_token": true,
+  "consola_confirmada": true,
+  "hora_evento_consola_lima": "2026-11-04T15:50:27-05:00",
+  "issue_id": "d25e1f11923e245adf89c569c07bd406"
+}

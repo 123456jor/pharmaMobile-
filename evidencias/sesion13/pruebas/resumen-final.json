@@ -1,0 +1,13 @@
+{
+  "tests": 119,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "fecha": "2026-11-04T16:05:58.347313-05:00",
+  "apk": "androidApp\\build\\outputs\\apk\\debug\\androidApp-debug.apk",
+  "apk_bytes": 25819289,
+  "apk_sha256": "26f298beeaf896929571fa6adb0913d272816a0833698e037957bf61c4a2499c",
+  "resultado": "BUILD SUCCESSFUL",
+  "tareas": "79 ejecutadas; sin resultados reutilizados",
+  "migracion": "verifyCommonMainPharmaDbMigration aprobada"
+}

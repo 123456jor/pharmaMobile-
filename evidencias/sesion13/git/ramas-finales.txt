@@ -1,0 +1,15 @@
+  develop
+  feature/auth-jwt-quispe
+  feature/crud-productos-quispe
+  feature/expect-actual-quispe
+* feature/integrador-13
+  feature/offline-first-quispe
+  feature/s11-autonoma-quispe
+  remotes/origin/HEAD -> origin/feature/crud-productos-quispe
+  remotes/origin/develop
+  remotes/origin/feature/auth-jwt-quispe
+  remotes/origin/feature/crud-productos-quispe
+  remotes/origin/feature/expect-actual-quispe
+  remotes/origin/feature/integrador-13
+  remotes/origin/feature/offline-first-quispe
+  remotes/origin/feature/s11-autonoma-quispe

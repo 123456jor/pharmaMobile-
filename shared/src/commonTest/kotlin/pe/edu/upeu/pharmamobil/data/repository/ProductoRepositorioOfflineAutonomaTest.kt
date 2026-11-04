@@ -92,7 +92,7 @@ class ProductoRepositorioOfflineAutonomaTest {
         var postAceptados = 0
         val confirmado = nuevo.copy(id = 72)
         conBaseNueva(MockEngine { solicitud ->
-            if (!conRed) throw IOException("Sin conexión")
+            if (!conRed) throw pe.edu.upeu.pharmamobil.data.remote.EnvioNoIniciadoException()
             if (solicitud.method == HttpMethod.Post) {
                 postAceptados++
                 respond(Json.encodeToString(confirmado.dto()), headers = cabeceras)

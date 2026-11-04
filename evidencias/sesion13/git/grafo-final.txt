@@ -1,0 +1,46 @@
+* 15db0d7 (HEAD -> feature/integrador-13, origin/feature/integrador-13) test(integrador): verificar reintentos permisos y sincronizacion
+* 7467096 feat(firebase): registrar telemetria mediante interfaz de dominio
+* a8f45be feat(permisos): integrar gestor nativo con tres estados
+* a3ce153 docs(s13): guardar avance del entregable con capturas reales
+* d30930f feat(ui): mostrar pendientes fallidas y ultima sincronizacion
+* 7bdbe76 feat(sync): distinguir fallos y aplicar espera creciente
+* afbd490 fix(build): inicializar SQLite en el worker de migraciones
+* 30a6899 feat(local): guardar intentos y errores de sincronizacion
+* 4f89b54 fix(auth): bloquear consulta local tras cierre voluntario
+* abae5a8 docs(integrador): registrar huecos del flujo completo
+* 8184dc7 (origin/feature/s11-autonoma-quispe, origin/develop, feature/s11-autonoma-quispe, develop) docs: finaliza entregable con enlace de GitHub publicado y verificado
+* f09721e docs: entrega bitacora real capturas Postman y PDF de actividad autonoma 11
+* f9fdf1d fix: bloquea escritura al caducar y retira sesion previa ante rechazo
+* c052b69 test: acredita sensibilidad del patron offline y 91 pruebas completas
+* de29d57 fix: permite consultar cache sin red con sesion vencida y bloquea modificaciones
+* fc3067e feat: persiste antiguedad de sincronizacion y migra la base sin perder productos
+* d33a5b1 test: verifica sincronizacion completa ids y ausencia de duplicados
+* f49b9cd test: acredita registro sin red y conservacion de pendientes en actividad autonoma
+* 7adc1ad (origin/feature/offline-first-quispe, feature/offline-first-quispe) feat(postman): prepara comprobaciones reutilizables del producto offline de Jorge
+* 9c526de docs: entrega persistencia offline-first con PDF y evidencias reales de Postman
+* 217c036 fix(auth): restaura sesion cifrada vigente al abrir sin red
+* 147d3b6 feat(ui): observa el Flow local y sincroniza sin recargas manuales
+* 1e68494 test: cubre offline-first y corrige duplicacion confirmada de pendientes
+* 2997a2e feat(data): agrega repositorio offline con subida antes de descarga
+* 963e2a6 feat(local): observa productos y conserva pendientes en transacciones
+* 010de22 feat(db): registra driver Android y PharmaDb en Koin
+* dbcc133 feat(db): agrega SQLDelight 2.1.0 y esquema de producto
+* ef38718 (origin/feature/auth-jwt-quispe, feature/auth-jwt-quispe) docs(auth): completar entrega S10 y confirmar publicacion
+* 171afd3 docs(auth): agregar evidencias reales de actividad autonoma S10
+* 08b05ef test(auth): verificar cliente real tras cerrar sesion
+* 2c787d0 fix(auth): ajustar acceso de productos segun permiso
+* 9c84377 test(auth): agregar utilidad debug para alterar token
+* 507da07 fix(auth): asegurar redireccion al expirar la sesion
+* cd19a6f fix(productos): enviar estado en solicitudes Android
+* da27088 fix(auth): restaurar sesión con respuesta real del backend
+* b56af1c docs(postman): agregar solicitudes CRUD de PharmaSoft
+* a3b3ac1 docs(auth): documentar flujo de autenticación
+* f9dbfe4 feat(auth): agregar login y guardia por permisos
+* 1b35b3e feat(auth): implementar repositorio y sesión JWT
+* 5594841 feat(auth): configurar Auth Bearer y errores HTTP
+* d6af687 feat(auth): almacenar JWT cifrado en Android
+* e0684f0 feat(auth): modelar sesión en dominio
+* a39f208 (origin/feature/expect-actual-quispe, feature/expect-actual-quispe) feat(presentation): botón Compartir en inventario, pruebas con FakeCompartidor y README de capacidades nativas
+* 2f71316 feat(domain): interfaz Compartidor, implementaciones por plataforma y registro en platformModule
+* 3dbfaea feat(platform): expect/actual formatearSoles para Android e iOS y uso en ProductoUi
+* 7de564c (origin/feature/crud-productos-quispe, origin/HEAD, feature/crud-productos-quispe) feat: add PharmaMobil product CRUD session 08

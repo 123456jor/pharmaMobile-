@@ -50,86 +50,83 @@ import pe.edu.upeu.pharmamobil.presentation.components.ValidatedTextField
 fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, permiteEscritura: Boolean = true,
     soloConsulta: Boolean = false) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val sync by viewModel.sincronizacion.collectAsStateWithLifecycle()
     val ocupada = uiState.operacion is ProductoUiState.Operacion.EnCurso
     var ahora by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
-    LaunchedEffect(uiState.ultimaSincronizacion) {
+    var detalle by remember { mutableStateOf<ProductoUi?>(null) }
+    val lista = androidx.compose.foundation.lazy.rememberLazyListState()
+    LaunchedEffect(uiState.productoEditandoId) {
+        if (uiState.productoEditandoId != null) lista.animateScrollToItem(0)
+    }
+    LaunchedEffect(sync.ultimaSync) {
         while (true) {
             ahora = Clock.System.now().toEpochMilliseconds()
-            delay(60_000) // Actualiza el texto visible; no realiza peticiones HTTP.
+            delay(60_000) // Solo renueva el texto de antigüedad; no consulta la red.
         }
     }
-
-    Column(
-        modifier = modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("Guardado en este dispositivo", modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.labelMedium)
-            OutlinedButton(onClick = viewModel::sincronizar, enabled = !soloConsulta && !uiState.sincronizando && !ocupada) {
-                Text(if (uiState.sincronizando) "Sincronizando…" else "Sincronizar")
-            }
-        }
-        Text(formatearAntiguedad(ahora, uiState.ultimaSincronizacion),
-            style = MaterialTheme.typography.bodySmall)
-        uiState.avisoRed?.let {
-            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
-        }
-        if (permiteEscritura) FormularioProductoCard(
-            formulario = uiState.formulario,
-            ocupado = ocupada,
-            editando = uiState.productoEditandoId != null,
-            onNombreChange = viewModel::onNombreChange,
-            onPrecioChange = viewModel::onPrecioChange,
-            onStockChange = viewModel::onStockChange,
-            onCategoriaIdChange = viewModel::onCategoriaIdChange,
-            onGuardar = if (uiState.productoEditandoId == null) viewModel::registrar else viewModel::actualizar,
-            onCancelar = viewModel::cancelarEdicion
-        )
-
-        uiState.mensajeExito?.let { MensajeExito(it) }
-        (uiState.operacion as? ProductoUiState.Operacion.Fallida)?.let {
-            Text(it.mensaje, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
-        }
-
-        EncabezadoInventario(uiState.fase)
-        Box(Modifier.fillMaxWidth().weight(1f)) {
-            when (val fase = uiState.fase) {
-                ProductoUiState.Fase.Cargando -> Column(
-                    Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    CircularProgressIndicator()
-                    Text("Cargando inventario…", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                ProductoUiState.Fase.SinProductos -> EstadoVacio(
-                    icono = Icons.Default.Inventory2,
-                    titulo = "Todavía no hay productos",
-                    descripcion = if (soloConsulta) "No hay datos guardados. Conéctate e inicia sesión para sincronizar."
-                        else "Registra el primero con el formulario de arriba.",
-                    modifier = Modifier.align(Alignment.Center)
-                )
-                is ProductoUiState.Fase.ConProductos -> LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(fase.productos, key = { it.id }) { producto ->
-                        ProductoItem(
-                            producto = producto,
-                            ocupado = ocupada || uiState.sincronizando || uiState.avisoRed != null,
-                            permiteEscritura = permiteEscritura,
-                            onCompartir = { viewModel.compartir(producto) },
-                            onEditar = { viewModel.comenzarEdicion(producto) },
-                            onEliminar = { viewModel.eliminar(producto.id) }
-                        )
+    detalle?.let { producto ->
+        DetalleEnvioDialog(producto, sync.conectado && !soloConsulta,
+            cerrar = { detalle = null },
+            corregir = { detalle = null; viewModel.comenzarEdicion(producto) },
+            reintentar = { detalle = null; viewModel.reintentar(producto.id, true) },
+            conciliar = { id -> detalle = null; viewModel.conciliar(producto.id, id) })
+    }
+    // Un único contenedor desplazable deja visibles lista y acciones incluso con teclado.
+    LazyColumn(modifier.fillMaxSize().padding(horizontal = 16.dp),
+        state = lista,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)) {
+        item(key = "estado-sync") {
+            Card(Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(if (sync.enCurso) "Sincronizando productos…" else
+                        "${if (sync.conectado) "Conectado" else "Sin conexión"} · ${formatearAntiguedad(ahora, sync.ultimaSync)}",
+                        style = MaterialTheme.typography.titleSmall)
+                    Text("Por enviar: ${sync.pendientes} · Requieren atención: ${sync.fallidas}",
+                        style = MaterialTheme.typography.bodyMedium)
+                    if (sync.fallidas > 0) Text("Revisa las filas marcadas y pulsa Ver qué pasó",
+                        color = MaterialTheme.colorScheme.error)
+                    if (!sync.conectado) Text("Puedes consultar lo guardado. Los nuevos productos quedan pendientes.",
+                        style = MaterialTheme.typography.bodySmall)
+                    OutlinedButton(onClick = viewModel::sincronizar,
+                        enabled = !soloConsulta && !sync.enCurso && !ocupada) {
+                        Text(if (sync.enCurso) "Sincronizando…" else "Sincronizar")
                     }
                 }
-                is ProductoUiState.Fase.Error -> EstadoVacio(
-                    icono = Icons.Default.CloudOff,
-                    titulo = "No pudimos cargar el inventario",
-                    descripcion = fase.mensaje,
-                    colorIcono = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.align(Alignment.Center),
-                    accion = { FilledTonalButton(onClick = viewModel::sincronizar) { Text("Reintentar") } }
-                )
+            }
+        }
+        if (permiteEscritura) item(key = "permiso-avisos") { pe.edu.upeu.pharmamobil.presentation.permiso.PermisosCard() }
+        uiState.avisoRed?.let { aviso -> item { Text(aviso, color = MaterialTheme.colorScheme.error) } }
+        if (permiteEscritura) item(key = "formulario") {
+            FormularioProductoCard(uiState.formulario, ocupada || sync.enCurso,
+                uiState.productoEditandoId != null, viewModel::onNombreChange, viewModel::onPrecioChange,
+                viewModel::onStockChange, viewModel::onCategoriaIdChange,
+                if (uiState.productoEditandoId == null) viewModel::registrar else viewModel::actualizar,
+                viewModel::cancelarEdicion)
+        }
+        uiState.mensajeExito?.let { item { MensajeExito(it) } }
+        (uiState.operacion as? ProductoUiState.Operacion.Fallida)?.let { error ->
+            item { Text(error.mensaje, color = MaterialTheme.colorScheme.error) }
+        }
+        item { EncabezadoInventario(uiState.fase) }
+        when (val fase = uiState.fase) {
+            ProductoUiState.Fase.Cargando -> item { CircularProgressIndicator(); Text("Cargando inventario…") }
+            ProductoUiState.Fase.SinProductos -> item {
+                EstadoVacio(Icons.Default.Inventory2, "Todavía no hay productos",
+                    if (soloConsulta) "No hay datos guardados. Conéctate e inicia sesión para sincronizar."
+                    else "Registra el primero con el formulario de arriba.")
+            }
+            is ProductoUiState.Fase.ConProductos -> items(fase.productos, key = { it.id }) { producto ->
+                ProductoItem(producto, ocupada || sync.enCurso, permiteEscritura,
+                    onCompartir = { viewModel.compartir(producto) },
+                    onEditar = { viewModel.comenzarEdicion(producto) },
+                    onEliminar = { viewModel.eliminar(producto.id) },
+                    conectado = sync.conectado,
+                    onDetalle = { detalle = producto })
+            }
+            is ProductoUiState.Fase.Error -> item {
+                Text(fase.mensaje, color = MaterialTheme.colorScheme.error)
+                FilledTonalButton(onClick = viewModel::sincronizar) { Text("Reintentar") }
             }
         }
     }
@@ -196,45 +193,37 @@ private fun EncabezadoInventario(fase: ProductoUiState.Fase) {
 
 @Composable
 private fun ProductoItem(
-    producto: ProductoUi,
-    ocupado: Boolean,
-    permiteEscritura: Boolean,
-    onCompartir: () -> Unit,
-    onEditar: () -> Unit,
-    onEliminar: () -> Unit
+    producto: ProductoUi, ocupado: Boolean, permiteEscritura: Boolean,
+    onCompartir: () -> Unit, onEditar: () -> Unit, onEliminar: () -> Unit,
+    conectado: Boolean, onDetalle: () -> Unit
 ) {
     Card(Modifier.fillMaxWidth()) {
-        Row(
-            Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer) {
-                Icon(Icons.Default.Medication, null, Modifier.padding(8.dp).size(20.dp))
-            }
-            Column(Modifier.weight(1f)) {
-                Text(producto.nombre, style = MaterialTheme.typography.titleSmall)
-                Text("${producto.precio}  ·  ${producto.stock}", style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text("Categoría ${producto.categoriaId}", style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(if (producto.pendiente) "Pendiente de sincronizar · ID ${producto.id}" else "ID ${producto.id}",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (producto.pendiente) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            if (producto.requiereReposicion) Surface(shape = MaterialTheme.shapes.small,
-                color = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer) {
-                Text("Reponer", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
-            }
-            IconButton(onClick = onCompartir) {
-                Icon(Icons.Default.Share, contentDescription = "Compartir ${producto.nombre}")
-            }
-            if (permiteEscritura) {
-                IconButton(onClick = onEditar, enabled = !ocupado && !producto.pendiente) {
-                    Icon(Icons.Default.Edit, contentDescription = "Editar ${producto.nombre}")
-                }
-                IconButton(onClick = onEliminar, enabled = !ocupado && !producto.pendiente) {
-                    Icon(Icons.Default.Delete, contentDescription = "Dar de baja ${producto.nombre}")
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(producto.nombre, style = MaterialTheme.typography.titleSmall)
+            Text("${producto.precio} · ${producto.stock} · Categoría ${producto.categoriaId}",
+                style = MaterialTheme.typography.bodyMedium)
+            Text(when (producto.estadoEnvio) {
+                EstadoEnvioUi.Sincronizado -> "✓ Sincronizado · ID ${producto.id}"
+                EstadoEnvioUi.Pendiente -> "↑ Pendiente de envío · ID ${producto.id} · ${producto.intentos}/5"
+                EstadoEnvioUi.Fallido -> "! Requiere atención · ID ${producto.id}"
+            }, color = if (producto.pendiente) MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelLarge)
+            if (producto.requiereReposicion) Text("Reponer stock", color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.labelSmall)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onCompartir) { Icon(Icons.Default.Share, "Compartir ${producto.nombre}") }
+                if (permiteEscritura) {
+                    if (producto.pendiente) androidx.compose.material3.TextButton(
+                        onClick = onDetalle, enabled = !ocupado) { Text("Ver qué pasó") }
+                    else {
+                        IconButton(onClick = onEditar, enabled = !ocupado && conectado) {
+                            Icon(Icons.Default.Edit, "Editar ${producto.nombre}")
+                        }
+                        IconButton(onClick = onEliminar, enabled = !ocupado && conectado) {
+                            Icon(Icons.Default.Delete, "Dar de baja ${producto.nombre}")
+                        }
+                    }
                 }
             }
         }

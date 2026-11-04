@@ -22,3 +22,6 @@ node_modules/
 .work/
 /tmp/
 /output/*.zip
+
+# Configuración Firebase local: decisión de Jorge, no publicar en GitHub.
+/androidApp/google-services.json

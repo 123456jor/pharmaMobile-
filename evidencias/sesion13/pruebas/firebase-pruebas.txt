@@ -1,0 +1,411 @@
+Calculating task graph as configuration cache cannot be reused because file 'gradle\libs.versions.toml' has changed.
+
+> Configure project :shared
+w: Native task 'iosSimulatorArm64Test' is disabled
+Task 'iosSimulatorArm64Test' for target 'ios_simulator_arm64' cannot run on the current host (windows-x86_64).
+Reason: simulator tests require macOS
+Solution: To suppress this warning, add 'kotlin.native.ignoreDisabledTargets=true' to gradle.properties.
+
+
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :shared:generateAndroidMainAssets UP-TO-DATE
+> Task :shared:preAndroidHostTestBuild UP-TO-DATE
+> Task :shared:generateAndroidHostTestAssets UP-TO-DATE
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:androidJar UP-TO-DATE
+> Task :shared:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :shared:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:processAndroidHostTestJavaRes NO-SOURCE
+> Task :androidApp:preBuild UP-TO-DATE
+> Task :androidApp:preDebugBuild UP-TO-DATE
+> Task :shared:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :androidApp:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :shared:generateAndroidMainEmptyResourceFiles
+> Task :shared:generateAndroidHostTestResources
+> Task :shared:copyNonXmlValueResourcesForCommonMain
+> Task :androidApp:generateDebugResources
+> Task :androidApp:injectCrashlyticsVersionControlInfoDebug
+> Task :shared:convertXmlValueResourcesForCommonMain NO-SOURCE
+> Task :androidApp:generateDebugAssets UP-TO-DATE
+> Task :shared:writeAndroidMainAarMetadata
+> Task :shared:prepareComposeResourcesTaskForCommonMain
+> Task :androidApp:generateDebugBuildConfig
+> Task :shared:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :androidApp:processDebugGoogleServices
+> Task :androidApp:injectCrashlyticsMappingFileIdDebug
+> Task :shared:packageAndroidMainResources
+> Task :shared:generateResourceAccessorsForCommonMain
+> Task :shared:generateComposeResClass
+> Task :shared:generateExpectResourceCollectorsForCommonMain
+> Task :shared:generateActualResourceCollectorsForAndroidMain
+> Task :shared:parseAndroidMainLocalResources
+> Task :androidApp:packageDebugResources
+> Task :androidApp:desugarDebugFileDependencies
+> Task :shared:generateAndroidMainRFile
+> Task :shared:processAndroidMainManifest
+> Task :androidApp:javaPreCompileDebug
+> Task :shared:mergeAndroidMainAssets
+> Task :shared:compileAndroidMainLibraryResources
+> Task :androidApp:checkDebugDuplicateClasses
+> Task :shared:generateCommonMainPharmaDbInterface
+WARN: Attempt to load key 'ide.hide.excluded.files' for not yet loaded registry
+WARN: Attempt to load key 'psi.sleep.in.validity.check' for not yet loaded registry
+WARN: Attempt to load key 'psi.incremental.reparse.depth.limit' for not yet loaded registry
+
+> Task :androidApp:processDebugNavigationResources
+> Task :shared:checkAndroidHostTestAarMetadata
+> Task :shared:mapAndroidHostTestSourceSetPaths
+> Task :androidApp:mapDebugSourceSetPaths
+> Task :shared:mergeAndroidHostTestResources
+> Task :androidApp:createDebugCompatibleScreenManifests
+> Task :shared:mergeAndroidHostTestAssets
+> Task :androidApp:extractDeepLinksDebug
+> Task :androidApp:mergeDebugJniLibFolders
+> Task :androidApp:writeDebugAppMetadata
+> Task :androidApp:validateSigningDebug
+> Task :androidApp:checkDebugAarMetadata
+> Task :androidApp:writeDebugSigningConfigVersions
+> Task :shared:mergeAndroidMainJniLibFolders
+> Task :shared:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :shared:copyAndroidMainJniLibsProjectOnly
+> Task :androidApp:mergeDebugAssets
+> Task :androidApp:compressDebugAssets
+> Task :shared:processAndroidHostTestManifest
+> Task :androidApp:mergeDebugResources
+> Task :androidApp:mergeExtDexDebug
+> Task :androidApp:processDebugMainManifest
+> Task :shared:compileAndroidMain
+> Task :androidApp:mergeDebugNativeLibs
+
+> Task :androidApp:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :androidApp:processDebugManifest
+> Task :androidApp:processDebugManifestForPackage
+> Task :androidApp:parseDebugLocalResources
+> Task :androidApp:generateDebugRFile
+> Task :androidApp:compileDebugNavigationResources
+> Task :androidApp:processDebugResources
+> Task :shared:processAndroidHostTestResources
+> Task :shared:packageAndroidHostTestForUnitTest
+> Task :shared:generateAndroidHostTestConfig
+
+> Task :shared:compileAndroidMain
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/androidMain/kotlin/pe/edu/upeu/pharmamobil/data/permiso/AvisadorSincronizacionAndroid.kt:22:116 'constructor(p0: Context!): Notification.Builder' is deprecated. Deprecated in Java.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/androidMain/kotlin/pe/edu/upeu/pharmamobil/platform/Formato.android.kt:7:38 'constructor(p0: String!, p1: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:93:13 'fun KoinContext(koin: Koin = ..., content: ComposableFunction0<Unit>): Unit' is deprecated. KoinContext is not needed anymore. This can be removed. Compose Koin context is setup with StartKoin().
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:221:44 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+w: file:///H:/ProyectosUPEU/pharmaMobile-/shared/src/commonMain/kotlin/pe/edu/upeu/pharmamobil/App.kt:238:52 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
+
+> Task :shared:processAndroidMainJavaRes
+> Task :shared:bundleAndroidMainClassesToCompileJar
+> Task :shared:bundleAndroidMainClassesToRuntimeJar
+> Task :shared:bundleLibRuntimeToDirAndroidMain
+> Task :androidApp:compileDebugKotlin
+> Task :androidApp:processDebugJavaRes
+> Task :androidApp:compileDebugJavaWithJavac
+> Task :androidApp:dexBuilderDebug
+> Task :androidApp:mergeProjectDexDebug
+> Task :androidApp:mergeLibDexDebug
+> Task :shared:compileAndroidHostTest
+> Task :androidApp:mergeDebugJavaResource
+
+> Task :shared:testAndroidHostTest
+
+SharedCommonTest > example PASSED
+
+SharedLogicAndroidHostTest > example PASSED
+
+PrivacidadTelemetriaTest > excluyeCredencialesDatosPersonalesYValoresNoPermitidos PASSED
+
+PrivacidadTelemetriaTest > excepcionSanitizadaNoConservaMensajeCausaNiPilaOriginal PASSED
+
+EstadoEnvioLocalTest > bajadaConColisionNoSobrescribePendienteNiFallida STANDARD_ERROR
+    SLF4J(W): No SLF4J providers were found.
+    SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+    SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+
+EstadoEnvioLocalTest > bajadaConColisionNoSobrescribePendienteNiFallida PASSED
+
+EstadoEnvioLocalTest > migrarVersionDosConservaTodosLosCamposYMarcaDeSincronizacion PASSED
+
+EstadoEnvioLocalTest > contadoresObservablesYFallidaPermanenteExcluidaDeEnvio PASSED
+
+EjecutarLlamadaTest > un401ProtegidoSeConvierteEnSesionExpirada PASSED
+
+EjecutarLlamadaTest > traduce409AlMensajeDelServidor STANDARD_OUT
+    REQUEST: http://test/api/v1/productos/99
+    METHOD: GET
+    COMMON HEADERS
+    -> Accept: application/json
+    -> Content-Type: application/json
+    CONTENT HEADERS
+    -> Content-Length: 0
+    RESPONSE: 409 Conflict
+    METHOD: GET
+    FROM: http://test/api/v1/productos/99
+    COMMON HEADERS
+    -> Content-Type: application/json
+
+EjecutarLlamadaTest > traduce409AlMensajeDelServidor PASSED
+
+EjecutarLlamadaTest > traduce404ANoEncontrado STANDARD_OUT
+    REQUEST: http://test/api/v1/productos/99
+    METHOD: GET
+    COMMON HEADERS
+    -> Accept: application/json
+    -> Content-Type: application/json
+    CONTENT HEADERS
+    -> Content-Length: 0
+    RESPONSE: 404 Not Found
+    METHOD: GET
+    FROM: http://test/api/v1/productos/99
+    COMMON HEADERS
+    -> Content-Type: application/json
+
+EjecutarLlamadaTest > traduce404ANoEncontrado PASSED
+
+EjecutarLlamadaTest > clienteAdjuntaTokenEnRutaProtegidaPeroNoEnLogin PASSED
+
+EjecutarLlamadaTest > traduce400ConLosErroresPorCampo STANDARD_OUT
+    REQUEST: http://test/api/v1/productos/99
+    METHOD: GET
+    COMMON HEADERS
+    -> Accept: application/json
+    -> Content-Type: application/json
+    CONTENT HEADERS
+    -> Content-Length: 0
+    RESPONSE: 400 Bad Request
+    METHOD: GET
+    FROM: http://test/api/v1/productos/99
+    COMMON HEADERS
+    -> Content-Type: application/json
+
+EjecutarLlamadaTest > traduce400ConLosErroresPorCampo PASSED
+
+AuthRepositorioRestTest > expirarNoBloqueaConsultaYUnLoginValidoDesbloqueaLogout PASSED
+
+AuthRepositorioRestTest > alReconectarSinTokenPideLoginYNoRestauraSesion PASSED
+
+AuthRepositorioRestTest > respuesta401NoUsaLaSesionCacheada PASSED
+
+AuthRepositorioRestTest > login401SeExponeComoCredencialesInvalidasSinGuardarToken PASSED
+
+AuthRepositorioRestTest > logoutVoluntarioBloqueaConsultaInclusoConRepositorioNuevo PASSED
+
+AuthRepositorioRestTest > primeraAperturaSinTokenYSinRedPermiteConsultaVaciaSinAutenticar PASSED
+
+AuthRepositorioRestTest > guardaTokenTrasLoginYLoUsaParaReconstruirSesion PASSED
+
+AuthRepositorioRestTest > sesionVencidaNoSeRestauraYPermiteSoloConsultaSinToken PASSED
+
+AuthRepositorioRestTest > jwtVencidoNoSeAdjuntaNiDuranteLaComprobacionDeReconexion PASSED
+
+AuthRepositorioRestTest > reabrirSinRedRestauraSoloSesionGuardadaVigente PASSED
+
+ClienteRepositorioEnMemoriaTest > asignaIdCorrelativoAlRegistrar PASSED
+
+ClienteRepositorioEnMemoriaTest > listarDevuelveLosClientesRegistrados PASSED
+
+ProductoRepositorioEnMemoriaTest > listarDevuelveLosProductosRegistrados PASSED
+
+ProductoRepositorioEnMemoriaTest > asignaIdCorrelativoAlRegistrar PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba04LaBajadaNoBorraElProductoPendiente PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba01SincronizarConRedGuardaYEmiteLaListaCompleta PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba05ProductoLocalYRemotoNoSeSobrescriben PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba03ReconectarEnviaElPendienteYLoConfirmaConIdReal PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba02RegistroSinRedConservaPendienteYLoEmiteElFlow PASSED
+
+ProductoRepositorioOfflineAutonomaTest > prueba06SincronizarDosVecesConservaCantidadYNoRepitePost PASSED
+
+ProductoRepositorioOfflineTest > errorServidorNoSeSilenciaComoSinConexion PASSED
+
+ProductoRepositorioOfflineTest > descargaTodasLasPaginas PASSED
+
+ProductoRepositorioOfflineTest > falloPostConservaPendienteYNoEjecutaGet PASSED
+
+ProductoRepositorioOfflineTest > sincronizarNoDejaDuplicadosNiPendientesHuerfanos PASSED
+
+ProductoRepositorioOfflineTest > subirPendientesOcurreAntesDeBajar PASSED
+
+ProductoRepositorioOfflineTest > idsLocalesSonNegativosDistintosYConservanCategoria PASSED
+
+ProductoRepositorioOfflineTest > sin red el producto queda pendiente y la pantalla lo ve PASSED
+
+ProductoRepositorioOfflineTest > reemplazarSincronizadosPreservaPendientes PASSED
+
+SincronizacionFechaTest > fechaSeGuardaSoloTrasExitoYUnFalloNoLaRenueva PASSED
+
+SincronizacionRefinadaTest > unFalloPermanenteMarcaLaFilaYNoLaReintenta PASSED
+
+SincronizacionRefinadaTest > bloqueoDuraderoExisteAntesDeInvocarElMotorHttp PASSED
+
+SincronizacionRefinadaTest > mapeoTipadoIncluyeTransporteValidacionYAutorizacion PASSED
+
+SincronizacionRefinadaTest > formulaDeEsperaIncluyeDieciseisYAcotaElDesplazamiento PASSED
+
+SincronizacionRefinadaTest > cincoIntentosPersistidosSinSextoNiEsperaDespuesDelUltimo PASSED
+
+SincronizacionRefinadaTest > rechazoDeUnaFilaNoImpideSubirLasDemasYLaBajadaEsLaUltima PASSED
+
+SincronizacionRefinadaTest > unFalloTransitorioSumaIntentoYNoMarcaFallida PASSED
+
+SincronizacionRefinadaTest > respuestaPerdidaSeBloqueaAntesDePostYOtroCicloNoReenvia PASSED
+
+TelemetriaSincronizacionTest > laRutaRealUsaLaInterfazYEmiteInicioErrorYFinSinNombresNiCredenciales PASSED
+
+AppModuleTest > resuelveLosViewModelConSusCasosDeUso PASSED
+
+AppModuleTest > losRepositoriosSonUnicosEnTodaLaAplicacion PASSED
+
+AppModuleTest > resuelveLosRepositoriosPorSuInterfazDeDominio PASSED
+
+AppModuleTest > registraLaImplementacionOfflineDeProductos PASSED
+
+AppModuleTest > resuelveLosCuatroCasosDeUsoConSusRepositorios PASSED
+
+AntiguedadTest > nuncaSincronizado PASSED
+
+AntiguedadTest > segundosYRelojAtrasado PASSED
+
+AntiguedadTest > dias PASSED
+
+AntiguedadTest > horas PASSED
+
+AntiguedadTest > minutos PASSED
+
+ClienteTest > aceptaUnClienteConTelefono PASSED
+
+ClienteTest > elTelefonoPuedeFaltar PASSED
+
+ClienteTest > noSeConstruyeSinNombre PASSED
+
+ClienteTest > noSeConstruyeConTelefonoVacio PASSED
+
+ProductoTest > noRequiereReposicionEnElStockMinimo PASSED
+
+ProductoTest > requiereReposicionPorDebajoDelStockMinimo PASSED
+
+ProductoTest > noSeConstruyeSinNombre PASSED
+
+ProductoTest > aceptaPrecioCeroParaQueElServidorValideElMinimo PASSED
+
+ProductoTest > noSeConstruyeConStockNegativo PASSED
+
+SesionTest > traduceEstadosDeSesion PASSED
+
+SesionTest > permisoSeConsultaPorAutoridad PASSED
+
+PermisosTest > primeraSolicitudNoSeConfundeConDenegacionDefinitiva PASSED
+
+PermisosTest > nuncaSolicitaAntesDeExplicarYTresResultadosNoSeFalsifican PASSED
+
+PermisosTest > explicarSolicitarYOfrecerAjustesSonDecisionesComunes PASSED
+
+ListarProductosUseCaseTest > devuelveElInventarioDelRepositorio PASSED
+
+ListarProductosUseCaseTest > relanzaLaCancelacionEnLugarDeConvertirlaEnFailure PASSED
+
+ListarProductosUseCaseTest > devuelveFailureCuandoElRepositorioFalla PASSED
+
+RegistrarClienteUseCaseTest > rechazaNombreVacio PASSED
+
+RegistrarClienteUseCaseTest > aceptaUnClienteValido PASSED
+
+RegistrarClienteUseCaseTest > elIdLoAsignaElRepositorio PASSED
+
+RegistrarClienteUseCaseTest > devuelveFailureCuandoElRepositorioFalla PASSED
+
+RegistrarClienteUseCaseTest > rechazaCorreoConFormatoInvalido PASSED
+
+RegistrarClienteUseCaseTest > rechazaTelefonoConMenosDeSeisDigitos PASSED
+
+RegistrarClienteUseCaseTest > elTelefonoEsOpcionalYSeGuardaComoNull PASSED
+
+RegistrarClienteUseCaseTest > reportaLosTresErroresALaVez PASSED
+
+RegistrarProductoUseCaseTest > aceptaStockCero PASSED
+
+RegistrarProductoUseCaseTest > rechazaNombreVacio PASSED
+
+RegistrarProductoUseCaseTest > rechazaNaNComoPrecio PASSED
+
+RegistrarProductoUseCaseTest > rechazaInfinityComoPrecio PASSED
+
+RegistrarProductoUseCaseTest > devuelveFailureCuandoElRepositorioFalla PASSED
+
+RegistrarProductoUseCaseTest > rechazaStockNegativo PASSED
+
+RegistrarProductoUseCaseTest > precioCeroSeDejaLlegarAlServidor PASSED
+
+RegistrarProductoUseCaseTest > rechazaPrecioNoNumerico PASSED
+
+RegistrarProductoUseCaseTest > elIdLoAsignaElRepositorioNoLaPantalla PASSED
+
+RegistrarProductoUseCaseTest > reportaLosTresErroresALaVez PASSED
+
+RegistrarProductoUseCaseTest > aceptaUnPrecioValido PASSED
+
+FormatoTest > formateaSolesConDosDecimales PASSED
+
+ClienteViewModelTest > elTelefonoAusenteSeMuestraComoNoRegistrado PASSED
+
+ClienteViewModelTest > arrancaEnSinClientesCuandoLaCarteraEstaVacia PASSED
+
+ClienteViewModelTest > elCorreoInvalidoCaeEnElFormulario PASSED
+
+ClienteViewModelTest > elClienteRegistradoApareceEnLaCartera PASSED
+
+EstadoSincronizacionTest > lasTresMarcasYLaAccionDeConciliacionSeDerivanDeLaFila PASSED
+
+EstadoSincronizacionTest > estadoCombinaConsultasSqlFechaEnCursoYConectividadSinContarAMano PASSED
+
+ProductoViewModelTest > cargaExitosaMuestraLaListaEsperada PASSED
+
+ProductoViewModelTest > consultaLocalMuestraCacheYBloqueaSincronizacionYMutaciones PASSED
+
+ProductoViewModelTest > errorDeRedAlEliminarConservaLaListaPrevia PASSED
+
+ProductoViewModelTest > eliminarSeReflejaPorFlowSinRecargarLaListaYConfirmaExito PASSED
+
+ProductoViewModelTest > productosInactivosNoAparecenEnElInventarioActivo PASSED
+
+ProductoViewModelTest > listadoVacioTerminaEnSinProductos PASSED
+
+ProductoViewModelTest > compartirEnviaAlCompartidorElTextoArmadoEnCodigoComun PASSED
+
+ProductoViewModelTest > validacionDelServidorSeMuestraEnElFormularioSinCambiarLaFase PASSED
+
+ProductoViewModelTest > precioCeroSeEnviaParaQueLoValideElServidor PASSED
+
+ProductoViewModelTest > cancelarLaCorrutinaNoProduceEstadoFallidoNiMensajeDeError PASSED
+
+SesionViewModelTest > caducarBloqueaAntesDeEsperarHttpYEl401RetiraLaSesionAnterior PASSED
+
+SesionViewModelTest > caducarSinRedMantieneSoloConsultaSinRecuperarPermisos PASSED
+
+> Task :androidApp:packageDebug
+> Task :androidApp:assembleDebug
+> Task :androidApp:createDebugApkListingFileRedirect
+
+[Incubating] Problems report is available at: file:///H:/ProyectosUPEU/pharmaMobile-/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 5m 34s
+76 actionable tasks: 75 executed, 1 up-to-date
+Configuration cache entry stored.

@@ -6,6 +6,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApi
 import pe.edu.upeu.pharmamobil.domain.error.ErrorApiException
@@ -29,11 +35,23 @@ class ProductoViewModel(
     private val eliminarProducto: EliminarProductoUseCase,
     private val obtenerProducto: ObtenerProductoUseCase,
     private val compartidor: Compartidor,
-    private val soloConsulta: Boolean = false
+    private val soloConsulta: Boolean = false,
+    conectividad: pe.edu.upeu.pharmamobil.domain.port.Conectividad? = null,
+    private val sincronizarProductos: pe.edu.upeu.pharmamobil.domain.usecase.SincronizarUseCase =
+        pe.edu.upeu.pharmamobil.domain.usecase.SincronizarUseCase(repositorio),
+    private val permisos: pe.edu.upeu.pharmamobil.domain.permiso.GestorPermisos? = null,
+    private val avisador: pe.edu.upeu.pharmamobil.domain.port.AvisadorSincronizacion? = null
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductoUiState())
     val uiState: StateFlow<ProductoUiState> = _uiState.asStateFlow()
+    val sincronizacion: StateFlow<SincronizacionUiState> = combine(
+        repositorio.observarPendientes(), repositorio.observarFallidas(),
+        _uiState.map { it.sincronizando }.distinctUntilChanged(),
+        repositorio.observarUltimaSincronizacion(), conectividad?.conectado ?: flowOf(false)
+    ) { pendientes, fallidas, enCurso, ultima, conectado ->
+        SincronizacionUiState(enCurso, pendientes, fallidas, ultima, conectado)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SincronizacionUiState())
 
     init {
         viewModelScope.launch {
@@ -55,8 +73,11 @@ class ProductoViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(sincronizando = true) }
             try {
-                repositorio.sincronizar()
-                _uiState.update { it.copy(avisoRed = null) }
+                val resumen = sincronizarProductos()
+                if (permisos?.estado(pe.edu.upeu.pharmamobil.domain.permiso.Permiso.NOTIFICACIONES) ==
+                    pe.edu.upeu.pharmamobil.domain.permiso.EstadoPermiso.Concedido) avisador?.avisar(resumen)
+                _uiState.update { it.copy(avisoRed = if (resumen.fallidas > 0)
+                    "${resumen.fallidas} ${if (resumen.fallidas == 1) "cambio requiere" else "cambios requieren"} atención" else null) }
             } catch (cancelacion: CancellationException) {
                 throw cancelacion
             } catch (fallo: Exception) {
@@ -92,6 +113,17 @@ class ProductoViewModel(
 
     fun comenzarEdicion(producto: ProductoUi) {
         if (!iniciarOperacion(ProductoUiState.Tipo.Actualizar)) return
+        if (producto.pendiente) {
+            if (producto.requiereConciliacion) {
+                manejarFallo(IllegalArgumentException("Revisa primero el servidor y concilia el producto"))
+                return
+            }
+            _uiState.update { it.copy(productoEditandoId = producto.id,
+                formulario = FormularioProducto(producto.nombre, producto.precioValor.toString(),
+                    producto.stockValor.toString(), producto.categoriaId.toString()),
+                operacion = ProductoUiState.Operacion.Inactiva) }
+            return
+        }
         viewModelScope.launch {
             obtenerProducto(producto.id).fold(
                 onSuccess = { encontrado ->
@@ -131,6 +163,26 @@ class ProductoViewModel(
         if (!iniciarOperacion(ProductoUiState.Tipo.Actualizar)) return
         viewModelScope.launch {
             val formulario = _uiState.value.formulario
+            if (id < 0) {
+                val precio = formulario.precio.toDoubleOrNull()
+                val stock = formulario.stock.toIntOrNull()
+                val categoria = formulario.categoriaId.toLongOrNull()
+                val errores = buildMap {
+                    if (formulario.nombre.trim().length !in 3..150) put("nombre", "Escribe entre 3 y 150 caracteres")
+                    if (precio == null || !precio.isFinite() || precio < 0.01) put("precio", "El precio debe ser mayor que cero")
+                    if (stock == null || stock < 0) put("stock", "El stock no puede ser negativo")
+                    if (categoria == null || categoria <= 0) put("categoriaId", "Indica una categoría existente")
+                }
+                if (errores.isNotEmpty()) { mostrarErroresDeCampos(errores); return@launch }
+                val resultado = try {
+                    repositorio.corregirPendiente(Producto(id, formulario.nombre.trim(), precio!!, stock!!,
+                        categoriaId = categoria!!, pendiente = true))
+                    Result.success(Unit)
+                } catch (cancelacion: CancellationException) { throw cancelacion }
+                catch (error: Exception) { Result.failure(error) }
+                resolverMutacion(resultado, "Corrección guardada. Pulsa Sincronizar para enviarla")
+                return@launch
+            }
             val resultado = actualizarProducto(
                 id = id,
                 nombre = formulario.nombre,
@@ -156,6 +208,7 @@ class ProductoViewModel(
 
     private fun iniciarOperacion(tipo: ProductoUiState.Tipo): Boolean {
         if (soloConsulta) return false
+        if (_uiState.value.sincronizando) return false
         if (_uiState.value.operacion is ProductoUiState.Operacion.EnCurso) return false
         _uiState.update {
             it.copy(
@@ -165,6 +218,24 @@ class ProductoViewModel(
             )
         }
         return true
+    }
+
+    fun reintentar(id: Long, confirmaRevisionServidor: Boolean) = accionLocal {
+        repositorio.reintentarPendiente(id, confirmaRevisionServidor)
+        sincronizar()
+    }
+
+    fun conciliar(idLocal: Long, idServidor: Long) = accionLocal {
+        repositorio.conciliarPendiente(idLocal, idServidor)
+    }
+
+    private fun accionLocal(accion: suspend () -> Unit) {
+        if (!iniciarOperacion(ProductoUiState.Tipo.Actualizar)) return
+        viewModelScope.launch {
+            try { accion(); confirmarMutacion("Revisión guardada", limpiarFormulario = false) }
+            catch (cancelacion: CancellationException) { throw cancelacion }
+            catch (error: Exception) { manejarFallo(error) }
+        }
     }
 
     private fun <T> resolverMutacion(resultado: Result<T>, exito: String) {

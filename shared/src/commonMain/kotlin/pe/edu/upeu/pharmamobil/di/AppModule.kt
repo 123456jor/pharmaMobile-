@@ -35,6 +35,8 @@ import pe.edu.upeu.pharmamobil.presentation.producto.ProductoViewModel
 
 
 val dataModule = module {
+    single { pe.edu.upeu.pharmamobil.data.firebase.TelemetriaFirebase() }
+    single<pe.edu.upeu.pharmamobil.domain.port.Telemetria> { get<pe.edu.upeu.pharmamobil.data.firebase.TelemetriaFirebase>() }
     single(createdAtStart = true) {
         PharmaDb(get<CreadorDeDriver>().crear()).also {
             // AndroidSqliteDriver abre el archivo al ejecutar la primera consulta.
@@ -52,7 +54,7 @@ val dataModule = module {
     }
     single { ProductoApi(get()) }
     single { ProductoLocal(get()) }
-    single<ProductoRepository> { ProductoRepositorioOffline(get(), get(), get()) }
+    single<ProductoRepository> { ProductoRepositorioOffline(get(), get(), get(), conectividad = getOrNull(), telemetria = get()) }
     single<AuthRepository> { AuthRepositorioRest(get(), get()) }
     single<ClienteRepository> { ClienteRepositorioEnMemoria() }
 }
@@ -61,6 +63,7 @@ val dataModule = module {
 private const val MODO_TIMEOUT_PARA_PRUEBAS = false
 
 val domainModule = module {
+    factory { pe.edu.upeu.pharmamobil.domain.usecase.SincronizarUseCase(get()) }
     factory { IniciarSesionUseCase(get()) }
     factory { ObtenerSesionGuardadaUseCase(get()) }
     factory { CerrarSesionUseCase(get()) }
@@ -74,9 +77,11 @@ val domainModule = module {
 }
 
 val presentationModule = module {
+    viewModel { pe.edu.upeu.pharmamobil.presentation.permiso.PermisosViewModel(get()) }
     viewModel { SesionViewModel(get(), get(), get(), get()) }
     viewModel { parametros -> ProductoViewModel(get(), get(), get(), get(), get(), get(),
-        soloConsulta = parametros.getOrNull<Boolean>() ?: false) }
+        soloConsulta = parametros.getOrNull<Boolean>() ?: false,
+        conectividad = getOrNull(), sincronizarProductos = get(), permisos = getOrNull(), avisador = getOrNull()) }
     viewModel { ClienteViewModel(get(), get()) }
 }
 

@@ -12,5 +12,7 @@ class ObtenerSesionGuardadaUseCase(private val repository: AuthRepository) {
 }
 
 class CerrarSesionUseCase(private val repository: AuthRepository) {
-    suspend operator fun invoke() = resultadoDe { repository.cerrarSesion() }
+    suspend operator fun invoke(porExpiracion: Boolean = false) = resultadoDe {
+        if (porExpiracion) repository.invalidarSesion() else repository.cerrarSesion()
+    }
 }

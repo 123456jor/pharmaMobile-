@@ -1,0 +1,16 @@
+ M README.md
+ M docs/sesion13/Matriz_Cumplimiento.md
+ M evidencias/sesion13/estado_entregable.json
+ M evidencias/sesion13/figuras_adicionales.json
+ M evidencias/sesion13/indice_capturas_pdf.json
+ M output/pdf/Entregable_Sesion13_Proyecto_Integrador_Jorge_Quispe.pdf
+ M postman/Sesion13_PharmaMobil_JorgeQuispe.postman_collection.json
+ M scripts/sesion13/crear_entregable.py
+?? docs/sesion13/Guia_Defensa.md
+?? evidencias/sesion13/capturas/12_pruebas_finales.jpg
+?? evidencias/sesion13/capturas/13a_postman_resultados.jpg
+?? evidencias/sesion13/capturas/13b_postman_validaciones.jpg
+?? evidencias/sesion13/capturas/13c_postman_403.jpg
+?? evidencias/sesion13/git/estado-antes-cierre.txt
+?? evidencias/sesion13/git/pull-request.json
+?? evidencias/sesion13/pruebas/postman-final.json

@@ -36,6 +36,7 @@ class AuthRepositorioRest(
         val dto: LoginResponseDto = cliente.post("auth/login") {
             setBody(LoginRequestDto(credenciales.usuario, credenciales.clave))
         }.body()
+        almacen.bloquearConsultaLocal(false)
         almacen.guardarToken(dto.token)
         limpiarTokenEnCache()
         dto.aSesion().copy(expiracionEpochSegundos = Clock.System.now().epochSeconds + dto.expiraEnSegundos)
@@ -56,16 +57,17 @@ class AuthRepositorioRest(
     }
 
     override suspend fun sesionGuardada(): Sesion? {
+        if (almacen.consultaLocalBloqueada()) return null
         val token = almacen.leerToken()
         val guardada = almacen.leerSesion()?.takeIf { it.token == token }
         val vencida = guardada != null && guardada.expiracionEpochSegundos <= Clock.System.now().epochSeconds
-        if (vencida) cerrarSesion()
+        if (vencida) invalidarSesion()
         return try {
             // También comprueba conectividad en una primera apertura sin token.
             // Un 401 con red lleva al login; un fallo de transporte habilita solo consulta local.
             val usuario: UsuarioActualDto = cliente.get("auth/me").body()
             if (vencida || token == null) {
-                cerrarSesion()
+                invalidarSesion()
                 return null
             }
             Sesion(
@@ -79,7 +81,7 @@ class AuthRepositorioRest(
             throw cancelacion
         } catch (error: ErrorSesionException) {
             if (error.error == ErrorSesion.SesionExpirada || error.error == ErrorSesion.CredencialesInvalidas) {
-                cerrarSesion()
+                invalidarSesion()
                 null
             } else throw error
         } catch (timeout: HttpRequestTimeoutException) {
@@ -92,7 +94,7 @@ class AuthRepositorioRest(
             return sesionSinRed(guardada, conexion)
         } catch (peticion: ClientRequestException) {
             if (peticion.response.status == HttpStatusCode.Unauthorized) {
-                cerrarSesion()
+                invalidarSesion()
                 if (token == null) return null
                 throw ErrorSesionException(ErrorSesion.SesionExpirada, peticion)
             }
@@ -106,11 +108,16 @@ class AuthRepositorioRest(
     private suspend fun sesionSinRed(guardada: Sesion?, causa: Throwable): Sesion {
         if (guardada != null && guardada.expiracionEpochSegundos > Clock.System.now().epochSeconds) return guardada
         // El token vencido se borra antes de abrir la consulta; nunca se reutiliza como autorización.
-        cerrarSesion()
+        invalidarSesion()
         throw ConsultaLocalException(sesionExpirada = guardada != null, causa = causa)
     }
 
     override suspend fun cerrarSesion() {
+        almacen.bloquearConsultaLocal(true)
+        invalidarSesion()
+    }
+
+    override suspend fun invalidarSesion() {
         almacen.borrarToken()
         limpiarTokenEnCache()
     }

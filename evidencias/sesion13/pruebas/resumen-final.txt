@@ -1,0 +1,10 @@
+PHARMAMOBIL - SESION 13 - JORGE QUISPE
+Resultado real: BUILD SUCCESSFUL
+Pruebas: 119
+Fallos: 0
+Errores: 0
+Omitidas: 0
+Migracion SQLDelight: APROBADA
+APK: androidApp\build\outputs\apk\debug\androidApp-debug.apk
+Tamano APK: 25819289 bytes
+Origen: XML JUnit y salida Gradle completa de esta ejecucion

@@ -11,6 +11,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        org.koin.core.context.GlobalContext.get()
+            .get<pe.edu.upeu.pharmamobil.data.permiso.GestorPermisosAndroid>().vincular(this)
 
         setContent {
             App()

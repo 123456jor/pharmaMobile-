@@ -19,6 +19,11 @@ class AlmacenSeguroAndroid(contexto: Context) : AlmacenSeguro {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
+    override fun bloquearConsultaLocal(bloqueada: Boolean) {
+        // commit: el bloqueo debe quedar escrito antes de completar el cierre de sesión.
+        check(preferencias.edit().putBoolean("consulta_bloqueada_logout", bloqueada).commit())
+    }
+    override fun consultaLocalBloqueada(): Boolean = preferencias.getBoolean("consulta_bloqueada_logout", false)
     override fun guardarToken(token: String) { preferencias.edit().putString(CLAVE, token).apply() }
     override fun leerToken(): String? = preferencias.getString(CLAVE, null)
     override fun guardarSesion(sesion: Sesion) { preferencias.edit().putString("sesion", Json.encodeToString(sesion)).apply() }
