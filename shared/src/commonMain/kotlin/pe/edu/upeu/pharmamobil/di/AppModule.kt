@@ -75,10 +75,11 @@ val domainModule = module {
 }
 
 val presentationModule = module {
+    viewModel { pe.edu.upeu.pharmamobil.presentation.permiso.PermisosViewModel(get()) }
     viewModel { SesionViewModel(get(), get(), get(), get()) }
     viewModel { parametros -> ProductoViewModel(get(), get(), get(), get(), get(), get(),
         soloConsulta = parametros.getOrNull<Boolean>() ?: false,
-        conectividad = getOrNull(), sincronizarProductos = get()) }
+        conectividad = getOrNull(), sincronizarProductos = get(), permisos = getOrNull(), avisador = getOrNull()) }
     viewModel { ClienteViewModel(get(), get()) }
 }
 

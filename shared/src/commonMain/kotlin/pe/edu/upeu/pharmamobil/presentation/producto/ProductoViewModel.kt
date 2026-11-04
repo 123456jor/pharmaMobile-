@@ -38,7 +38,9 @@ class ProductoViewModel(
     private val soloConsulta: Boolean = false,
     conectividad: pe.edu.upeu.pharmamobil.domain.port.Conectividad? = null,
     private val sincronizarProductos: pe.edu.upeu.pharmamobil.domain.usecase.SincronizarUseCase =
-        pe.edu.upeu.pharmamobil.domain.usecase.SincronizarUseCase(repositorio)
+        pe.edu.upeu.pharmamobil.domain.usecase.SincronizarUseCase(repositorio),
+    private val permisos: pe.edu.upeu.pharmamobil.domain.permiso.GestorPermisos? = null,
+    private val avisador: pe.edu.upeu.pharmamobil.domain.port.AvisadorSincronizacion? = null
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductoUiState())
@@ -72,6 +74,8 @@ class ProductoViewModel(
             _uiState.update { it.copy(sincronizando = true) }
             try {
                 val resumen = sincronizarProductos()
+                if (permisos?.estado(pe.edu.upeu.pharmamobil.domain.permiso.Permiso.NOTIFICACIONES) ==
+                    pe.edu.upeu.pharmamobil.domain.permiso.EstadoPermiso.Concedido) avisador?.avisar(resumen)
                 _uiState.update { it.copy(avisoRed = if (resumen.fallidas > 0)
                     "${resumen.fallidas} ${if (resumen.fallidas == 1) "cambio requiere" else "cambios requieren"} atención" else null) }
             } catch (cancelacion: CancellationException) {

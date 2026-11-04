@@ -11,6 +11,12 @@ import pe.edu.upeu.pharmamobil.data.local.CreadorDeDriver
 import pe.edu.upeu.pharmamobil.data.local.CreadorDeDriverAndroid
 
 actual val platformModule: Module = module {
+    single { pe.edu.upeu.pharmamobil.data.permiso.GestorPermisosAndroid(androidContext(),
+        androidContext().getSharedPreferences("permisos", android.content.Context.MODE_PRIVATE)) }
+    single<pe.edu.upeu.pharmamobil.domain.permiso.GestorPermisos> { get<pe.edu.upeu.pharmamobil.data.permiso.GestorPermisosAndroid>() }
+    single<pe.edu.upeu.pharmamobil.domain.port.AvisadorSincronizacion> {
+        pe.edu.upeu.pharmamobil.data.permiso.AvisadorSincronizacionAndroid(androidContext())
+    }
     single<pe.edu.upeu.pharmamobil.domain.port.Conectividad> {
         pe.edu.upeu.pharmamobil.data.network.ConectividadAndroid(androidContext())
     }

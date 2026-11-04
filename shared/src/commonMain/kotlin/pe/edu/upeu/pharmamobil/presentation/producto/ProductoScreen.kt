@@ -95,6 +95,7 @@ fun ProductoScreen(viewModel: ProductoViewModel, modifier: Modifier = Modifier, 
                 }
             }
         }
+        if (permiteEscritura) item(key = "permiso-avisos") { pe.edu.upeu.pharmamobil.presentation.permiso.PermisosCard() }
         uiState.avisoRed?.let { aviso -> item { Text(aviso, color = MaterialTheme.colorScheme.error) } }
         if (permiteEscritura) item(key = "formulario") {
             FormularioProductoCard(uiState.formulario, ocupada || sync.enCurso,

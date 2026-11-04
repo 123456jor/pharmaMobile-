@@ -1,0 +1,42 @@
+[
+  {
+    "archivo": "11b_explicacion_previa.png",
+    "titulo": "22 Explicación antes del permiso",
+    "descripcion": "Se explica el resultado útil de los avisos antes de solicitar autorización. La app sigue funcionando si se rechaza."
+  },
+  {
+    "archivo": "11c_dialogo_real_android.png",
+    "titulo": "23 Diálogo auténtico de Android",
+    "descripcion": "El sistema solicita permitir las notificaciones de PharmaMobil. No es un diálogo simulado de la app."
+  },
+  {
+    "archivo": "11d_permiso_denegado.png",
+    "titulo": "24 Permiso denegado",
+    "descripcion": "Después del primer rechazo, la app permite volver a solicitar tras explicar la finalidad."
+  },
+  {
+    "archivo": "11e_permiso_denegado_permanente.png",
+    "titulo": "25 Denegación definitiva",
+    "descripcion": "Después del segundo rechazo, la app deja de solicitar diálogos y ofrece Ir a Ajustes."
+  },
+  {
+    "archivo": "11f_acceso_ajustes_android.png",
+    "titulo": "26 Acceso real a Ajustes",
+    "descripcion": "El botón abre App info de PharmaMobil en Android. Desde aquí se puede conceder el permiso."
+  },
+  {
+    "archivo": "11g_permiso_activado_en_ajustes.png",
+    "titulo": "27 Concesión desde el sistema",
+    "descripcion": "Se habilitaron las notificaciones en los Ajustes auténticos de Android, sin pm grant."
+  },
+  {
+    "archivo": "11h_permiso_concedido.png",
+    "titulo": "28 Permiso concedido",
+    "descripcion": "Al volver a la app, el estado se actualiza desde el permiso real del sistema."
+  },
+  {
+    "archivo": "11i_aviso_real_sincronizacion.png",
+    "titulo": "29 Notificación de sincronización",
+    "descripcion": "Después de sincronizar aparece un aviso auténtico con los contadores reales. No se generó una imagen de ejemplo."
+  }
+]
