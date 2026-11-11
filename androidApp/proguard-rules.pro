@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# PharmaMobil uses kotlinx.serialization DTOs across the Ktor boundary.
+# Preserve serialized names and generated serializer adapters in minified builds.
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+-keep @kotlinx.serialization.Serializable class * { *; }
+-keepclassmembers class **$$serializer { *; }
+-keepclassmembers class **$serializer { *; }
+-keepclassmembers class **$Companion { kotlinx.serialization.KSerializer serializer(...); }

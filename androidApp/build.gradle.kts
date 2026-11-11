@@ -1,3 +1,4 @@
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -5,6 +6,11 @@ plugins {
     alias(libs.plugins.firebaseCrashlytics)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
+}
+
+val releaseSigningFile = rootProject.file("keystore.properties")
+val releaseSigningProperties = Properties().apply {
+    if (releaseSigningFile.exists()) releaseSigningFile.inputStream().use(::load)
 }
 
 kotlin {
@@ -42,7 +48,15 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            if (releaseSigningFile.exists()) {
+                signingConfig = signingConfigs.create("release") {
+                    storeFile = file(requireNotNull(releaseSigningProperties.getProperty("storeFile")))
+                    storePassword = requireNotNull(releaseSigningProperties.getProperty("storePassword"))
+                    keyAlias = requireNotNull(releaseSigningProperties.getProperty("keyAlias"))
+                    keyPassword = requireNotNull(releaseSigningProperties.getProperty("keyPassword"))
+                }
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
