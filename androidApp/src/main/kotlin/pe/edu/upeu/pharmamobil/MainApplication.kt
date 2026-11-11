@@ -14,6 +14,10 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // shared lee esta propiedad al construir el cliente HTTP; permite que
+        // los APK físicos usen el host LAN sin fijar la IP del equipo en Git.
+        System.setProperty("pe.edu.upeu.pharmamobil.apiBaseUrl", BuildConfig.PHARMASOFT_API_BASE_URL)
+
         initKoin(esDepuracion = BuildConfig.DEBUG) {
             androidLogger()
             androidContext(this@MainApplication)

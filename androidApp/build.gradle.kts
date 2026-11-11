@@ -12,6 +12,9 @@ val releaseSigningFile = rootProject.file("keystore.properties")
 val releaseSigningProperties = Properties().apply {
     if (releaseSigningFile.exists()) releaseSigningFile.inputStream().use(::load)
 }
+val pharmasoftApiBaseUrl = providers.gradleProperty("pharmasoftApiBaseUrl")
+    .orElse("http://10.0.2.2:8080/api/v1/")
+    .get()
 
 kotlin {
     compilerOptions {
@@ -40,6 +43,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String", "PHARMASOFT_API_BASE_URL", "\"$pharmasoftApiBaseUrl\"")
     }
     packaging {
         resources {
